@@ -66,13 +66,21 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="text-xl sm:text-2xl font-extrabold font-display tracking-tight bg-gradient-to-r from-brand-700 via-indigo-700 to-purple-800 bg-clip-text text-transparent">MathQuest</span>
-                        <span id="portal-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">Student Portal</span>
+                        <span id="portal-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">Cross-Device Portal</span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Interactive Daily Word Problems &bull; Real-time Marking &bull; Multi-Format Exports</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Cloud Synced &bull; Multi-Device Grading Hub &bull; Grade 2 &amp; Grade 5</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
+                <!-- User Account Profile Button -->
+                <button onclick="openLoginModal()" id="btn-user-profile"
+                    class="px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 border border-slate-200 shadow-sm">
+                    <i id="user-role-avatar-icon" class="fa-solid fa-user-astronaut text-brand-600"></i>
+                    <span id="header-user-name" class="max-w-[110px] truncate">Alex Parker</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-md bg-slate-200 text-slate-700 font-semibold" id="header-user-role-tag">Student</span>
+                </button>
+
                 <div class="bg-slate-100 p-1 rounded-xl flex items-center border border-slate-200 shadow-inner">
                     <button id="btn-grade-2" onclick="switchGrade(2)" 
                         class="px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-brand-700 shadow-sm">
@@ -88,15 +96,15 @@
                     </button>
                 </div>
 
-                <!-- Auto-Save Status Badge -->
+                <!-- Cloud Sync Status Badge -->
                 <div id="autosave-status-badge" 
-                    title="Real-time auto-saving of answers, scratchpads and marks"
+                    title="Real-time multi-device cloud synchronization active"
                     class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 transition-all flex items-center gap-1.5 shadow-sm">
                     <span class="relative flex h-2 w-2">
                         <span id="autosave-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span id="autosave-dot" class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </span>
-                    <span id="autosave-label" class="font-bold text-[11px] sm:text-xs">Auto-Saved</span>
+                    <span id="autosave-label" class="font-bold text-[11px] sm:text-xs"><i class="fa-solid fa-cloud mr-1"></i>Live Cloud Sync</span>
                 </div>
 
                 <!-- Download Hub Trigger Button -->
@@ -123,16 +131,16 @@
         <section id="student-portal-banner" class="no-print bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5 flex-1">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-brand-500/20 shrink-0">
-                    <i class="fa-solid fa-user-astronaut"></i>
+                    <i id="banner-user-icon" class="fa-solid fa-user-astronaut"></i>
                 </div>
                 <div class="flex-1">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Student Portal</span>
+                        <span id="banner-role-tag" class="text-xs font-bold uppercase tracking-wider text-slate-400">Student Portal</span>
                         <span id="student-badge-status" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                            Active Learner
+                            Cloud Active
                         </span>
                         <span id="submission-count-pill" class="text-[11px] font-medium text-slate-500">
-                            &bull; Type answers and submit for teacher evaluation
+                            &bull; Submissions instantly sync to the Teacher Hub on all devices
                         </span>
                     </div>
                     <div class="flex items-center gap-2 mt-1">
@@ -148,6 +156,9 @@
                                 class="w-full pl-7 pr-2 py-1.5 text-xs font-mono font-semibold rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50/50 transition">
                             <i class="fa-solid fa-id-card absolute left-2.5 top-2.5 text-slate-400 text-[10px]"></i>
                         </div>
+                        <button onclick="openLoginModal()" title="Switch user or change profile" class="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200">
+                            <i class="fa-solid fa-right-left"></i> Switch
+                        </button>
                     </div>
                 </div>
             </div>
@@ -470,6 +481,99 @@
         </div>
     </div>
 
+    <div id="user-login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
+        <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
+            <div class="text-center space-y-2 mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center mx-auto text-2xl shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 font-display">MathQuest User Login</h3>
+                <p class="text-xs text-slate-500">Sign in as a student to complete word problems or as an educator to grade submissions on any device.</p>
+            </div>
+
+            <!-- Role Selector Tabs -->
+            <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl mb-4 border border-slate-200">
+                <button type="button" onclick="selectLoginRole('student')" id="login-role-student-btn"
+                    class="py-2 rounded-xl text-xs font-extrabold transition bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                    <span>Student Login</span>
+                </button>
+                <button type="button" onclick="selectLoginRole('teacher')" id="login-role-teacher-btn"
+                    class="py-2 rounded-xl text-xs font-extrabold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Teacher Login</span>
+                </button>
+            </div>
+
+            <form id="user-login-form" onsubmit="event.preventDefault(); handleUserLoginSubmit();" class="space-y-4">
+                <!-- Student Login Fields -->
+                <div id="login-student-fields" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Student Full Name</label>
+                        <div class="relative">
+                            <input type="text" id="login-student-name" placeholder="e.g. Alex Parker"
+                                class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold">
+                            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Student ID / Badge Number</label>
+                        <div class="relative">
+                            <input type="text" id="login-student-id" placeholder="e.g. STU-2026"
+                                class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-mono font-semibold">
+                            <i class="fa-solid fa-id-card absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Grade Portal</label>
+                        <select id="login-student-grade" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <option value="2">Grade 2 (Addition &amp; Subtraction)</option>
+                            <option value="5">Grade 5 (Mixed Integers &amp; Fractions)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Teacher Login Fields -->
+                <div id="login-teacher-fields" class="hidden space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Educator / Teacher Name</label>
+                        <div class="relative">
+                            <input type="text" id="login-teacher-name" placeholder="e.g. Ms. Vance"
+                                class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm font-semibold">
+                            <i class="fa-solid fa-chalkboard-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Teacher Security Passcode</label>
+                        <div class="relative">
+                            <input type="password" id="login-teacher-passcode" placeholder="Enter teacher passcode"
+                                class="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm font-mono">
+                            <i class="fa-solid fa-key absolute left-3 top-3 text-slate-400 text-xs"></i>
+                            <button type="button" onclick="togglePasswordVisibility('login-teacher-passcode', 'eye-login-teacher')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
+                                <i id="eye-login-teacher" class="fa-regular fa-eye text-xs"></i>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1">Default passcode is <span class="font-mono font-bold text-rose-600 cursor-pointer underline" onclick="fillTeacherLoginDefault()">mathmaster</span></p>
+                    </div>
+                </div>
+
+                <div id="login-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span id="login-error-text">Please enter valid login credentials.</span>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeLoginModal()" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" id="btn-login-submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm">
+                        Enter Portal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="teacher-marking-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
         <div class="bg-white rounded-3xl max-w-3xl w-full mx-4 max-h-[90vh] flex flex-col shadow-2xl border border-slate-100 transform transition-all overflow-hidden">
             <div class="bg-slate-900 text-white p-5 flex items-center justify-between shrink-0">
@@ -502,7 +606,7 @@
                     <button onclick="closeMarkingModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                         Cancel
                     </button>
-                    <button onclick="saveAndFinalizeMarks()" class="px-5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm flex items-center gap-1.5">
+                    <button onclick="saveAndFinalizeMarks()" class="px-5 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm flex items-center gap-1.5">
                         <i class="fa-solid fa-check-double"></i>
                         <span>Save &amp; Return Marks to Student</span>
                     </button>
@@ -631,18 +735,209 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Environment variables provided by runtime platform
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'mathquest-app-default';
+        const rawFirebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        let firebaseConfig = {};
+        if (rawFirebaseConfig) {
+            try { firebaseConfig = JSON.parse(rawFirebaseConfig); } catch (e) { console.error("Firebase config parse error", e); }
+        }
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let isCloudAvailable = false;
+
+        if (firebaseConfig && firebaseConfig.apiKey) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                isCloudAvailable = true;
+            } catch (err) {
+                console.warn("Cloud initialization error, running in memory-mode:", err);
+            }
+        }
+
+        // Initialize Authentication before Firestore operations (Rule 3)
+        async function initCloudAuth() {
+            if (!isCloudAvailable || !auth) return;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                currentUser = auth.currentUser;
+                window.currentUser = currentUser;
+                console.log("Cloud authentication initialized. User ID:", currentUser?.uid);
+                setupRealtimeCloudListeners();
+            } catch (authErr) {
+                console.warn("Auth initialization fallback:", authErr);
+                try {
+                    await signInAnonymously(auth);
+                    currentUser = auth.currentUser;
+                    setupRealtimeCloudListeners();
+                } catch (fallbackErr) {
+                    console.error("Anonymous auth failed:", fallbackErr);
+                }
+            }
+        }
+
+        // Setup Firestore Real-time Listeners (Rule 1 & Rule 2)
+        function setupRealtimeCloudListeners() {
+            if (!db || !currentUser) return;
+
+            // 1. Listen for all submissions across any device
+            const submissionsCol = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+            onSnapshot(submissionsCol, (snapshot) => {
+                const cloudSubmissions = [];
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    cloudSubmissions.push({ id: docSnap.id, ...data });
+                });
+
+                // Sort submissions newest first in JS memory (Rule 2: No complex orderBy queries)
+                cloudSubmissions.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+                window.APP_STATE.submissions = cloudSubmissions;
+
+                // Sync current student's answer state if graded by teacher
+                if (window.APP_STATE.currentUserRole === 'student') {
+                    const mySub = cloudSubmissions.find(s => 
+                        s.grade === window.APP_STATE.currentGrade && 
+                        s.day === window.APP_STATE.currentDay && 
+                        s.studentName === window.APP_STATE.studentName
+                    );
+                    if (mySub && mySub.answers) {
+                        Object.keys(mySub.answers).forEach(qid => {
+                            const key = `${mySub.grade}-${mySub.day}-${qid}`;
+                            if (!window.APP_STATE.studentAnswers[key]) {
+                                window.APP_STATE.studentAnswers[key] = mySub.answers[qid];
+                            }
+                        });
+                    }
+                }
+
+                window.renderSubmissionsList();
+                window.updateStudentSubmissionStatusCard();
+                window.updateVaultBadgeCounts();
+                window.updateAutoSaveBadge('saved');
+            }, (error) => {
+                console.error("Submissions cloud sync error:", error);
+            });
+
+            // 2. Listen for Shared Weekly Curriculum so all devices see identical word problems
+            const curriculumCol = collection(db, 'artifacts', appId, 'public', 'data', 'curriculum');
+            onSnapshot(curriculumCol, (snapshot) => {
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.grade2 && data.grade2.days) {
+                        window.APP_STATE.weeks[2] = data.grade2;
+                    }
+                    if (data.grade5 && data.grade5.days) {
+                        window.APP_STATE.weeks[5] = data.grade5;
+                    }
+                });
+                window.renderProblems();
+                window.renderVaultSolutions();
+            }, (error) => {
+                console.error("Curriculum cloud sync error:", error);
+            });
+
+            // 3. Listen for Global Teacher Settings (such as custom passcode)
+            const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
+            onSnapshot(settingsDocRef, (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data.teacherPassword && data.teacherPassword.length >= 3) {
+                        window.APP_STATE.teacherPassword = data.teacherPassword;
+                        window.updatePasswordHintUI();
+                    }
+                }
+            }, (error) => {
+                console.error("Settings cloud sync error:", error);
+            });
+        }
+
+        // Cloud writer functions exposed globally
+        window.cloudSaveSubmission = async function(submission) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submission.id);
+                await setDoc(subDocRef, submission, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to push submission to cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudDeleteSubmission = async function(submissionId) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submissionId);
+                await deleteDoc(subDocRef);
+                return true;
+            } catch (err) {
+                console.error("Failed to delete submission from cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudSaveCurriculum = async function(weekG2, weekG5) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const currDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'curriculum', 'active_weekly_sets');
+                await setDoc(currDocRef, {
+                    grade2: weekG2,
+                    grade5: weekG5,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to sync curriculum to cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudSaveTeacherPassword = async function(newPassword) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const settingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
+                await setDoc(settingsRef, {
+                    teacherPassword: newPassword,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to sync teacher passcode to cloud:", err);
+                return false;
+            }
+        };
+
+        // Start cloud initialization immediately
+        initCloudAuth();
+    </script>
+
     <script>
         const APP_STATE = {
             currentGrade: 2,
             currentDay: 1,
             isVaultUnlocked: false,
             teacherPassword: 'mathmaster',
+            currentUserRole: 'student', // 'student' or 'teacher'
             studentName: 'Alex Parker',
             studentId: 'STU-2026',
+            teacherName: 'Teacher',
             selectedExportFormat: 'word',
             activeVaultTab: 'submissions',
             activeMarkingSubmissionId: null,
-            expandedSubmissions: {}, // tracks inline drawer open/close
+            expandedSubmissions: {},
             weeks: { 2: null, 5: null },
             studentAnswers: {},
             studentScratchpads: {},
@@ -654,21 +949,20 @@
         let autoSaveDebounceTimer = null;
         const AUTOSAVE_STORAGE_KEY = 'mathquest_autosaved_session_v3';
 
-        // Load stored passcode & student profile if present
+        // Load stored state
         try {
+            const savedRole = localStorage.getItem('mathquest_user_role');
+            if (savedRole === 'teacher' || savedRole === 'student') APP_STATE.currentUserRole = savedRole;
+            const savedTeacherName = localStorage.getItem('mathquest_teacher_name');
+            if (savedTeacherName) APP_STATE.teacherName = savedTeacherName;
             const savedPass = localStorage.getItem('mathquest_vault_pin_2026');
-            if (savedPass && savedPass.trim().length >= 3) {
-                APP_STATE.teacherPassword = savedPass.trim();
-            }
+            if (savedPass && savedPass.trim().length >= 3) APP_STATE.teacherPassword = savedPass.trim();
             const savedName = localStorage.getItem('mathquest_student_name');
             if (savedName) APP_STATE.studentName = savedName;
             const savedId = localStorage.getItem('mathquest_student_id');
             if (savedId) APP_STATE.studentId = savedId;
-        } catch (e) {
-            console.warn("Storage restricted, using in-memory state.");
-        }
+        } catch (e) {}
 
-        // Mathematical generator contexts
         const G2_CONTEXTS = [
             { item: 'stickers', container: 'sticker album', verb: 'collected', icon: 'fa-star text-amber-500' },
             { item: 'muffins', container: 'bakery tray', verb: 'baked', icon: 'fa-cake-candles text-pink-500' },
@@ -929,8 +1223,8 @@
         }
 
         function initMathData() {
-            APP_STATE.weeks[2] = generateFullWeek(2);
-            APP_STATE.weeks[5] = generateFullWeek(5);
+            if (!APP_STATE.weeks[2]) APP_STATE.weeks[2] = generateFullWeek(2);
+            if (!APP_STATE.weeks[5]) APP_STATE.weeks[5] = generateFullWeek(5);
         }
         initMathData();
 
@@ -942,384 +1236,146 @@
             renderSubmissionsList();
             updateVaultUIStatus();
             updateStudentSubmissionStatusCard();
+            updateUserProfileUI();
         }
 
-        function updateInfographicHeader() {
-            const grade = APP_STATE.currentGrade;
-            const isG2 = grade === 2;
-            const gradePill = document.getElementById('infographic-grade-pill');
-            const portalBadge = document.getElementById('portal-badge');
-            const titleEl = document.getElementById('infographic-title');
-            const descEl = document.getElementById('infographic-description');
-            const fracBadge = document.getElementById('badge-fraction-support');
-            const opsPillsContainer = document.getElementById('operations-pills');
+        function updateUserProfileUI() {
+            const userNameEl = document.getElementById('header-user-name');
+            const userRoleTag = document.getElementById('header-user-role-tag');
+            const avatarIcon = document.getElementById('user-role-avatar-icon');
+            const bannerUserIcon = document.getElementById('banner-user-icon');
+            const bannerRoleTag = document.getElementById('banner-role-tag');
+            const nameInput = document.getElementById('student-name-input');
+            const idInput = document.getElementById('student-id-input');
 
-            if (isG2) {
-                gradePill.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
-                gradePill.textContent = "Grade 2 Portal";
-                portalBadge.textContent = "Grade 2 Student Portal";
-                portalBadge.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200";
-                titleEl.textContent = "Grade 2 Daily Word Problems: Addition & Subtraction";
-                descEl.textContent = "Carefully crafted two-digit addition and subtraction scenarios. Uses clean whole numbers, part-part-whole bar models, and real-life classroom themes.";
-                fracBadge.classList.add('hidden');
-                opsPillsContainer.innerHTML = `
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <i class="fa-solid fa-plus text-[10px]"></i> Addition
-                    </span>
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-                        <i class="fa-solid fa-minus text-[10px]"></i> Subtraction
-                    </span>
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                        <i class="fa-solid fa-shapes text-[10px]"></i> Bar Tape Models
-                    </span>
-                `;
-            } else {
-                gradePill.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 border border-indigo-200";
-                gradePill.textContent = "Grade 5 Portal";
-                portalBadge.textContent = "Grade 5 Student Portal";
-                portalBadge.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 border border-indigo-200";
-                titleEl.textContent = "Grade 5 Daily Word Problems: Operations & Fractions";
-                descEl.textContent = "Multi-operation challenges including fractions with unlike denominators, fraction-by-whole multiplication, unit fraction division, and multi-step word logic.";
-                fracBadge.classList.remove('hidden');
-                opsPillsContainer.innerHTML = `
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200"><i class="fa-solid fa-plus text-[10px]"></i> + Add</span>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200"><i class="fa-solid fa-minus text-[10px]"></i> − Sub</span>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-xmark text-[10px]"></i> × Mult</span>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200"><i class="fa-solid fa-divide text-[10px]"></i> ÷ Div</span>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-pie-chart text-[10px]"></i> Fractions</span>
-                `;
-            }
-
-            const btnG2 = document.getElementById('btn-grade-2');
-            const btnG5 = document.getElementById('btn-grade-5');
-            if (isG2) {
-                btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-emerald-700 shadow-sm";
-                btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
-            } else {
-                btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
-                btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-indigo-700 shadow-sm";
-            }
-
-            const vaultGLabel = document.getElementById('vault-grade-label');
-            if (vaultGLabel) vaultGLabel.textContent = grade;
-        }
-
-        function updateNavigationTabs() {
-            const day = APP_STATE.currentDay;
-            [1, 2, 3, 4, 5].forEach(d => {
-                const tab = document.getElementById(`day-tab-${d}`);
-                if (d === day) {
-                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 bg-brand-600 text-white shadow-md shadow-brand-500/20 border-transparent";
-                    tab.querySelector('span:first-child').className = "text-[10px] uppercase font-semibold text-brand-200";
-                } else {
-                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:bg-slate-100 border border-transparent";
-                    tab.querySelector('span:first-child').className = "text-[10px] uppercase font-semibold text-slate-400";
+            if (APP_STATE.currentUserRole === 'teacher') {
+                if (userNameEl) userNameEl.textContent = APP_STATE.teacherName || 'Teacher';
+                if (userRoleTag) {
+                    userRoleTag.textContent = 'Teacher';
+                    userRoleTag.className = "text-[10px] px-1.5 py-0.2 rounded-md bg-rose-100 text-rose-800 font-bold";
                 }
-            });
-
-            const testTab = document.getElementById('day-tab-test');
-            if (day === 'test') {
-                testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-500 text-white shadow-md shadow-amber-500/20";
-                testTab.querySelector('i').className = "fa-solid fa-award text-white text-lg";
-                testTab.querySelector('span:first-child').className = "block text-[10px] uppercase font-bold text-amber-100";
+                if (avatarIcon) avatarIcon.className = "fa-solid fa-chalkboard-user text-rose-600";
+                if (bannerUserIcon) bannerUserIcon.className = "fa-solid fa-chalkboard-user";
+                if (bannerRoleTag) bannerRoleTag.textContent = "Teacher Review Mode";
             } else {
-                testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100";
-                testTab.querySelector('i').className = "fa-solid fa-award text-amber-600";
-                testTab.querySelector('span:first-child').className = "block text-[10px] uppercase font-bold text-amber-600";
+                if (userNameEl) userNameEl.textContent = APP_STATE.studentName || 'Student';
+                if (userRoleTag) {
+                    userRoleTag.textContent = `Grade ${APP_STATE.currentGrade}`;
+                    userRoleTag.className = "text-[10px] px-1.5 py-0.2 rounded-md bg-brand-100 text-brand-800 font-bold";
+                }
+                if (avatarIcon) avatarIcon.className = "fa-solid fa-user-astronaut text-brand-600";
+                if (bannerUserIcon) bannerUserIcon.className = "fa-solid fa-user-astronaut";
+                if (bannerRoleTag) bannerRoleTag.textContent = "Student Portal";
             }
 
-            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
-            const printTitle = document.getElementById('print-sheet-title');
-            const printSubtitle = document.getElementById('print-sheet-subtitle');
-            const printPoints = document.getElementById('print-total-points');
-            const printMax = document.getElementById('print-max-score');
-            const printName = document.getElementById('print-student-name');
-            const printDate = document.getElementById('print-date');
-            const vaultDLabel = document.getElementById('vault-day-label');
+            if (nameInput && nameInput.value !== APP_STATE.studentName) {
+                nameInput.value = APP_STATE.studentName || '';
+            }
+            if (idInput && idInput.value !== APP_STATE.studentId) {
+                idInput.value = APP_STATE.studentId || '';
+            }
+        }
 
-            if (vaultDLabel) vaultDLabel.textContent = day === 'test' ? 'Friday Assessment' : dayNames[day];
-            if (printDate) printDate.textContent = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-            if (printName) printName.textContent = APP_STATE.studentName ? APP_STATE.studentName : '___________________________';
+        function openLoginModal() {
+            document.getElementById('user-login-modal').classList.remove('hidden');
+            document.getElementById('login-error-msg').classList.add('hidden');
+            document.getElementById('login-student-name').value = APP_STATE.studentName || '';
+            document.getElementById('login-student-id').value = APP_STATE.studentId || '';
+            document.getElementById('login-student-grade').value = APP_STATE.currentGrade || 2;
+            document.getElementById('login-teacher-name').value = APP_STATE.teacherName || '';
+            document.getElementById('login-teacher-passcode').value = '';
 
-            if (day === 'test') {
-                printTitle.textContent = `Grade ${APP_STATE.currentGrade} • End-of-Week 10-Question Assessment`;
-                printSubtitle.textContent = `Comprehensive Assessment covering Days 1-5 Core Concepts`;
-                printPoints.textContent = '20 pts';
-                printMax.textContent = '20';
+            selectLoginRole(APP_STATE.currentUserRole || 'student');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('user-login-modal').classList.add('hidden');
+        }
+
+        function selectLoginRole(role) {
+            const studentBtn = document.getElementById('login-role-student-btn');
+            const teacherBtn = document.getElementById('login-role-teacher-btn');
+            const studentFields = document.getElementById('login-student-fields');
+            const teacherFields = document.getElementById('login-teacher-fields');
+            const submitBtn = document.getElementById('btn-login-submit');
+
+            if (role === 'student') {
+                studentBtn.className = "py-2 rounded-xl text-xs font-extrabold transition bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2";
+                teacherBtn.className = "py-2 rounded-xl text-xs font-extrabold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2";
+                studentFields.classList.remove('hidden');
+                teacherFields.classList.add('hidden');
+                submitBtn.className = "px-5 py-2.5 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm";
+                submitBtn.textContent = "Enter Student Portal";
             } else {
-                printTitle.textContent = `Grade ${APP_STATE.currentGrade} • ${dayNames[day]} Daily Word Problems`;
-                printSubtitle.textContent = `5 Mathematical Challenge Problems with Working Space`;
-                printPoints.textContent = '10 pts';
-                printMax.textContent = '10';
+                teacherBtn.className = "py-2 rounded-xl text-xs font-extrabold transition bg-white text-rose-700 shadow-sm flex items-center justify-center gap-2";
+                studentBtn.className = "py-2 rounded-xl text-xs font-extrabold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-2";
+                teacherFields.classList.remove('hidden');
+                studentFields.classList.add('hidden');
+                submitBtn.className = "px-5 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm";
+                submitBtn.textContent = "Log In as Teacher";
             }
         }
 
-        function renderProblems() {
-            const container = document.getElementById('problems-container');
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            const weekData = APP_STATE.weeks[grade];
-            const problemList = (day === 'test') ? weekData.test : weekData.days[day];
-
-            let html = '';
-            if (day === 'test') {
-                html += `
-                    <div class="no-print bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-trophy"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-extrabold font-display">End-of-Week 10-Question Assessment</h3>
-                                <p class="text-xs text-amber-100">Curated across Monday-to-Friday practice sets for comprehensive teacher evaluation.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="px-3 py-1.5 rounded-xl bg-white/15 text-xs font-bold border border-white/20">
-                                <i class="fa-regular fa-clock mr-1"></i> Time: 30 Mins
-                            </span>
-                            <button onclick="submitWorkForGrading()" class="px-4 py-2 rounded-xl bg-white text-amber-800 text-xs font-extrabold shadow hover:bg-amber-50">
-                                Submit for Marking
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            problemList.forEach((prob, idx) => {
-                const probNumber = idx + 1;
-                const storageKey = `${grade}-${day}-${prob.id}`;
-                const currentVal = APP_STATE.studentAnswers[storageKey] || '';
-                const currentScratch = APP_STATE.studentScratchpads[storageKey] || '';
-                const evalData = APP_STATE.evaluations[storageKey];
-
-                html += `
-                    <article class="worksheet-card bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-sm hover:shadow-md transition-all">
-                        <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-brand-50 text-brand-700 font-extrabold font-display flex items-center justify-center text-sm border border-brand-100">
-                                    Q${probNumber}
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Problem ${probNumber} of ${problemList.length}</span>
-                                        ${prob.isTestQuestion ? `<span class="px-2 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Synthesized from Day ${prob.sourceDay}</span>` : ''}
-                                    </div>
-                                    <h4 class="text-xs font-semibold text-slate-500 capitalize flex items-center gap-1.5 mt-0.5">
-                                        <i class="${prob.icon || 'fa-solid fa-shapes text-brand-500'}"></i>
-                                        <span>${formatOperationName(prob.operationType)}</span>
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="no-print flex items-center gap-2">
-                                <button onclick="toggleVisualModel(${prob.id})" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 transition flex items-center gap-1">
-                                    <i class="fa-solid fa-diagram-project text-brand-500"></i>
-                                    <span class="hidden sm:inline">Tape Model</span>
-                                </button>
-                                <button onclick="toggleScratchpad(${prob.id})" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl ${currentScratch ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-slate-50 text-slate-600 border-slate-200'} border transition flex items-center gap-1">
-                                    <i class="fa-solid fa-pencil text-amber-500"></i>
-                                    <span class="hidden sm:inline">Scratchpad</span>
-                                    ${currentScratch ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>' : ''}
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="py-4">
-                            <p class="text-base sm:text-lg text-slate-800 leading-relaxed font-medium">${prob.question}</p>
-                        </div>
-
-                        <div id="visual-model-${prob.id}" class="hidden no-print my-3 p-4 rounded-2xl bg-gradient-to-r from-brand-50/60 to-indigo-50/60 border border-brand-200">
-                            <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-200/50">
-                                <span class="text-xs font-bold text-brand-800 uppercase tracking-wider flex items-center gap-1.5">
-                                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Singapore Math Bar Tape Diagram
-                                </span>
-                                <span class="text-[10px] text-brand-600 font-medium">Visual Representation</span>
-                            </div>
-                            ${renderBarModelGraphic(prob)}
-                        </div>
-
-                        <div class="hidden print-only mt-2 pt-2 border border-dashed border-slate-300 rounded-xl h-24 p-2 text-slate-400 text-xs">
-                            Show your work / calculations here:
-                        </div>
-
-                        <div id="scratchpad-${prob.id}" class="${currentScratch ? '' : 'hidden'} no-print my-3 p-3 rounded-2xl bg-amber-50/50 border border-amber-200">
-                            <label class="block text-xs font-bold text-amber-800 uppercase mb-1 flex items-center justify-between">
-                                <span>Student Working Space / Scratchpad Notes</span>
-                                <span class="text-[10px] text-amber-600 font-normal">Sent directly to Teacher for Review</span>
-                            </label>
-                            <textarea placeholder="Type your step-by-step thinking or calculations here..." rows="2"
-                                oninput="saveStudentScratchpad('${storageKey}', this.value)"
-                                class="w-full text-xs font-mono p-3 rounded-xl border border-amber-200 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">${currentScratch}</textarea>
-                        </div>
-
-                        <div class="no-print pt-3 mt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                            <div class="flex items-center gap-2 flex-1 max-w-sm">
-                                <label for="input-${prob.id}" class="text-xs font-bold text-slate-600 whitespace-nowrap">Your Answer:</label>
-                                <input type="text" id="input-${prob.id}" value="${currentVal}" placeholder="${grade === 2 ? 'e.g. 42' : 'e.g. 18 or 3/4'}"
-                                    oninput="saveStudentAnswer('${storageKey}', this.value)"
-                                    class="w-full px-3 py-1.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold font-mono">
-                            </div>
-
-                            <div class="flex items-center gap-2">
-                                <button onclick="checkStudentAnswer(${prob.id}, '${prob.answer}')" 
-                                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm active:scale-95">
-                                    Check Answer
-                                </button>
-                                <span id="feedback-${prob.id}" class="text-xs font-bold ${evalData ? '' : 'hidden'} ${evalData?.isCorrect ? 'text-emerald-600' : 'text-rose-600'}">
-                                    ${evalData ? (evalData.isCorrect ? '<i class="fa-solid fa-circle-check"></i> Correct!' : '<i class="fa-solid fa-circle-xmark"></i> Check your work!') : ''}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="hidden print-only mt-3 text-right font-bold text-xs text-slate-900">
-                            Final Answer: __________________________
-                        </div>
-                    </article>
-                `;
-            });
-
-            container.innerHTML = html;
+        function fillTeacherLoginDefault() {
+            document.getElementById('login-teacher-passcode').value = APP_STATE.teacherPassword;
         }
 
-        function renderBarModelGraphic(prob) {
-            const data = prob.barModel;
-            if (!data) return `<p class="text-xs text-slate-500">Visual model not available for this question.</p>`;
+        function handleUserLoginSubmit() {
+            const isStudent = !document.getElementById('login-student-fields').classList.contains('hidden');
+            const errorBox = document.getElementById('login-error-msg');
+            const errorText = document.getElementById('login-error-text');
 
-            if (data.type === 'part-part-whole') {
-                return `
-                    <div class="space-y-2 py-1">
-                        <div class="flex h-10 w-full rounded-xl overflow-hidden shadow-inner border border-slate-300">
-                            <div class="bg-emerald-400 text-white text-xs font-bold flex items-center justify-center border-r border-white/50" style="flex: ${data.part1.val};">
-                                ${data.part1.label} (${data.part1.val})
-                            </div>
-                            <div class="bg-sky-400 text-white text-xs font-bold flex items-center justify-center" style="flex: ${data.part2.val};">
-                                ${data.part2.label} (${data.part2.val})
-                            </div>
-                        </div>
-                        <div class="text-center text-xs font-extrabold text-slate-700">
-                            &uarr; Total Combined: ${data.whole.val} &uarr;
-                        </div>
-                    </div>
-                `;
-            } else if (data.type === 'comparison') {
-                return `
-                    <div class="space-y-2 py-1">
-                        <div class="flex items-center gap-2 text-xs">
-                            <span class="w-16 font-semibold text-slate-700">${data.top.label}:</span>
-                            <div class="h-6 bg-indigo-500 text-white font-bold rounded-lg flex items-center px-3" style="width: ${Math.min(100, data.top.val * 1.5)}%;">
-                                ${data.top.val}
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs">
-                            <span class="w-16 font-semibold text-slate-700">${data.bottom.label}:</span>
-                            <div class="h-6 bg-slate-400 text-white font-bold rounded-lg flex items-center px-3" style="width: ${Math.min(100, data.bottom.val * 1.5)}%;">
-                                ${data.bottom.val}
-                            </div>
-                        </div>
-                        <div class="text-xs font-bold text-amber-700 pt-1">
-                            Difference: ${data.diff.val}
-                        </div>
-                    </div>
-                `;
-            } else if (data.type === 'fraction-sum') {
-                return `
-                    <div class="flex items-center gap-2 py-2">
-                        <div class="h-8 bg-purple-200 border border-purple-400 text-purple-900 font-bold text-xs rounded-xl flex items-center px-3">
-                            Part A: ${data.f1}
-                        </div>
-                        <span class="font-black text-slate-400">+</span>
-                        <div class="h-8 bg-indigo-200 border border-indigo-400 text-indigo-900 font-bold text-xs rounded-xl flex items-center px-3">
-                            Part B: ${data.f2}
-                        </div>
-                        <span class="font-black text-slate-400">=</span>
-                        <div class="h-8 bg-brand-600 text-white font-extrabold text-xs rounded-xl flex items-center px-3 shadow-sm">
-                            Total: ${data.res}
-                        </div>
-                    </div>
-                `;
-            } else if (data.type === 'fraction-diff') {
-                return `
-                    <div class="flex items-center gap-2 py-2">
-                        <div class="h-8 bg-slate-200 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl flex items-center px-3">
-                            Total: ${data.total}
-                        </div>
-                        <span class="font-black text-slate-400">−</span>
-                        <div class="h-8 bg-rose-100 border border-rose-300 text-rose-800 font-bold text-xs rounded-xl flex items-center px-3">
-                            Used: ${data.used}
-                        </div>
-                        <span class="font-black text-slate-400">=</span>
-                        <div class="h-8 bg-emerald-600 text-white font-extrabold text-xs rounded-xl flex items-center px-3 shadow-sm">
-                            Remaining: ${data.res}
-                        </div>
-                    </div>
-                `;
-            } else if (data.type === 'fraction-of-whole') {
-                return `
-                    <div class="space-y-1.5 py-1">
-                        <div class="text-xs font-semibold text-slate-700">Whole Quantity = ${data.whole} (${data.parts} equal segments):</div>
-                        <div class="flex gap-1 h-8">
-                            ${Array.from({ length: data.parts }).map((_, i) => `
-                                <div class="flex-1 ${i < data.highlight ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-200 text-slate-500'} rounded-lg text-xs flex items-center justify-center">
-                                    ${data.whole / data.parts}
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="text-xs font-extrabold text-indigo-700 pt-1">
-                            ${data.highlight} of ${data.parts} segments = ${data.res}
-                        </div>
-                    </div>
-                `;
+            if (isStudent) {
+                const sName = document.getElementById('login-student-name').value.trim();
+                const sId = document.getElementById('login-student-id').value.trim();
+                const sGrade = parseInt(document.getElementById('login-student-grade').value, 10);
+
+                if (!sName) {
+                    errorText.textContent = "Please enter student name.";
+                    errorBox.classList.remove('hidden');
+                    return;
+                }
+
+                APP_STATE.currentUserRole = 'student';
+                APP_STATE.studentName = sName;
+                APP_STATE.studentId = sId || 'STU-' + Math.floor(1000 + Math.random() * 9000);
+                APP_STATE.currentGrade = sGrade;
+
+                try {
+                    localStorage.setItem('mathquest_user_role', 'student');
+                    localStorage.setItem('mathquest_student_name', sName);
+                    localStorage.setItem('mathquest_student_id', APP_STATE.studentId);
+                } catch (e) {}
+
+                closeLoginModal();
+                renderApp();
+                showToast(`Welcome ${sName}! Logged in to Grade ${sGrade} Portal.`);
             } else {
-                return `
-                    <div class="text-xs text-slate-700 py-1">
-                        <span class="font-bold">Model Context:</span> ${JSON.stringify(data).replace(/["{}]/g, ' ')}
-                    </div>
-                `;
+                const tName = document.getElementById('login-teacher-name').value.trim();
+                const tPass = document.getElementById('login-teacher-passcode').value.trim();
+
+                if (tPass !== APP_STATE.teacherPassword) {
+                    errorText.textContent = "Incorrect teacher passcode.";
+                    errorBox.classList.remove('hidden');
+                    return;
+                }
+
+                APP_STATE.currentUserRole = 'teacher';
+                APP_STATE.teacherName = tName || 'Teacher';
+                APP_STATE.isVaultUnlocked = true;
+
+                try {
+                    localStorage.setItem('mathquest_user_role', 'teacher');
+                    localStorage.setItem('mathquest_teacher_name', APP_STATE.teacherName);
+                } catch (e) {}
+
+                closeLoginModal();
+                renderApp();
+                const panel = document.getElementById('vault-panel');
+                panel.classList.remove('hidden');
+                setTimeout(() => panel.scrollIntoView({ behavior: 'smooth' }), 100);
+                showToast(`Welcome ${APP_STATE.teacherName}! Teacher Grading Hub unlocked.`);
             }
-        }
-
-        function formatOperationName(type) {
-            if (!type) return 'Mathematical Logic';
-            return type.replace(/-/g, ' ');
-        }
-
-        function renderVaultSolutions() {
-            const vaultList = document.getElementById('vault-solutions-list');
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            const weekData = APP_STATE.weeks[grade];
-            const problemList = (day === 'test') ? weekData.test : weekData.days[day];
-
-            let html = `
-                <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-                    <span class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
-                        Master Answer Key: Grade ${grade} &bull; ${day === 'test' ? '10-Question Friday Assessment' : `Day ${day}`}
-                    </span>
-                    <span class="text-xs font-bold text-rose-600">
-                        ${problemList.length} Total Solutions
-                    </span>
-                </div>
-            `;
-
-            problemList.forEach((prob, idx) => {
-                html += `
-                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500">Problem #${idx + 1}</span>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                Target Answer: ${prob.answer}
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-600 italic">"${prob.question}"</p>
-                        <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200/80">
-                            <span class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Step-by-Step Pedagogical Method:</span>
-                            <pre class="text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${prob.steps}</pre>
-                        </div>
-                    </div>
-                `;
-            });
-
-            vaultList.innerHTML = html;
         }
 
         function submitWorkForGrading() {
@@ -1330,7 +1386,6 @@
             const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
             const assignmentTitle = day === 'test' ? 'Friday 10-Question Assessment' : `${dayNames[day]} Daily Practice`;
 
-            // Actively inspect the DOM inputs to guarantee no values are dropped
             const answersMap = {};
             const scratchpadMap = {};
             let enteredCount = 0;
@@ -1351,7 +1406,6 @@
                 scratchpadMap[prob.id] = scratchVal;
             });
 
-            // Retain snapshot of questions so submissions never lose question context
             const problemsSnapshot = problems.map(p => ({
                 id: p.id,
                 grade: p.grade,
@@ -1363,16 +1417,19 @@
                 sourceDay: p.sourceDay
             }));
 
-            // Check if there is already an existing submission for this exact grade/day/student to update it
+            const studentName = APP_STATE.studentName || 'Student';
             const existingIndex = APP_STATE.submissions.findIndex(s => 
-                s.grade === grade && s.day === day && s.studentName === (APP_STATE.studentName || 'Student')
+                s.grade === grade && s.day === day && s.studentName === studentName
             );
 
-            const submissionId = existingIndex >= 0 ? APP_STATE.submissions[existingIndex].id : `SUB-${Date.now()}`;
+            // Use stable deterministic ID so multiple edits cleanly update the cloud document
+            const submissionId = existingIndex >= 0 
+                ? APP_STATE.submissions[existingIndex].id 
+                : `SUB-${grade}-${day}-${studentName.replace(/[^a-zA-Z0-9]/g, '_')}`;
             
             const submission = {
                 id: submissionId,
-                studentName: APP_STATE.studentName || 'Student',
+                studentName: studentName,
                 studentId: APP_STATE.studentId || 'N/A',
                 grade: grade,
                 day: day,
@@ -1408,330 +1465,12 @@
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
 
-            showToast(`Work for ${assignmentTitle} submitted to the teacher for marking! (${enteredCount}/${problems.length} answered)`);
-        }
-
-        function updateStudentSubmissionStatusCard() {
-            const card = document.getElementById('student-submission-status-card');
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            if (!card) return;
-
-            const sub = APP_STATE.submissions.find(s => s.grade === grade && s.day === day && s.studentName === APP_STATE.studentName);
-
-            if (!sub) {
-                card.classList.add('hidden');
-                return;
+            // Cloud synchronization across devices (Rule 1 & Rule 3)
+            if (typeof window.cloudSaveSubmission === 'function') {
+                window.cloudSaveSubmission(submission);
             }
 
-            card.classList.remove('hidden');
-            if (sub.status === 'graded') {
-                card.className = "no-print rounded-2xl p-4 border bg-emerald-50 border-emerald-200 text-emerald-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm";
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-clipboard-check"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-extrabold text-sm font-display">Marked by Teacher!</span>
-                                <span class="px-2 py-0.5 rounded-full text-xs font-black bg-emerald-600 text-white">${sub.awardedPoints} / ${sub.maxPoints} pts</span>
-                            </div>
-                            <p class="text-xs text-emerald-800 mt-0.5">Teacher Remark: "${sub.teacherRemarks || 'Excellent work!'}"</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="openExportModal()" class="px-3 py-1.5 rounded-xl bg-white text-emerald-800 border border-emerald-300 font-bold text-xs hover:bg-emerald-100">
-                            <i class="fa-solid fa-download mr-1"></i> Download Marked Report
-                        </button>
-                    </div>
-                `;
-            } else {
-                card.className = "no-print rounded-2xl p-4 border bg-amber-50 border-amber-200 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm";
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-clock"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-extrabold text-sm font-display">Submitted for Teacher Marking</span>
-                                <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-200 text-amber-900">Awaiting Grade</span>
-                            </div>
-                            <p class="text-xs text-amber-700 mt-0.5">Submitted at ${new Date(sub.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}. Your teacher will mark and return feedback.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="submitWorkForGrading()" class="px-3 py-1.5 rounded-xl bg-amber-600 text-white font-bold text-xs hover:bg-amber-700">
-                            Resubmit Update
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
-        function renderSubmissionsList() {
-            const container = document.getElementById('submissions-list-container');
-            const badge = document.getElementById('vault-submissions-badge');
-            const countChip = document.getElementById('pending-mark-count');
-            if (!container) return;
-
-            const pending = APP_STATE.submissions.filter(s => s.status === 'pending').length;
-            if (badge) badge.textContent = APP_STATE.submissions.length;
-            if (countChip) countChip.textContent = `${pending} Submissions`;
-
-            if (APP_STATE.submissions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 bg-white rounded-2xl border border-dashed border-slate-300 p-6">
-                        <i class="fa-solid fa-folder-open text-3xl text-slate-300 mb-2"></i>
-                        <h4 class="text-sm font-bold text-slate-600">No Submissions Yet</h4>
-                        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">When students in Grade 2 or Grade 5 click "Submit Work to Teacher", their complete answers and scratchpad notes will appear here immediately for grading.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            APP_STATE.submissions.forEach((sub, subIdx) => {
-                const isGraded = sub.status === 'graded';
-                const timeStr = new Date(sub.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                const isExpanded = !!APP_STATE.expandedSubmissions[sub.id];
-
-                // Count questions answered
-                const questionsList = sub.problems || [];
-                let answeredCount = 0;
-                questionsList.forEach(q => {
-                    if (sub.answers && sub.answers[q.id] && sub.answers[q.id].trim()) answeredCount++;
-                });
-
-                html += `
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
-                        <div class="p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                            <div class="flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-xl ${isGraded ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center text-lg shrink-0">
-                                    <i class="${isGraded ? 'fa-solid fa-clipboard-check' : 'fa-solid fa-hourglass-half'}"></i>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap">
-                                        <span class="font-extrabold text-sm text-slate-900">${sub.studentName}</span>
-                                        <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${sub.grade === 2 ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'}">
-                                            Grade ${sub.grade}
-                                        </span>
-                                        <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${isGraded ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">
-                                            ${isGraded ? `Marked (${sub.awardedPoints}/${sub.maxPoints} pts)` : 'Needs Marking'}
-                                        </span>
-                                        <span class="text-[11px] text-slate-400 font-semibold">
-                                            (${answeredCount}/${sub.totalQuestions} Answered)
-                                        </span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mt-0.5">
-                                        ${sub.assignmentTitle} &bull; ID: ${sub.studentId} &bull; ${timeStr}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-2 self-end md:self-auto">
-                                <button onclick="toggleSubmissionDrawer('${sub.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5">
-                                    <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'} text-slate-500"></i>
-                                    <span>${isExpanded ? 'Hide Work' : 'Inspect Work &amp; Scratchpad'}</span>
-                                </button>
-                                <button onclick="openMarkingModal('${sub.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold ${isGraded ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100' : 'bg-rose-600 text-white hover:bg-rose-700'} transition flex items-center gap-1.5 shadow-sm">
-                                    <i class="fa-solid fa-marker"></i>
-                                    <span>${isGraded ? 'Edit Marks' : 'Mark Submission'}</span>
-                                </button>
-                                <button onclick="deleteSubmission('${sub.id}')" title="Delete record" class="p-1.5 rounded-xl text-xs text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Direct Inline Student Work Inspector -->
-                        <div id="drawer-${sub.id}" class="${isExpanded ? '' : 'hidden'} bg-slate-50 p-4 sm:p-6 border-t border-slate-200 space-y-4">
-                            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-                                <span class="text-xs font-extrabold uppercase text-slate-700 flex items-center gap-2">
-                                    <i class="fa-solid fa-glasses text-brand-600"></i>
-                                    Submitted Student Answers &amp; Working Steps (${sub.studentName})
-                                </span>
-                                <span class="text-xs font-semibold text-slate-500">
-                                    Status: <strong class="${isGraded ? 'text-emerald-700' : 'text-amber-700'}">${isGraded ? 'Graded' : 'Awaiting Grade'}</strong>
-                                </span>
-                            </div>
-
-                            <div class="space-y-3">
-                                ${renderInlineStudentQuestions(sub)}
-                            </div>
-
-                            <div class="pt-2 flex items-center justify-between">
-                                <p class="text-xs text-slate-500 italic">
-                                    ${sub.teacherRemarks ? `Current Teacher Remark: "${sub.teacherRemarks}"` : 'No teacher remarks written yet.'}
-                                </p>
-                                <button onclick="openMarkingModal('${sub.id}')" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-sm">
-                                    <i class="fa-solid fa-marker"></i>
-                                    <span>Open Marking Studio</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderInlineStudentQuestions(sub) {
-            const problems = sub.problems || [];
-            if (problems.length === 0) {
-                return `<p class="text-xs text-slate-400 italic">No question snapshots recorded for this submission.</p>`;
-            }
-
-            return problems.map((prob, idx) => {
-                const ans = (sub.answers && sub.answers[prob.id] !== undefined) ? sub.answers[prob.id] : '';
-                const scratch = (sub.scratchpads && sub.scratchpads[prob.id]) ? sub.scratchpads[prob.id] : '';
-                const mark = sub.questionMarks ? sub.questionMarks[prob.id] : null;
-                const feedback = sub.teacherFeedbackPerQuestion ? sub.teacherFeedbackPerQuestion[prob.id] : '';
-
-                const cleanAns = (ans || '').trim().toLowerCase();
-                const cleanTarget = (prob.answer || '').trim().toLowerCase();
-                const isExact = cleanAns && ((cleanAns === cleanTarget) || (cleanAns.replace(/[^0-9/]/g, '') === cleanTarget.replace(/[^0-9/]/g, '')));
-
-                return `
-                    <div class="bg-white rounded-xl p-4 border border-slate-200 space-y-2">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="flex-1">
-                                <span class="text-xs font-bold text-slate-500">Q${idx + 1}: ${formatOperationName(prob.operationType)}</span>
-                                <p class="text-xs text-slate-800 font-medium mt-0.5">${prob.question}</p>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="px-2 py-0.5 rounded-lg text-xs font-black ${mark == 2 ? 'bg-emerald-100 text-emerald-800' : (mark == 1 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700')}">
-                                    ${mark !== null && mark !== undefined ? `${mark}/2 pts` : 'Not graded'}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
-                            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                                <span class="font-bold text-slate-500 block text-[11px]">Student Answer:</span>
-                                <span class="font-mono text-sm font-black ${ans ? (isExact ? 'text-emerald-700' : 'text-slate-900') : 'text-rose-500 italic'}">
-                                    ${ans || '[No answer submitted]'}
-                                </span>
-                                ${isExact ? '<span class="ml-2 text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Matches Key</span>' : ''}
-                                ${scratch ? `
-                                    <div class="mt-2 pt-1 border-t border-slate-200 text-[11px] text-slate-600 font-mono">
-                                        <strong class="text-amber-800">Scratchpad Work:</strong> ${scratch}
-                                    </div>
-                                ` : ''}
-                            </div>
-
-                            <div class="p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-200">
-                                <span class="font-bold text-emerald-800 block text-[11px]">Correct Solution &amp; Method:</span>
-                                <span class="font-mono text-sm font-black text-emerald-900">${prob.answer}</span>
-                                <p class="mt-1 text-[11px] text-emerald-700 whitespace-pre-line leading-tight font-sans">${prob.steps.split('\n')[0]}</p>
-                            </div>
-                        </div>
-
-                        ${feedback ? `
-                            <div class="text-xs text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">
-                                <strong>Teacher Note:</strong> ${feedback}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function toggleSubmissionDrawer(id) {
-            APP_STATE.expandedSubmissions[id] = !APP_STATE.expandedSubmissions[id];
-            renderSubmissionsList();
-        }
-
-        function openMarkingModal(subId) {
-            const sub = APP_STATE.submissions.find(s => s.id === subId);
-            if (!sub) return;
-
-            APP_STATE.activeMarkingSubmissionId = subId;
-            const modal = document.getElementById('teacher-marking-modal');
-            const titleEl = document.getElementById('marking-modal-student-title');
-            const metaEl = document.getElementById('marking-modal-meta');
-            const bodyEl = document.getElementById('marking-modal-body');
-
-            titleEl.textContent = `Marking: ${sub.studentName} (${sub.assignmentTitle})`;
-            metaEl.textContent = `Grade ${sub.grade} &bull; Student ID: ${sub.studentId} &bull; Submitted ${new Date(sub.timestamp).toLocaleTimeString()}`;
-
-            const problems = sub.problems || [];
-
-            let html = `
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-                    <label class="block text-xs font-bold uppercase text-slate-700">Overall Teacher Remarks &amp; Feedback:</label>
-                    <textarea id="marking-overall-remarks" rows="2" placeholder="e.g., Splendid work! Be mindful of simplifying fractions."
-                        class="w-full text-xs p-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 font-sans">${sub.teacherRemarks || ''}</textarea>
-                </div>
-            `;
-
-            problems.forEach((prob, idx) => {
-                const ans = (sub.answers && sub.answers[prob.id] !== undefined) ? sub.answers[prob.id] : '';
-                const scratch = (sub.scratchpads && sub.scratchpads[prob.id]) ? sub.scratchpads[prob.id] : '';
-                const target = prob.answer;
-                const currentScore = sub.questionMarks[prob.id] !== undefined ? sub.questionMarks[prob.id] : 0;
-                const feedbackText = sub.teacherFeedbackPerQuestion[prob.id] || '';
-
-                html += `
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                        <div class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
-                            <div>
-                                <span class="text-xs font-extrabold text-slate-800">Question ${idx + 1} (${formatOperationName(prob.operationType)})</span>
-                                <p class="text-xs text-slate-600 mt-1">${prob.question}</p>
-                            </div>
-                            <div class="flex items-center gap-1.5 shrink-0">
-                                <label class="text-[11px] font-bold text-slate-600">Points (Max 2):</label>
-                                <select id="q-mark-${prob.id}" onchange="recalculateMarkingTotal()"
-                                    class="text-xs font-bold font-mono px-2 py-1 rounded-lg border border-slate-300 bg-slate-50 focus:ring-2 focus:ring-rose-500">
-                                    <option value="2" ${currentScore == 2 ? 'selected' : ''}>2 / 2 (Full)</option>
-                                    <option value="1" ${currentScore == 1 ? 'selected' : ''}>1 / 2 (Partial)</option>
-                                    <option value="0" ${currentScore == 0 ? 'selected' : ''}>0 / 2 (Zero)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                                <span class="font-bold text-slate-500 block mb-1">Student Answer Submitted:</span>
-                                <span class="font-mono text-sm font-bold ${ans ? 'text-slate-900' : 'text-rose-500 italic'}">${ans || '[No answer submitted]'}</span>
-                                ${scratch ? `<p class="mt-2 text-[11px] text-slate-500 font-mono border-t border-slate-200 pt-1"><strong>Scratchpad:</strong> ${scratch}</p>` : ''}
-                            </div>
-                            <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-                                <span class="font-bold text-emerald-800 block mb-1">Target Key &amp; Method:</span>
-                                <span class="font-mono text-sm font-bold text-emerald-900">${target}</span>
-                                <p class="mt-1 text-[11px] text-emerald-700 whitespace-pre-line">${prob.steps.split('\n')[0]}</p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <input type="text" id="q-feedback-${prob.id}" value="${feedbackText}" placeholder="Optional note for this question..."
-                                class="w-full text-xs px-3 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-500">
-                        </div>
-                    </div>
-                `;
-            });
-
-            bodyEl.innerHTML = html;
-            recalculateMarkingTotal();
-            modal.classList.remove('hidden');
-        }
-
-        function recalculateMarkingTotal() {
-            const sub = APP_STATE.submissions.find(s => s.id === APP_STATE.activeMarkingSubmissionId);
-            if (!sub) return;
-
-            const problems = sub.problems || [];
-            let sum = 0;
-            problems.forEach(prob => {
-                const select = document.getElementById(`q-mark-${prob.id}`);
-                if (select) sum += parseInt(select.value, 10);
-            });
-
-            const max = problems.length * 2;
-            const badge = document.getElementById('marking-total-score-badge');
-            if (badge) badge.textContent = `${sum} / ${max} pts (${Math.round((sum / max) * 100)}%)`;
+            showToast(`Work for ${assignmentTitle} submitted to the teacher on all devices! (${enteredCount}/${problems.length} answered)`);
         }
 
         function saveAndFinalizeMarks() {
@@ -1758,12 +1497,13 @@
             renderSubmissionsList();
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
-            showToast(`Marks finalized and returned to ${sub.studentName}!`);
-        }
 
-        function closeMarkingModal() {
-            document.getElementById('teacher-marking-modal').classList.add('hidden');
-            APP_STATE.activeMarkingSubmissionId = null;
+            // Sync updated marks to cloud so the student sees them on their device
+            if (typeof window.cloudSaveSubmission === 'function') {
+                window.cloudSaveSubmission(sub);
+            }
+
+            showToast(`Marks saved and synced to student device for ${sub.studentName}!`);
         }
 
         function deleteSubmission(id) {
@@ -1771,351 +1511,74 @@
             renderSubmissionsList();
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
+
+            if (typeof window.cloudDeleteSubmission === 'function') {
+                window.cloudDeleteSubmission(id);
+            }
+
             showToast("Submission record removed.");
         }
 
-        function switchVaultTab(tab) {
-            APP_STATE.activeVaultTab = tab;
-            const subTab = document.getElementById('vault-tab-submissions');
-            const solTab = document.getElementById('vault-tab-solutions');
-            const subView = document.getElementById('vault-submissions-view');
-            const solView = document.getElementById('vault-solutions-view');
+        function updateVaultBadgeCounts() {
+            const badge = document.getElementById('vault-submissions-badge');
+            const countChip = document.getElementById('pending-mark-count');
+            const pending = APP_STATE.submissions.filter(s => s.status === 'pending').length;
+            if (badge) badge.textContent = APP_STATE.submissions.length;
+            if (countChip) countChip.textContent = `${pending} Submissions`;
+        }
 
-            if (tab === 'submissions') {
-                subTab.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-rose-700 shadow-sm";
-                solTab.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
-                subView.classList.remove('hidden');
-                solView.classList.add('hidden');
-            } else {
-                subTab.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
-                solTab.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-rose-700 shadow-sm";
-                subView.classList.add('hidden');
-                solView.classList.remove('hidden');
+        function saveNewPassword() {
+            const currentPass = document.getElementById('current-pass-input').value.trim();
+            const newPass = document.getElementById('new-pass-input').value.trim();
+            const confirmPass = document.getElementById('confirm-pass-input').value.trim();
+            const errBox = document.getElementById('change-pass-error');
+            const errText = document.getElementById('change-pass-error-text');
+
+            if (!APP_STATE.isVaultUnlocked && currentPass !== APP_STATE.teacherPassword) {
+                errText.textContent = "Current passcode is incorrect.";
+                errBox.classList.remove('hidden');
+                return;
             }
-        }
 
-        function refreshSubmissionsList() {
-            renderSubmissionsList();
-            showToast("Submissions list refreshed!");
-        }
-
-        function openExportModal() {
-            document.getElementById('export-download-modal').classList.remove('hidden');
-            selectExportFormat(APP_STATE.selectedExportFormat || 'word');
-        }
-
-        function closeExportModal() {
-            document.getElementById('export-download-modal').classList.add('hidden');
-        }
-
-        function selectExportFormat(format) {
-            APP_STATE.selectedExportFormat = format;
-            ['word', 'pdf', 'json', 'html'].forEach(f => {
-                const el = document.getElementById(`format-card-${f}`);
-                if (!el) return;
-                if (f === format) {
-                    el.className = "format-choice border-2 border-indigo-600 bg-indigo-50/50 p-3 rounded-2xl cursor-pointer transition flex items-center gap-3 shadow-sm";
-                } else {
-                    el.className = "format-choice border border-slate-200 p-3 rounded-2xl cursor-pointer hover:bg-slate-50 transition flex items-center gap-3";
-                }
-            });
-
-            const desc = document.getElementById('format-description-text');
-            const btnLabel = document.getElementById('download-confirm-btn-label');
-
-            if (format === 'word') {
-                desc.textContent = "Word Document (.doc): Fully formatted for Microsoft Word, Google Docs, and LibreOffice with tables, headers, and working areas.";
-                btnLabel.textContent = "Download Word Document (.doc)";
-            } else if (format === 'pdf') {
-                desc.textContent = "PDF Document: Formats the current worksheet or graded paper for instant browser printing or saving directly to PDF.";
-                btnLabel.textContent = "Print / Save as PDF";
-            } else if (format === 'json') {
-                desc.textContent = "JSON Data Archive: Saves all questions, student responses, scratchpads, and teacher marks into an open JSON file.";
-                btnLabel.textContent = "Download Activity JSON";
-            } else if (format === 'html') {
-                desc.textContent = "Offline HTML Worksheet: Generates a self-contained web file that can be opened in any browser offline.";
-                btnLabel.textContent = "Download Offline HTML";
+            if (newPass.length < 3) {
+                errText.textContent = "New passcode must be at least 3 characters.";
+                errBox.classList.remove('hidden');
+                return;
             }
-        }
 
-        function executeDownloadChoice() {
-            const format = APP_STATE.selectedExportFormat;
-            const contentTypeRadio = document.querySelector('input[name="export-content-type"]:checked');
-            const contentType = contentTypeRadio ? contentTypeRadio.value : 'worksheet';
-
-            closeExportModal();
-
-            if (format === 'word') {
-                downloadAsWordDocument(contentType);
-            } else if (format === 'pdf') {
-                printCurrentWorksheet();
-            } else if (format === 'json') {
-                downloadActivityJSON();
-            } else if (format === 'html') {
-                downloadCurrentWorksheet();
+            if (newPass !== confirmPass) {
+                errText.textContent = "New passcode and confirmation do not match.";
+                errBox.classList.remove('hidden');
+                return;
             }
-        }
 
-        function downloadAsWordDocument(contentType) {
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
-            const weekData = APP_STATE.weeks[grade];
-            const problems = (day === 'test') ? weekData.test : weekData.days[day];
-            const title = (day === 'test') 
-                ? `Grade ${grade} - End of Week 10-Question Assessment` 
-                : `Grade ${grade} - ${dayNames[day]} Daily Word Problems`;
-            const student = APP_STATE.studentName || 'Student';
-            const studentId = APP_STATE.studentId || 'N/A';
-            const dateStr = new Date().toLocaleDateString();
-
-            const sub = APP_STATE.submissions.find(s => s.grade === grade && s.day === day && s.studentName === APP_STATE.studentName);
-
-            let rows = '';
-            problems.forEach((p, idx) => {
-                const key = `${grade}-${day}-${p.id}`;
-                const studentAnswer = APP_STATE.studentAnswers[key] || '';
-                const studentScratch = APP_STATE.studentScratchpads[key] || '';
-                const qMark = sub?.questionMarks?.[p.id];
-                const qFeedback = sub?.teacherFeedbackPerQuestion?.[p.id];
-
-                rows += `
-                    <div style="margin-bottom: 24px; padding: 16px; border: 1px solid #cbd5e1; border-radius: 8px; page-break-inside: avoid; font-family: 'Calibri', Arial, sans-serif;">
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
-                            <tr>
-                                <td style="font-weight: bold; font-size: 14pt; color: #0284c7;">Question ${idx + 1}</td>
-                                <td style="text-align: right; font-size: 10pt; color: #64748b;">Concept: ${formatOperationName(p.operationType)}</td>
-                            </tr>
-                        </table>
-                        <p style="font-size: 11.5pt; line-height: 1.5; color: #1e293b; margin: 8px 0 12px 0;">${p.question}</p>
-                        
-                        ${contentType === 'student_work' ? `
-                            <table style="width: 100%; border: 1px solid #94a3b8; background-color: #f8fafc; padding: 8px; margin-bottom: 8px; font-size: 10.5pt;">
-                                <tr>
-                                    <td><strong>Student's Answer:</strong> ${studentAnswer || '<span style="color:#94a3b8;">[No answer submitted]</span>'}</td>
-                                    ${sub ? `<td style="text-align: right;"><strong>Teacher Score:</strong> ${qMark !== undefined ? `${qMark} / 2 pts` : 'Pending'}</td>` : ''}
-                                </tr>
-                                ${studentScratch ? `<tr><td colspan="2" style="font-size: 9.5pt; color: #475569; padding-top: 4px;"><strong>Working / Scratchpad:</strong> ${studentScratch}</td></tr>` : ''}
-                                ${qFeedback ? `<tr><td colspan="2" style="font-size: 9.5pt; color: #0284c7; padding-top: 4px;"><strong>Teacher Feedback:</strong> ${qFeedback}</td></tr>` : ''}
-                            </table>
-                        ` : `
-                            <div style="border: 1px dashed #94a3b8; height: 80px; padding: 6px; color: #94a3b8; font-size: 10pt;">
-                                Show your calculations &amp; working steps here:
-                            </div>
-                            <div style="text-align: right; margin-top: 10px; font-size: 11pt; font-weight: bold;">
-                                Answer: __________________________
-                            </div>
-                        `}
-                    </div>
-                `;
-            });
-
-            const docContent = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head>
-                    <meta charset='utf-8'>
-                    <title>${title}</title>
-                    <style>
-                        body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; color: #0f172a; margin: 30px; }
-                        h1 { font-size: 20pt; color: #0369a1; margin: 0; }
-                        h2 { font-size: 14pt; color: #334155; margin: 4px 0 16px 0; }
-                        .meta-table { width: 100%; border-bottom: 2px solid #0284c7; padding-bottom: 10px; margin-bottom: 20px; }
-                        .meta-table td { font-size: 11pt; }
-                    </style>
-                </head>
-                <body>
-                    <table class="meta-table">
-                        <tr>
-                            <td>
-                                <h1>MathQuest &bull; Grade ${grade}</h1>
-                                <h2>${title}</h2>
-                            </td>
-                            <td style="text-align: right;">
-                                <p><strong>Student:</strong> ${student}</p>
-                                <p><strong>Student ID:</strong> ${studentId}</p>
-                                <p><strong>Date:</strong> ${dateStr}</p>
-                                ${sub?.status === 'graded' ? `<p style="color: #16a34a; font-weight: bold;"><strong>Final Grade:</strong> ${sub.awardedPoints} / ${sub.maxPoints} pts</p>` : ''}
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    ${sub?.teacherRemarks ? `
-                        <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
-                            <strong style="color: #065f46;">Teacher Overall Remarks:</strong>
-                            <p style="margin: 4px 0 0 0; color: #047857;">${sub.teacherRemarks}</p>
-                        </div>
-                    ` : ''}
-
-                    <div class="questions">
-                        ${rows}
-                    </div>
-
-                    <p style="margin-top: 30px; font-size: 9pt; text-align: center; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                        MathQuest Curriculum Suite &bull; Aligned with Standards for Grade 2 and Grade 5
-                    </p>
-                </body>
-                </html>
-            `;
-
-            const blob = new Blob(['\ufeff', docContent], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const safeName = student.replace(/[^a-zA-Z0-9]/g, '_');
-            const safeDay = (day === 'test') ? 'Friday_Test' : `Day_${day}`;
-            const fileName = `MathQuest_G${grade}_${safeDay}_${safeName}.doc`;
-
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            showToast(`Downloaded Microsoft Word document: "${fileName}"!`);
-        }
-
-        function downloadCurrentWorksheet() {
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
-            const weekData = APP_STATE.weeks[grade];
-            const problems = (day === 'test') ? weekData.test : weekData.days[day];
-            const title = (day === 'test') 
-                ? `Grade ${grade} - End of Week 10-Question Test` 
-                : `Grade ${grade} - ${dayNames[day]} Word Problems`;
-            const student = APP_STATE.studentName || 'Student';
-            const dateStr = new Date().toLocaleDateString();
-
-            let problemRows = '';
-            problems.forEach((p, idx) => {
-                problemRows += `
-                    <div style="margin-bottom: 24px; padding: 16px; border: 1px solid #cbd5e1; border-radius: 8px; page-break-inside: avoid;">
-                        <div style="font-size: 14px; font-weight: bold; color: #0f172a; margin-bottom: 6px;">
-                            Question ${idx + 1} (${p.operationType ? p.operationType.replace(/-/g, ' ') : 'Math'})
-                        </div>
-                        <p style="font-size: 15px; line-height: 1.5; color: #1e293b; margin: 0 0 12px 0;">${p.question}</p>
-                        <div style="border: 1px dashed #94a3b8; height: 90px; border-radius: 6px; padding: 8px; color: #94a3b8; font-size: 11px;">
-                            Show your work &amp; calculations here:
-                        </div>
-                        <div style="text-align: right; margin-top: 10px; font-size: 13px; font-weight: bold; color: #0f172a;">
-                            Answer: _______________________
-                        </div>
-                    </div>
-                `;
-            });
-
-            const htmlContent = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>${title} - ${student}</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 40px; color: #0f172a; max-width: 800px; margin: auto; }
-        .header { border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 25px; }
-        .info-grid { display: flex; justify-content: space-between; margin-top: 15px; font-size: 14px; }
-        @media print { body { padding: 0; } }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1 style="margin: 0; font-size: 24px;">MathQuest Worksheet</h1>
-        <h2 style="margin: 4px 0 0 0; font-size: 16px; color: #475569; font-weight: normal;">${title}</h2>
-        <div class="info-grid">
-            <div><strong>Student Name:</strong> ${student}</div>
-            <div><strong>Date:</strong> ${dateStr}</div>
-            <div><strong>Score:</strong> ______ / ${problems.length * 2}</div>
-        </div>
-    </div>
-    <div class="questions">
-        ${problemRows}
-    </div>
-    <footer style="margin-top: 30px; font-size: 11px; text-align: center; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-        MathQuest &bull; Grade ${grade} Word Problem Curriculum
-    </footer>
-</body>
-</html>`;
-
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const safeName = student.replace(/[^a-zA-Z0-9]/g, '_');
-            const safeDay = (day === 'test') ? 'Friday_Test' : `Day_${day}`;
-            const fileName = `MathQuest_G${grade}_${safeDay}_${safeName}.html`;
-
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            showToast(`Downloaded "${fileName}"!`);
-        }
-
-        function downloadActivityJSON() {
+            APP_STATE.teacherPassword = newPass;
             try {
-                const payload = generateActivityJSONPayload();
-                const jsonStr = JSON.stringify(payload, null, 2);
-                const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
+                localStorage.setItem('mathquest_vault_pin_2026', newPass);
+            } catch (e) {}
 
-                const safeName = (APP_STATE.studentName || 'Student').replace(/[^a-zA-Z0-9]/g, '_');
-                const dateKey = new Date().toISOString().split('T')[0];
-                const fileName = `MathQuest_Activity_G${APP_STATE.currentGrade}_${safeName}_${dateKey}.json`;
-
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-
-                showToast(`Activity & questions saved as "${fileName}"!`);
-            } catch (err) {
-                console.error("JSON Export Error:", err);
-                showToast("Failed to generate JSON file.");
+            if (typeof window.cloudSaveTeacherPassword === 'function') {
+                window.cloudSaveTeacherPassword(newPass);
             }
+
+            closeChangePasswordModal();
+            updatePasswordHintUI();
+            showToast("Teacher passcode successfully updated and synced across devices!");
         }
 
-        function generateActivityJSONPayload() {
-            const timestamp = new Date().toISOString();
-            return {
-                app: "MathQuest Educational Systems",
-                schemaVersion: "2.1.0",
-                exportedAt: timestamp,
-                student: {
-                    name: APP_STATE.studentName || "Anonymous Learner",
-                    studentId: APP_STATE.studentId || "N/A",
-                    activeGrade: APP_STATE.currentGrade,
-                    activeDay: APP_STATE.currentDay
-                },
-                curriculumData: {
-                    grade2: APP_STATE.weeks[2],
-                    grade5: APP_STATE.weeks[5]
-                },
-                studentSubmissions: {
-                    answers: APP_STATE.studentAnswers,
-                    scratchpads: APP_STATE.studentScratchpads,
-                    evaluations: APP_STATE.evaluations,
-                    teacherSubmissionHistory: APP_STATE.submissions
-                }
-            };
-        }
+        function resetToDefaultPassword() {
+            APP_STATE.teacherPassword = 'mathmaster';
+            try {
+                localStorage.setItem('mathquest_vault_pin_2026', 'mathmaster');
+            } catch (e) {}
 
-        function switchGrade(grade) {
-            if (APP_STATE.currentGrade === grade) return;
-            APP_STATE.currentGrade = grade;
-            renderApp();
-            showToast(`Switched to Grade ${grade} Portal`);
-            triggerAutoSave();
-        }
+            if (typeof window.cloudSaveTeacherPassword === 'function') {
+                window.cloudSaveTeacherPassword('mathmaster');
+            }
 
-        function switchDay(day) {
-            APP_STATE.currentDay = day;
-            renderApp();
-            window.scrollTo({ top: 120, behavior: 'smooth' });
-            triggerAutoSave();
+            closeChangePasswordModal();
+            updatePasswordHintUI();
+            showToast("Passcode reset to default: mathmaster");
         }
 
         function regenerateCurrentWeek() {
@@ -2123,110 +1586,36 @@
             renderApp();
             showToast(`Generated a fresh weekly set for Grade ${APP_STATE.currentGrade}!`);
             triggerAutoSave();
-        }
 
-        function toggleVisualModel(id) {
-            const el = document.getElementById(`visual-model-${id}`);
-            if (el) el.classList.toggle('hidden');
-        }
-
-        function toggleScratchpad(id) {
-            const el = document.getElementById(`scratchpad-${id}`);
-            if (el) el.classList.toggle('hidden');
-        }
-
-        function saveStudentScratchpad(key, value) {
-            APP_STATE.studentScratchpads[key] = value;
-            triggerAutoSave();
-        }
-
-        function saveStudentAnswer(key, value) {
-            APP_STATE.studentAnswers[key] = value.trim();
-            triggerAutoSave();
-        }
-
-        function handleStudentNameChange(name) {
-            APP_STATE.studentName = name.trim();
-            try {
-                localStorage.setItem('mathquest_student_name', APP_STATE.studentName);
-            } catch (e) {}
-
-            const printName = document.getElementById('print-student-name');
-            if (printName) printName.textContent = APP_STATE.studentName || '___________________________';
-            updateStudentSubmissionStatusCard();
-            triggerAutoSave();
-        }
-
-        function handleStudentIdChange(id) {
-            APP_STATE.studentId = id.trim();
-            try {
-                localStorage.setItem('mathquest_student_id', APP_STATE.studentId);
-            } catch (e) {}
-            triggerAutoSave();
-        }
-
-        function checkStudentAnswer(id, target) {
-            const grade = APP_STATE.currentGrade;
-            const day = APP_STATE.currentDay;
-            const storageKey = `${grade}-${day}-${id}`;
-
-            const input = document.getElementById(`input-${id}`);
-            const feedback = document.getElementById(`feedback-${id}`);
-            if (!input || !feedback) return;
-
-            const val = input.value.trim().toLowerCase();
-            const cleanTarget = target.trim().toLowerCase();
-
-            feedback.classList.remove('hidden');
-
-            if (!val) {
-                feedback.className = "text-xs font-bold text-slate-400";
-                feedback.textContent = "Please enter an answer.";
-                return;
-            }
-
-            const namePrefix = APP_STATE.studentName ? `${APP_STATE.studentName}, ` : '';
-            const isMatch = (val === cleanTarget) || 
-                (val.replace(/[^0-9/]/g, '') === cleanTarget.replace(/[^0-9/]/g, ''));
-
-            APP_STATE.evaluations[storageKey] = {
-                isCorrect: isMatch,
-                submittedAnswer: val,
-                targetAnswer: target,
-                timestamp: new Date().toISOString()
-            };
-
-            if (isMatch) {
-                feedback.className = "text-xs font-bold text-emerald-600 flex items-center gap-1";
-                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Great job, ${namePrefix}that's correct!`;
-            } else {
-                feedback.className = "text-xs font-bold text-rose-600 flex items-center gap-1";
-                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Not quite yet, check your steps!`;
-            }
-            triggerAutoSave();
-        }
-
-        function updateAutoSaveBadge(state, timeStr) {
-            const badge = document.getElementById('autosave-status-badge');
-            const ping = document.getElementById('autosave-ping');
-            const dot = document.getElementById('autosave-dot');
-            const label = document.getElementById('autosave-label');
-            if (!badge || !label) return;
-
-            if (state === 'saving') {
-                badge.className = "px-2.5 py-1 sm:py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 transition-all flex items-center gap-1.5 shadow-sm";
-                ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
-                dot.className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
-                label.innerHTML = `<i class="fa-solid fa-rotate fa-spin text-[10px]"></i> Saving...`;
-            } else if (state === 'saved') {
-                badge.className = "px-2.5 py-1 sm:py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 transition-all flex items-center gap-1.5 shadow-sm";
-                ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
-                dot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
-                const displayTime = timeStr || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                label.textContent = `Auto-Saved (${displayTime})`;
+            // Sync week questions so student and teacher on any device see identical problems
+            if (typeof window.cloudSaveCurriculum === 'function') {
+                window.cloudSaveCurriculum(APP_STATE.weeks[2], APP_STATE.weeks[5]);
             }
         }
 
+        // Attach global exports for module and legacy handlers
+        window.APP_STATE = APP_STATE;
+        window.renderApp = renderApp;
+        window.renderProblems = renderProblems;
+        window.renderVaultSolutions = renderVaultSolutions;
+        window.renderSubmissionsList = renderSubmissionsList;
+        window.updateVaultBadgeCounts = updateVaultBadgeCounts;
+        window.updateStudentSubmissionStatusCard = updateStudentSubmissionStatusCard;
+        window.updateAutoSaveBadge = updateAutoSaveBadge;
+        window.updatePasswordHintUI = updatePasswordHintUI;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.selectLoginRole = selectLoginRole;
+        window.handleUserLoginSubmit = handleUserLoginSubmit;
+        window.fillTeacherLoginDefault = fillTeacherLoginDefault;
+        window.submitWorkForGrading = submitWorkForGrading;
+        window.saveAndFinalizeMarks = saveAndFinalizeMarks;
+        window.deleteSubmission = deleteSubmission;
+        window.saveNewPassword = saveNewPassword;
+        window.resetToDefaultPassword = resetToDefaultPassword;
+        window.regenerateCurrentWeek = regenerateCurrentWeek;
+
+        // Auto-save debounced runner
         function triggerAutoSave() {
             updateAutoSaveBadge('saving');
             if (autoSaveDebounceTimer) clearTimeout(autoSaveDebounceTimer);
