@@ -1123,9 +1123,10 @@
             const week = APP_STATE.weeks[grade];
             if (!week) return;
 
-            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+            const isTestDay = day === 'test';
+            const problems = isTestDay ? week.test : (week.days[day] || []);
             const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
-            const titleStr = day === 'test' ? 'Friday End-of-Week 10-Question Test' : `${dayNames[day]} Practice • 5 Word Problems`;
+            const titleStr = isTestDay ? 'Friday End-of-Week 10-Question Test' : `${dayNames[day]} Practice • 5 Word Problems`;
 
             // Print header sync
             const pTitle = document.getElementById('print-sheet-title');
@@ -1147,7 +1148,7 @@
                 const evalResult = APP_STATE.evaluations[key];
 
                 let evalHtml = '';
-                if (evalResult) {
+                if (!isTestDay && evalResult) {
                     if (evalResult.isCorrect) {
                         evalHtml = `
                             <div class="mt-3 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center justify-between">
@@ -1201,10 +1202,16 @@
                                         oninput="handleAnswerInput('${grade}', '${day}', '${p.id}', this.value)"
                                         class="w-full pl-3 pr-3 py-2 text-xs sm:text-sm font-semibold rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50/50">
                                 </div>
+                                ${!isTestDay ? `
                                 <button onclick="checkProblemAnswer('${grade}', '${day}', '${p.id}')"
                                     class="px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm active:scale-95 shrink-0">
                                     Check
                                 </button>
+                                ` : `
+                                <span class="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-1.5 rounded-xl border border-amber-200 shrink-0 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-clipboard-check text-amber-600"></i> Test Mode
+                                </span>
+                                `}
                             </div>
 
                             <button onclick="toggleScratchpad('${p.id}')" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition flex items-center justify-center gap-1.5">
@@ -1555,6 +1562,7 @@
         }
 
         function checkProblemAnswer(grade, day, id) {
+            if (day === 'test') return; // Do not check answers during formal Friday test assessment
             const key = `${grade}-${day}-${id}`;
             const studentVal = (APP_STATE.studentAnswers[key] || '').trim().toLowerCase();
             const week = APP_STATE.weeks[grade];
