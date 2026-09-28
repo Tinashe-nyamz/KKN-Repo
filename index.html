@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MathQuest • Student Grade Portal & Teacher Grading Hub</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -69,7 +68,7 @@
                         <span class="text-xl sm:text-2xl font-extrabold font-display tracking-tight bg-gradient-to-r from-brand-700 via-indigo-700 to-purple-800 bg-clip-text text-transparent">MathQuest</span>
                         <span id="portal-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">Student Portal</span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Interactive Daily Word Problems &bull; Marking &bull; Multi-Format Exports</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Interactive Daily Word Problems &bull; Real-time Marking &bull; Multi-Format Exports</p>
                 </div>
             </div>
 
@@ -121,7 +120,6 @@
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
 
-        <!-- Student Portal Authentication / Profile Bar -->
         <section id="student-portal-banner" class="no-print bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5 flex-1">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-brand-500/20 shrink-0">
@@ -131,10 +129,10 @@
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Student Portal</span>
                         <span id="student-badge-status" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                            Logged In
+                            Active Learner
                         </span>
                         <span id="submission-count-pill" class="text-[11px] font-medium text-slate-500">
-                            &bull; Ready to attempt questions
+                            &bull; Type answers and submit for teacher evaluation
                         </span>
                     </div>
                     <div class="flex items-center gap-2 mt-1">
@@ -159,12 +157,12 @@
                     id="btn-submit-grading"
                     class="px-4 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-2 shadow-sm active:scale-95">
                     <i class="fa-solid fa-paper-plane text-emerald-200"></i>
-                    <span>Submit for Teacher Marking</span>
+                    <span>Submit Work to Teacher</span>
                 </button>
                 <button onclick="openExportModal()" 
                     class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm active:scale-95">
                     <i class="fa-solid fa-file-arrow-down text-amber-400"></i>
-                    <span>Export / Download Sheet</span>
+                    <span>Export Sheet</span>
                 </button>
             </div>
         </section>
@@ -204,12 +202,12 @@
                         <p class="text-xl sm:text-2xl font-black text-indigo-700 font-display">10 Qs</p>
                         <p class="text-[10px] text-slate-400">Synthesized</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
-                        <p class="text-[11px] font-semibold text-slate-500 uppercase">Teacher Marking</p>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center cursor-pointer hover:bg-rose-50/50 transition" onclick="handleVaultClick()">
+                        <p class="text-[11px] font-semibold text-slate-500 uppercase">Teacher Hub</p>
                         <p id="status-chip-vault" class="text-xl sm:text-2xl font-black text-rose-600 font-display flex items-center justify-center gap-1">
                             <i class="fa-solid fa-lock text-sm"></i> Vault
                         </p>
-                        <p id="pending-mark-count" class="text-[10px] text-slate-400">0 Submissions</p>
+                        <p id="pending-mark-count" class="text-[10px] text-rose-600 font-bold">0 Submissions</p>
                     </div>
                 </div>
             </div>
@@ -266,6 +264,7 @@
 
         <div id="student-submission-status-card" class="hidden no-print rounded-2xl p-4 border transition-all"></div>
 
+        <!-- Print-Only Header -->
         <div class="hidden print-only mb-6 border-b-2 border-slate-900 pb-4">
             <div class="flex items-center justify-between">
                 <div>
@@ -284,7 +283,24 @@
             </div>
         </div>
 
+        <!-- Problems Container -->
         <section id="problems-container" class="space-y-4"></section>
+
+        <div id="submit-action-banner" class="no-print bg-white rounded-3xl p-5 border border-emerald-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-800">Finished working through the questions?</h4>
+                    <p class="text-xs text-slate-500" id="submission-progress-text">All answers and scratchpad working will be delivered directly to the Teacher Grading Hub.</p>
+                </div>
+            </div>
+            <button onclick="submitWorkForGrading()" class="px-5 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-2 shadow active:scale-95 shrink-0">
+                <i class="fa-solid fa-paper-plane text-emerald-200"></i>
+                <span>Submit Work for Teacher Marking</span>
+            </button>
+        </div>
 
         <section id="vault-panel" class="hidden no-print mt-8 bg-white rounded-3xl border-2 border-rose-200 shadow-xl overflow-hidden transition-all">
             <div class="bg-gradient-to-r from-rose-600 via-rose-700 to-red-700 p-4 sm:p-6 text-white flex flex-wrap items-center justify-between gap-4">
@@ -297,7 +313,7 @@
                             <h2 class="text-lg sm:text-xl font-bold font-display">Teacher Grading &amp; Solutions Vault</h2>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-400 text-slate-950">Active Session</span>
                         </div>
-                        <p class="text-xs text-rose-100">Review student submissions, assign marks, and access full pedagogical solutions</p>
+                        <p class="text-xs text-rose-100">Review student submissions, inspect answers &amp; scratchpads, award marks, and view answer keys</p>
                     </div>
                 </div>
 
@@ -317,7 +333,7 @@
                     <button onclick="switchVaultTab('submissions')" id="vault-tab-submissions"
                         class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-rose-700 shadow-sm">
                         <i class="fa-solid fa-inbox text-rose-600"></i>
-                        <span>Student Submissions</span>
+                        <span>Student Submissions Inbox</span>
                         <span id="vault-submissions-badge" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 text-rose-800">0</span>
                     </button>
                     <button onclick="switchVaultTab('solutions')" id="vault-tab-solutions"
@@ -331,15 +347,18 @@
                 </div>
             </div>
 
+            <!-- Submissions Inbox View -->
             <div id="vault-submissions-view" class="p-5 sm:p-7 space-y-4 bg-slate-50/50">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
                     <div>
-                        <h3 class="text-sm font-bold text-slate-800">Student Submissions Inbox</h3>
-                        <p class="text-xs text-slate-500">Review answers submitted by students, award marks, and add teacher remarks.</p>
+                        <h3 class="text-sm font-bold text-slate-800">Student Submissions &amp; Completed Work</h3>
+                        <p class="text-xs text-slate-500">Click on any submission below to inspect questions, answers, and scratchpad calculations, or assign grades.</p>
                     </div>
-                    <button onclick="refreshSubmissionsList()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600">
-                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh List
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="refreshSubmissionsList()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition">
+                            <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh Submissions
+                        </button>
+                    </div>
                 </div>
 
                 <div id="submissions-list-container" class="space-y-3">
@@ -347,6 +366,7 @@
                 </div>
             </div>
 
+            <!-- Solutions Master Key View -->
             <div id="vault-solutions-view" class="hidden p-5 sm:p-7 space-y-4 bg-slate-50/50">
                 <div id="vault-solutions-list" class="space-y-4"></div>
             </div>
@@ -374,7 +394,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:bg-indigo-50/40">
                             <input type="radio" name="export-content-type" value="worksheet" checked class="text-indigo-600">
-                            <span class="font-medium text-slate-800">Current Worksheet (Questions)</span>
+                            <span class="font-medium text-slate-800">Current Worksheet (Blank)</span>
                         </label>
                         <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:bg-indigo-50/40">
                             <input type="radio" name="export-content-type" value="student_work" class="text-indigo-600">
@@ -386,7 +406,6 @@
                 <div>
                     <label class="block font-bold text-slate-700 uppercase mb-1.5">2. Choose File Format</label>
                     <div class="grid grid-cols-2 gap-2.5">
-                        <!-- Microsoft Word Option -->
                         <div onclick="selectExportFormat('word')" id="format-card-word"
                             class="format-choice border-2 border-indigo-600 bg-indigo-50/50 p-3 rounded-2xl cursor-pointer transition flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shrink-0">
@@ -398,7 +417,6 @@
                             </div>
                         </div>
 
-                        <!-- PDF Option -->
                         <div onclick="selectExportFormat('pdf')" id="format-card-pdf"
                             class="format-choice border border-slate-200 p-3 rounded-2xl cursor-pointer hover:bg-slate-50 transition flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center text-lg shrink-0">
@@ -410,7 +428,6 @@
                             </div>
                         </div>
 
-                        <!-- JSON Data File -->
                         <div onclick="selectExportFormat('json')" id="format-card-json"
                             class="format-choice border border-slate-200 p-3 rounded-2xl cursor-pointer hover:bg-slate-50 transition flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-sky-600 text-white flex items-center justify-center text-lg shrink-0">
@@ -422,7 +439,6 @@
                             </div>
                         </div>
 
-                        <!-- Standalone HTML -->
                         <div onclick="selectExportFormat('html')" id="format-card-html"
                             class="format-choice border border-slate-200 p-3 rounded-2xl cursor-pointer hover:bg-slate-50 transition flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg shrink-0">
@@ -502,7 +518,7 @@
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h3 class="text-xl font-extrabold text-slate-900 font-display">Teacher Hub Access</h3>
-                <p class="text-xs text-slate-500">Enter teacher passcode to access student submissions, marking rubrics, and step-by-step solutions.</p>
+                <p class="text-xs text-slate-500">Enter teacher passcode to view student submissions, evaluate answers, and inspect step-by-step solutions.</p>
             </div>
 
             <form id="vault-auth-form" onsubmit="event.preventDefault(); verifyVaultPassword();" class="space-y-4">
@@ -525,7 +541,7 @@
                 </div>
 
                 <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1">
-                    <p class="font-semibold text-slate-700">Educator Quick Access:</p>
+                    <p class="font-semibold text-slate-700">Educator Access PIN:</p>
                     <p id="password-hint-text">Default PIN: <span class="font-mono font-bold text-rose-600 cursor-pointer underline" onclick="fillDefaultPassword()">mathmaster</span></p>
                     <p><button type="button" onclick="openChangePasswordModal()" class="text-brand-600 hover:text-brand-700 underline font-medium">Change passcode?</button></p>
                 </div>
@@ -542,6 +558,7 @@
         </div>
     </div>
 
+    <!-- Change Password Modal -->
     <div id="change-password-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
         <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -596,6 +613,7 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none no-print">
         <div class="bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700 text-xs sm:text-sm">
             <span id="toast-icon" class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
@@ -624,6 +642,7 @@
             selectedExportFormat: 'word',
             activeVaultTab: 'submissions',
             activeMarkingSubmissionId: null,
+            expandedSubmissions: {}, // tracks inline drawer open/close
             weeks: { 2: null, 5: null },
             studentAnswers: {},
             studentScratchpads: {},
@@ -1125,8 +1144,8 @@
 
                         <div id="scratchpad-${prob.id}" class="${currentScratch ? '' : 'hidden'} no-print my-3 p-3 rounded-2xl bg-amber-50/50 border border-amber-200">
                             <label class="block text-xs font-bold text-amber-800 uppercase mb-1 flex items-center justify-between">
-                                <span>Student Working Space / Rough Notes</span>
-                                <span class="text-[10px] text-amber-600 font-normal">Sent to Teacher for Review</span>
+                                <span>Student Working Space / Scratchpad Notes</span>
+                                <span class="text-[10px] text-amber-600 font-normal">Sent directly to Teacher for Review</span>
                             </label>
                             <textarea placeholder="Type your step-by-step thinking or calculations here..." rows="2"
                                 oninput="saveStudentScratchpad('${storageKey}', this.value)"
@@ -1311,20 +1330,46 @@
             const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
             const assignmentTitle = day === 'test' ? 'Friday 10-Question Assessment' : `${dayNames[day]} Daily Practice`;
 
-            // Collect answers for this assignment
+            // Actively inspect the DOM inputs to guarantee no values are dropped
             const answersMap = {};
             const scratchpadMap = {};
             let enteredCount = 0;
 
             problems.forEach(prob => {
                 const key = `${grade}-${day}-${prob.id}`;
-                const val = APP_STATE.studentAnswers[key] || '';
-                if (val.trim()) enteredCount++;
-                answersMap[prob.id] = val;
-                scratchpadMap[prob.id] = APP_STATE.studentScratchpads[key] || '';
+                const domInput = document.getElementById(`input-${prob.id}`);
+                const domScratch = document.querySelector(`#scratchpad-${prob.id} textarea`);
+
+                const inputVal = domInput ? domInput.value.trim() : (APP_STATE.studentAnswers[key] || '');
+                const scratchVal = domScratch ? domScratch.value.trim() : (APP_STATE.studentScratchpads[key] || '');
+
+                APP_STATE.studentAnswers[key] = inputVal;
+                APP_STATE.studentScratchpads[key] = scratchVal;
+
+                if (inputVal.length > 0) enteredCount++;
+                answersMap[prob.id] = inputVal;
+                scratchpadMap[prob.id] = scratchVal;
             });
 
-            const submissionId = `SUB-${Date.now()}`;
+            // Retain snapshot of questions so submissions never lose question context
+            const problemsSnapshot = problems.map(p => ({
+                id: p.id,
+                grade: p.grade,
+                question: p.question,
+                answer: p.answer,
+                steps: p.steps,
+                operationType: p.operationType,
+                isTestQuestion: !!p.isTestQuestion,
+                sourceDay: p.sourceDay
+            }));
+
+            // Check if there is already an existing submission for this exact grade/day/student to update it
+            const existingIndex = APP_STATE.submissions.findIndex(s => 
+                s.grade === grade && s.day === day && s.studentName === (APP_STATE.studentName || 'Student')
+            );
+
+            const submissionId = existingIndex >= 0 ? APP_STATE.submissions[existingIndex].id : `SUB-${Date.now()}`;
+            
             const submission = {
                 id: submissionId,
                 studentName: APP_STATE.studentName || 'Student',
@@ -1333,10 +1378,11 @@
                 day: day,
                 assignmentTitle: assignmentTitle,
                 timestamp: new Date().toISOString(),
-                status: 'pending', // 'pending' or 'graded'
+                status: 'pending',
                 totalQuestions: problems.length,
-                maxPoints: problems.length * 2, // 2 points per problem
+                maxPoints: problems.length * 2,
                 awardedPoints: 0,
+                problems: problemsSnapshot,
                 answers: answersMap,
                 scratchpads: scratchpadMap,
                 teacherRemarks: '',
@@ -1344,7 +1390,7 @@
                 questionMarks: {}
             };
 
-            // Pre-calculate suggested scores based on target answers
+            // Pre-calculate suggested marks for teacher guidance
             problems.forEach(prob => {
                 const ans = (answersMap[prob.id] || '').trim().toLowerCase();
                 const target = prob.answer.trim().toLowerCase();
@@ -1352,12 +1398,17 @@
                 submission.questionMarks[prob.id] = isExact ? 2 : (ans ? 1 : 0);
             });
 
-            APP_STATE.submissions.unshift(submission);
+            if (existingIndex >= 0) {
+                APP_STATE.submissions[existingIndex] = submission;
+            } else {
+                APP_STATE.submissions.unshift(submission);
+            }
+
             renderSubmissionsList();
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
 
-            showToast(`Work for ${assignmentTitle} successfully submitted to the teacher for marking!`);
+            showToast(`Work for ${assignmentTitle} submitted to the teacher for marking! (${enteredCount}/${problems.length} answered)`);
         }
 
         function updateStudentSubmissionStatusCard() {
@@ -1366,7 +1417,6 @@
             const day = APP_STATE.currentDay;
             if (!card) return;
 
-            // Find latest submission for this grade and day
             const sub = APP_STATE.submissions.find(s => s.grade === grade && s.day === day && s.studentName === APP_STATE.studentName);
 
             if (!sub) {
@@ -1428,60 +1478,170 @@
 
             const pending = APP_STATE.submissions.filter(s => s.status === 'pending').length;
             if (badge) badge.textContent = APP_STATE.submissions.length;
-            if (countChip) countChip.textContent = `${pending} Pending Marking`;
+            if (countChip) countChip.textContent = `${pending} Submissions`;
 
             if (APP_STATE.submissions.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-10 bg-white rounded-2xl border border-dashed border-slate-300 p-6">
                         <i class="fa-solid fa-folder-open text-3xl text-slate-300 mb-2"></i>
                         <h4 class="text-sm font-bold text-slate-600">No Submissions Yet</h4>
-                        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">When students in Grade 2 or Grade 5 click "Submit for Teacher Marking", their work will appear here for grading.</p>
+                        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">When students in Grade 2 or Grade 5 click "Submit Work to Teacher", their complete answers and scratchpad notes will appear here immediately for grading.</p>
                     </div>
                 `;
                 return;
             }
 
             let html = '';
-            APP_STATE.submissions.forEach(sub => {
+            APP_STATE.submissions.forEach((sub, subIdx) => {
                 const isGraded = sub.status === 'graded';
                 const timeStr = new Date(sub.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const isExpanded = !!APP_STATE.expandedSubmissions[sub.id];
+
+                // Count questions answered
+                const questionsList = sub.problems || [];
+                let answeredCount = 0;
+                questionsList.forEach(q => {
+                    if (sub.answers && sub.answers[q.id] && sub.answers[q.id].trim()) answeredCount++;
+                });
 
                 html += `
-                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl ${isGraded ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center text-lg shrink-0">
-                                <i class="${isGraded ? 'fa-solid fa-check' : 'fa-solid fa-hourglass-half'}"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-extrabold text-sm text-slate-900">${sub.studentName}</span>
-                                    <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${sub.grade === 2 ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'}">
-                                        Grade ${sub.grade}
-                                    </span>
-                                    <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${isGraded ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">
-                                        ${isGraded ? `Marked (${sub.awardedPoints}/${sub.maxPoints} pts)` : 'Needs Marking'}
-                                    </span>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                        <div class="p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl ${isGraded ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center text-lg shrink-0">
+                                    <i class="${isGraded ? 'fa-solid fa-clipboard-check' : 'fa-solid fa-hourglass-half'}"></i>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-0.5">
-                                    ${sub.assignmentTitle} &bull; ID: ${sub.studentId} &bull; ${timeStr}
-                                </p>
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="font-extrabold text-sm text-slate-900">${sub.studentName}</span>
+                                        <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${sub.grade === 2 ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'}">
+                                            Grade ${sub.grade}
+                                        </span>
+                                        <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${isGraded ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">
+                                            ${isGraded ? `Marked (${sub.awardedPoints}/${sub.maxPoints} pts)` : 'Needs Marking'}
+                                        </span>
+                                        <span class="text-[11px] text-slate-400 font-semibold">
+                                            (${answeredCount}/${sub.totalQuestions} Answered)
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-0.5">
+                                        ${sub.assignmentTitle} &bull; ID: ${sub.studentId} &bull; ${timeStr}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 self-end md:self-auto">
+                                <button onclick="toggleSubmissionDrawer('${sub.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5">
+                                    <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'} text-slate-500"></i>
+                                    <span>${isExpanded ? 'Hide Work' : 'Inspect Work &amp; Scratchpad'}</span>
+                                </button>
+                                <button onclick="openMarkingModal('${sub.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold ${isGraded ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100' : 'bg-rose-600 text-white hover:bg-rose-700'} transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-marker"></i>
+                                    <span>${isGraded ? 'Edit Marks' : 'Mark Submission'}</span>
+                                </button>
+                                <button onclick="deleteSubmission('${sub.id}')" title="Delete record" class="p-1.5 rounded-xl text-xs text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-2 self-end md:self-auto">
-                            <button onclick="openMarkingModal('${sub.id}')" class="px-3.5 py-2 rounded-xl text-xs font-bold ${isGraded ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-rose-600 text-white hover:bg-rose-700'} transition flex items-center gap-1.5 shadow-sm">
-                                <i class="fa-solid fa-marker"></i>
-                                <span>${isGraded ? 'Edit Marks' : 'Mark Submission'}</span>
-                            </button>
-                            <button onclick="deleteSubmission('${sub.id}')" title="Delete record" class="p-2 rounded-xl text-xs text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
+                        <!-- Direct Inline Student Work Inspector -->
+                        <div id="drawer-${sub.id}" class="${isExpanded ? '' : 'hidden'} bg-slate-50 p-4 sm:p-6 border-t border-slate-200 space-y-4">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                                <span class="text-xs font-extrabold uppercase text-slate-700 flex items-center gap-2">
+                                    <i class="fa-solid fa-glasses text-brand-600"></i>
+                                    Submitted Student Answers &amp; Working Steps (${sub.studentName})
+                                </span>
+                                <span class="text-xs font-semibold text-slate-500">
+                                    Status: <strong class="${isGraded ? 'text-emerald-700' : 'text-amber-700'}">${isGraded ? 'Graded' : 'Awaiting Grade'}</strong>
+                                </span>
+                            </div>
+
+                            <div class="space-y-3">
+                                ${renderInlineStudentQuestions(sub)}
+                            </div>
+
+                            <div class="pt-2 flex items-center justify-between">
+                                <p class="text-xs text-slate-500 italic">
+                                    ${sub.teacherRemarks ? `Current Teacher Remark: "${sub.teacherRemarks}"` : 'No teacher remarks written yet.'}
+                                </p>
+                                <button onclick="openMarkingModal('${sub.id}')" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-600 hover:bg-rose-700 text-white transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-marker"></i>
+                                    <span>Open Marking Studio</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
             });
 
             container.innerHTML = html;
+        }
+
+        function renderInlineStudentQuestions(sub) {
+            const problems = sub.problems || [];
+            if (problems.length === 0) {
+                return `<p class="text-xs text-slate-400 italic">No question snapshots recorded for this submission.</p>`;
+            }
+
+            return problems.map((prob, idx) => {
+                const ans = (sub.answers && sub.answers[prob.id] !== undefined) ? sub.answers[prob.id] : '';
+                const scratch = (sub.scratchpads && sub.scratchpads[prob.id]) ? sub.scratchpads[prob.id] : '';
+                const mark = sub.questionMarks ? sub.questionMarks[prob.id] : null;
+                const feedback = sub.teacherFeedbackPerQuestion ? sub.teacherFeedbackPerQuestion[prob.id] : '';
+
+                const cleanAns = (ans || '').trim().toLowerCase();
+                const cleanTarget = (prob.answer || '').trim().toLowerCase();
+                const isExact = cleanAns && ((cleanAns === cleanTarget) || (cleanAns.replace(/[^0-9/]/g, '') === cleanTarget.replace(/[^0-9/]/g, '')));
+
+                return `
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex-1">
+                                <span class="text-xs font-bold text-slate-500">Q${idx + 1}: ${formatOperationName(prob.operationType)}</span>
+                                <p class="text-xs text-slate-800 font-medium mt-0.5">${prob.question}</p>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="px-2 py-0.5 rounded-lg text-xs font-black ${mark == 2 ? 'bg-emerald-100 text-emerald-800' : (mark == 1 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700')}">
+                                    ${mark !== null && mark !== undefined ? `${mark}/2 pts` : 'Not graded'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
+                            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                                <span class="font-bold text-slate-500 block text-[11px]">Student Answer:</span>
+                                <span class="font-mono text-sm font-black ${ans ? (isExact ? 'text-emerald-700' : 'text-slate-900') : 'text-rose-500 italic'}">
+                                    ${ans || '[No answer submitted]'}
+                                </span>
+                                ${isExact ? '<span class="ml-2 text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Matches Key</span>' : ''}
+                                ${scratch ? `
+                                    <div class="mt-2 pt-1 border-t border-slate-200 text-[11px] text-slate-600 font-mono">
+                                        <strong class="text-amber-800">Scratchpad Work:</strong> ${scratch}
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-200">
+                                <span class="font-bold text-emerald-800 block text-[11px]">Correct Solution &amp; Method:</span>
+                                <span class="font-mono text-sm font-black text-emerald-900">${prob.answer}</span>
+                                <p class="mt-1 text-[11px] text-emerald-700 whitespace-pre-line leading-tight font-sans">${prob.steps.split('\n')[0]}</p>
+                            </div>
+                        </div>
+
+                        ${feedback ? `
+                            <div class="text-xs text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">
+                                <strong>Teacher Note:</strong> ${feedback}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleSubmissionDrawer(id) {
+            APP_STATE.expandedSubmissions[id] = !APP_STATE.expandedSubmissions[id];
+            renderSubmissionsList();
         }
 
         function openMarkingModal(subId) {
@@ -1497,8 +1657,7 @@
             titleEl.textContent = `Marking: ${sub.studentName} (${sub.assignmentTitle})`;
             metaEl.textContent = `Grade ${sub.grade} &bull; Student ID: ${sub.studentId} &bull; Submitted ${new Date(sub.timestamp).toLocaleTimeString()}`;
 
-            const weekData = APP_STATE.weeks[sub.grade];
-            const problems = (sub.day === 'test') ? weekData.test : weekData.days[sub.day];
+            const problems = sub.problems || [];
 
             let html = `
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
@@ -1509,17 +1668,17 @@
             `;
 
             problems.forEach((prob, idx) => {
-                const ans = sub.answers[prob.id] || '';
-                const scratch = sub.scratchpads[prob.id] || '';
+                const ans = (sub.answers && sub.answers[prob.id] !== undefined) ? sub.answers[prob.id] : '';
+                const scratch = (sub.scratchpads && sub.scratchpads[prob.id]) ? sub.scratchpads[prob.id] : '';
                 const target = prob.answer;
-                const currentScore = sub.questionMarks[prob.id] ?? 0;
+                const currentScore = sub.questionMarks[prob.id] !== undefined ? sub.questionMarks[prob.id] : 0;
                 const feedbackText = sub.teacherFeedbackPerQuestion[prob.id] || '';
 
                 html += `
                     <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
                         <div class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
                             <div>
-                                <span class="text-xs font-extrabold text-slate-800">Question ${idx + 1}</span>
+                                <span class="text-xs font-extrabold text-slate-800">Question ${idx + 1} (${formatOperationName(prob.operationType)})</span>
                                 <p class="text-xs text-slate-600 mt-1">${prob.question}</p>
                             </div>
                             <div class="flex items-center gap-1.5 shrink-0">
@@ -1536,8 +1695,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                             <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
                                 <span class="font-bold text-slate-500 block mb-1">Student Answer Submitted:</span>
-                                <span class="font-mono text-sm font-bold ${ans ? 'text-slate-900' : 'text-slate-400 italic'}">${ans || 'No answer provided'}</span>
-                                ${scratch ? `<p class="mt-2 text-[11px] text-slate-500 font-mono border-t border-slate-200 pt-1">Scratchpad: ${scratch}</p>` : ''}
+                                <span class="font-mono text-sm font-bold ${ans ? 'text-slate-900' : 'text-rose-500 italic'}">${ans || '[No answer submitted]'}</span>
+                                ${scratch ? `<p class="mt-2 text-[11px] text-slate-500 font-mono border-t border-slate-200 pt-1"><strong>Scratchpad:</strong> ${scratch}</p>` : ''}
                             </div>
                             <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200">
                                 <span class="font-bold text-emerald-800 block mb-1">Target Key &amp; Method:</span>
@@ -1563,9 +1722,7 @@
             const sub = APP_STATE.submissions.find(s => s.id === APP_STATE.activeMarkingSubmissionId);
             if (!sub) return;
 
-            const weekData = APP_STATE.weeks[sub.grade];
-            const problems = (sub.day === 'test') ? weekData.test : weekData.days[sub.day];
-
+            const problems = sub.problems || [];
             let sum = 0;
             problems.forEach(prob => {
                 const select = document.getElementById(`q-mark-${prob.id}`);
@@ -1581,9 +1738,7 @@
             const sub = APP_STATE.submissions.find(s => s.id === APP_STATE.activeMarkingSubmissionId);
             if (!sub) return;
 
-            const weekData = APP_STATE.weeks[sub.grade];
-            const problems = (sub.day === 'test') ? weekData.test : weekData.days[sub.day];
-
+            const problems = sub.problems || [];
             let sum = 0;
             problems.forEach(prob => {
                 const select = document.getElementById(`q-mark-${prob.id}`);
@@ -1714,7 +1869,6 @@
             const studentId = APP_STATE.studentId || 'N/A';
             const dateStr = new Date().toLocaleDateString();
 
-            // Find marked submission if exists
             const sub = APP_STATE.submissions.find(s => s.grade === grade && s.day === day && s.studentName === APP_STATE.studentName);
 
             let rows = '';
@@ -2135,6 +2289,7 @@
         function handleVaultClick() {
             if (APP_STATE.isVaultUnlocked) {
                 const panel = document.getElementById('vault-panel');
+                panel.classList.remove('hidden');
                 panel.scrollIntoView({ behavior: 'smooth' });
             } else {
                 openAuthModal();
