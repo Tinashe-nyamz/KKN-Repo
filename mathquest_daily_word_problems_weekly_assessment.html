@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathQuest • Daily Word Problems & Weekly Assessment</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        display: ['Outfit', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Outfit', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { 
+                background: white !important; 
+                color: #0f172a !important; 
+                font-size: 11pt; 
+            }
+            .worksheet-card { 
+                break-inside: avoid; 
+                border: 1px solid #cbd5e1 !important; 
+                box-shadow: none !important; 
+                margin-bottom: 1.5rem !important; 
+                padding: 1.25rem !important; 
+            }
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col text-slate-800 bg-gradient-to-br from-slate-50 via-sky-50/20 to-indigo-50/30">
+
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 no-print transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-brand-500/25 ring-2 ring-white">
+                    <i class="fa-solid fa-shapes text-xl sm:text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl sm:text-2xl font-extrabold font-display tracking-tight bg-gradient-to-r from-brand-700 via-indigo-700 to-purple-800 bg-clip-text text-transparent">MathQuest</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">2026 Core</span>
+                    </div>
+                    <p class="text-xs text-slate-500 hidden sm:block">Daily Curriculum Word Problems & Friday Assessment Suite</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-4">
+                <div class="bg-slate-100 p-1 rounded-xl flex items-center border border-slate-200 shadow-inner">
+                    <button id="btn-grade-2" onclick="switchGrade(2)" 
+                        class="px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-brand-700 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>Grade 2</span>
+                        <span class="text-[10px] hidden md:inline text-slate-400 font-normal">(Add / Sub)</span>
+                    </button>
+                    <button id="btn-grade-5" onclick="switchGrade(5)" 
+                        class="px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                        <span>Grade 5</span>
+                        <span class="text-[10px] hidden md:inline text-slate-400 font-normal">(+ − × ÷ Fractions)</span>
+                    </button>
+                </div>
+
+                <button onclick="handleVaultClick()" id="btn-vault-trigger" 
+                    class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition-all flex items-center gap-2 shadow-sm active:scale-95">
+                    <i id="vault-icon-indicator" class="fa-solid fa-lock text-rose-600"></i>
+                    <span class="hidden sm:inline" id="vault-button-label">Teacher Vault</span>
+                    <span class="sm:hidden">Vault</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+        <section class="no-print bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-slate-200/90 relative overflow-hidden">
+            <div class="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-gradient-to-tr from-brand-100/40 via-indigo-100/40 to-transparent pointer-events-none blur-2xl"></div>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="space-y-3 max-w-2xl">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="infographic-grade-pill" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            Grade 2 Curriculum
+                        </span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                            5 Daily Problems &bull; 10-Question Friday Test
+                        </span>
+                        <span id="badge-fraction-support" class="hidden px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 border border-purple-200">
+                            Fractions &amp; Mixed Numbers
+                        </span>
+                    </div>
+
+                    <h1 id="infographic-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-display">
+                        Grade 2 Daily Word Problems: Addition &amp; Subtraction
+                    </h1>
+                    <p id="infographic-description" class="text-sm text-slate-600 leading-relaxed">
+                        Focused on foundational two-digit addition, subtraction, real-world context models, and change-over-time word problems without fractional complexity.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 sm:gap-3 lg:w-96 shrink-0">
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
+                        <p class="text-[11px] font-semibold text-slate-500 uppercase">Daily Practice</p>
+                        <p class="text-xl sm:text-2xl font-black text-brand-700 font-display">5 Qs</p>
+                        <p class="text-[10px] text-slate-400">10-15 min</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
+                        <p class="text-[11px] font-semibold text-slate-500 uppercase">Friday Test</p>
+                        <p class="text-xl sm:text-2xl font-black text-indigo-700 font-display">10 Qs</p>
+                        <p class="text-[10px] text-slate-400">Auto-Synthesized</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-center">
+                        <p class="text-[11px] font-semibold text-slate-500 uppercase">Teacher Vault</p>
+                        <p id="status-chip-vault" class="text-xl sm:text-2xl font-black text-rose-600 font-display flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-lock text-sm"></i> Locked
+                        </p>
+                        <p class="text-[10px] text-slate-400">Protected Keys</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Concept Scope:</span>
+                    <div id="operations-pills" class="flex flex-wrap items-center gap-1.5"></div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="regenerateCurrentWeek()" class="text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-arrows-rotate text-brand-600"></i>
+                        <span>Generate Fresh Set</span>
+                    </button>
+                    <button onclick="printCurrentWorksheet()" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Print</span>
+                    </button>
+                    <button onclick="downloadCurrentWorksheet()" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <nav class="no-print bg-white rounded-2xl p-2 shadow-sm border border-slate-200 flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <button onclick="switchDay(1)" id="day-tab-1" class="day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent">
+                <span class="text-[10px] uppercase font-semibold text-slate-400">Day 1</span>
+                <span>Monday</span>
+            </button>
+            <button onclick="switchDay(2)" id="day-tab-2" class="day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent">
+                <span class="text-[10px] uppercase font-semibold text-slate-400">Day 2</span>
+                <span>Tuesday</span>
+            </button>
+            <button onclick="switchDay(3)" id="day-tab-3" class="day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent">
+                <span class="text-[10px] uppercase font-semibold text-slate-400">Day 3</span>
+                <span>Wednesday</span>
+            </button>
+            <button onclick="switchDay(4)" id="day-tab-4" class="day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent">
+                <span class="text-[10px] uppercase font-semibold text-slate-400">Day 4</span>
+                <span>Thursday</span>
+            </button>
+            <button onclick="switchDay(5)" id="day-tab-5" class="day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent">
+                <span class="text-[10px] uppercase font-semibold text-slate-400">Day 5</span>
+                <span>Friday Practice</span>
+            </button>
+            <div class="h-8 w-px bg-slate-200 hidden sm:block"></div>
+            <button onclick="switchDay('test')" id="day-tab-test" class="day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100">
+                <i class="fa-solid fa-award text-amber-600"></i>
+                <div class="text-left leading-tight">
+                    <span class="block text-[10px] uppercase font-bold text-amber-600">Friday Test</span>
+                    <span>10-Q Assessment</span>
+                </div>
+            </button>
+        </nav>
+
+        <section class="no-print bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 flex-1">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-brand-500/20 shrink-0">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+                <div class="flex-1 max-w-md">
+                    <div class="flex items-center justify-between">
+                        <label for="student-name-input" class="text-xs font-bold uppercase tracking-wider text-slate-500">Student Name</label>
+                        <span id="student-greeting-tag" class="text-[11px] text-brand-600 font-semibold hidden sm:inline">Ready to solve!</span>
+                    </div>
+                    <div class="relative mt-1">
+                        <input type="text" id="student-name-input" placeholder="Enter student full name..."
+                            oninput="handleStudentNameChange(this.value)"
+                            class="w-full pl-8 pr-3 py-2 text-sm font-semibold rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50/50 transition">
+                        <i class="fa-solid fa-signature absolute left-2.5 top-3 text-slate-400 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 shrink-0 border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
+                <button onclick="printCurrentWorksheet()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition flex items-center gap-2 shadow-sm active:scale-95">
+                    <i class="fa-solid fa-print text-amber-400"></i>
+                    <span>Print Sheet / PDF</span>
+                </button>
+                <button onclick="downloadCurrentWorksheet()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center gap-2 shadow-sm active:scale-95">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span>Download Worksheet (.html)</span>
+                </button>
+            </div>
+        </section>
+
+        <div class="hidden print-only mb-6 border-b-2 border-slate-900 pb-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 id="print-sheet-title" class="text-2xl font-black uppercase tracking-wide text-slate-900">MathQuest Daily Practice</h1>
+                    <p id="print-sheet-subtitle" class="text-sm font-medium text-slate-700">Grade 2 • Word Problem Challenge</p>
+                </div>
+                <div class="text-right text-xs border border-slate-300 p-2 rounded">
+                    <p>Total Points: <span id="print-total-points" class="font-bold">10 pts</span></p>
+                    <p>Passing Mark: 80%</p>
+                </div>
+            </div>
+            <div class="mt-4 pt-2 grid grid-cols-3 gap-4 text-xs font-semibold text-slate-700 border-t border-slate-200">
+                <div>Student Name: <span id="print-student-name" class="font-bold text-slate-900 underline underline-offset-4">___________________________</span></div>
+                <div>Date: <span id="print-date" class="font-bold text-slate-900"></span></div>
+                <div>Score: _______ / <span id="print-max-score">10</span></div>
+            </div>
+        </div>
+
+        <section id="problems-container" class="space-y-4"></section>
+
+        <section id="vault-panel" class="hidden no-print mt-8 bg-white rounded-3xl border-2 border-rose-200 shadow-xl overflow-hidden transition-all">
+            <div class="bg-gradient-to-r from-rose-600 via-rose-700 to-red-700 p-4 sm:p-6 text-white flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-lg sm:text-xl font-bold font-display">Teacher Solutions &amp; Rubric Vault</h2>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-400 text-slate-950">Active Session</span>
+                        </div>
+                        <p class="text-xs text-rose-100">Step-by-step mathematical reasoning, bar models &amp; answer keys</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="openChangePasswordModal()" class="text-xs px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1.5 border border-white/20">
+                        <i class="fa-solid fa-lock-open"></i> Change Passcode
+                    </button>
+                    <button onclick="lockVault()" class="text-xs px-3 py-1.5 rounded-lg bg-white text-rose-700 hover:bg-rose-50 font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-lock"></i> Lock Vault
+                    </button>
+                </div>
+            </div>
+
+            <div id="vault-solutions-list" class="p-5 sm:p-7 space-y-4 bg-slate-50/50"></div>
+        </section>
+
+    </main>
+
+    <div id="vault-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
+        <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
+            <div class="text-center space-y-2 mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 font-display">Teacher Vault Access</h3>
+                <p class="text-xs text-slate-500">Solutions and answer keys are protected to encourage student independent problem solving.</p>
+            </div>
+
+            <form id="vault-auth-form" onsubmit="event.preventDefault(); verifyVaultPassword();" class="space-y-4">
+                <div>
+                    <label for="vault-password-input" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                        Teacher Passcode
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="vault-password-input" autocomplete="current-password" placeholder="Enter teacher passcode" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm font-mono transition">
+                        <button type="button" onclick="togglePasswordVisibility('vault-password-input', 'eye-auth-icon')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
+                            <i id="eye-auth-icon" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="auth-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Incorrect passcode. Please try again or reset below.</span>
+                </div>
+
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1">
+                    <p class="font-semibold text-slate-700">Educator Quick Access:</p>
+                    <p id="password-hint-text">Default Master PIN: <span class="font-mono font-bold text-rose-600 cursor-pointer underline" onclick="fillDefaultPassword()">mathmaster</span></p>
+                    <p><button type="button" onclick="openChangePasswordModal()" class="text-brand-600 hover:text-brand-700 underline font-medium">Forgot or wish to change passcode?</button></p>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeAuthModal()" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-sm">
+                        Unlock Solutions
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="change-password-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
+        <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                <div class="flex items-center gap-2 text-slate-900 font-display font-bold text-lg">
+                    <div class="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <span>Change Vault Passcode</span>
+                </div>
+                <button onclick="closeChangePasswordModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <p class="text-slate-600">Set a custom teacher passcode. This passcode is securely stored in your browser session.</p>
+                <div id="current-pass-group">
+                    <label for="current-pass-input" class="block font-bold text-slate-700 uppercase mb-1">Current Passcode</label>
+                    <input type="password" id="current-pass-input" placeholder="Enter current passcode"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono text-sm">
+                </div>
+                <div>
+                    <label for="new-pass-input" class="block font-bold text-slate-700 uppercase mb-1">New Passcode</label>
+                    <input type="password" id="new-pass-input" placeholder="Minimum 3 characters"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono text-sm">
+                </div>
+                <div>
+                    <label for="confirm-pass-input" class="block font-bold text-slate-700 uppercase mb-1">Confirm New Passcode</label>
+                    <input type="password" id="confirm-pass-input" placeholder="Repeat new passcode"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono text-sm">
+                </div>
+                <div id="change-pass-error" class="hidden text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span id="change-pass-error-text">Passwords do not match.</span>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between">
+                    <span class="text-slate-500">Reset to default factory PIN?</span>
+                    <button type="button" onclick="resetToDefaultPassword()" class="text-rose-600 hover:text-rose-700 font-bold underline">
+                        Reset to "mathmaster"
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-4 mt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+                <button onclick="closeChangePasswordModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    Cancel
+                </button>
+                <button onclick="saveNewPassword()" class="px-5 py-2 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white transition shadow-sm">
+                    Save New Passcode
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none no-print">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700 text-xs sm:text-sm">
+            <span id="toast-icon" class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
+            <span id="toast-msg" class="font-medium">Action complete!</span>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-200/80 bg-white py-6 text-center text-xs text-slate-400 no-print">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <p>&copy; 2026 MathQuest Educational Systems. Aligned with Grade 2 &amp; Grade 5 Math Standards.</p>
+            <div class="flex items-center gap-4">
+                <span class="inline-flex items-center gap-1"><i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> Grade 2 Addition &amp; Subtraction</span>
+                <span class="inline-flex items-center gap-1"><i class="fa-solid fa-circle text-[8px] text-indigo-500"></i> Grade 5 Integers &amp; Fractions</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const APP_STATE = {
+            currentGrade: 2,
+            currentDay: 1,
+            isVaultUnlocked: false,
+            teacherPassword: 'mathmaster',
+            studentName: '',
+            weeks: { 2: null, 5: null },
+            studentAnswers: {}
+        };
+
+        try {
+            const savedPass = localStorage.getItem('mathquest_vault_pin_2026');
+            if (savedPass && savedPass.trim().length >= 3) {
+                APP_STATE.teacherPassword = savedPass.trim();
+            }
+            const savedName = localStorage.getItem('mathquest_student_name');
+            if (savedName) {
+                APP_STATE.studentName = savedName;
+            }
+        } catch (err) {
+            console.warn("Storage access restricted, using in-memory state.");
+        }
+
+        const G2_CONTEXTS = [
+            { item: 'stickers', container: 'sticker album', verb: 'collected', icon: 'fa-star text-amber-500' },
+            { item: 'muffins', container: 'bakery tray', verb: 'baked', icon: 'fa-cake-candles text-pink-500' },
+            { item: 'colored markers', container: 'art supply box', verb: 'packed', icon: 'fa-paintbrush text-blue-500' },
+            { item: 'sweet apples', container: 'orchard basket', verb: 'picked', icon: 'fa-apple-whole text-rose-500' },
+            { item: 'storybooks', container: 'classroom library', verb: 'cataloged', icon: 'fa-book text-emerald-500' },
+            { item: 'building blocks', container: 'toy chest', verb: 'stacked', icon: 'fa-cubes text-indigo-500' },
+            { item: 'seashells', container: 'beach bucket', verb: 'gathered', icon: 'fa-water text-cyan-500' }
+        ];
+
+        const STUDENT_NAMES = [
+            'Liam', 'Maya', 'Noah', 'Emma', 'Oliver', 'Sophia', 'Lucas', 'Aria',
+            'Ethan', 'Mia', 'Mateo', 'Zoe', 'Leo', 'Amara', 'Kai', 'Chloe'
+        ];
+
+        function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+        function lcm(a, b) { return (a * b) / gcd(a, b); }
+
+        function simplifyFraction(num, den) {
+            if (num === 0) return "0";
+            const common = gcd(Math.abs(num), Math.abs(den));
+            let sNum = num / common;
+            let sDen = den / common;
+            if (sDen < 0) { sNum = -sNum; sDen = -sDen; }
+            if (sDen === 1) return `${sNum}`;
+            if (Math.abs(sNum) > sDen) {
+                const whole = Math.floor(Math.abs(sNum) / sDen) * (sNum < 0 ? -1 : 1);
+                const rem = Math.abs(sNum) % sDen;
+                return rem === 0 ? `${whole}` : `${whole} ${rem}/${sDen}`;
+            }
+            return `${sNum}/${sDen}`;
+        }
+
+        function generateGrade2Problem(id, seedIndex) {
+            const isAddition = Math.random() > 0.45;
+            const ctx = G2_CONTEXTS[seedIndex % G2_CONTEXTS.length];
+            const name1 = STUDENT_NAMES[(seedIndex * 2) % STUDENT_NAMES.length];
+            const name2 = STUDENT_NAMES[(seedIndex * 2 + 1) % STUDENT_NAMES.length];
+
+            let question = '', stepText = '', finalAnswer = '', barModelData = {};
+            const operationType = isAddition ? 'addition' : 'subtraction';
+
+            if (isAddition) {
+                const a = Math.floor(Math.random() * 32) + 14;
+                const b = Math.floor(Math.random() * 32) + 9;
+                const sum = a + b;
+                const subtype = seedIndex % 3;
+
+                if (subtype === 0) {
+                    question = `${name1} had ${a} ${ctx.item} stored inside a ${ctx.container}. In math circle, ${name2} gave ${name1} ${b} more ${ctx.item}. How many ${ctx.item} does ${name1} have in total now?`;
+                    stepText = `Step 1: Start with ${name1}'s initial count: ${a} ${ctx.item}.\nStep 2: Add the ${b} additional ${ctx.item} given by ${name2}.\nStep 3: Calculate ${a} + ${b} = ${sum} ${ctx.item}.`;
+                } else if (subtype === 1) {
+                    question = `In the morning, the teacher placed ${a} ${ctx.item} on the table. After recess, students contributed ${b} more ${ctx.item}. What is the total count of ${ctx.item} on the table?`;
+                    stepText = `Step 1: Identify morning items: ${a}.\nStep 2: Identify items added after recess: ${b}.\nStep 3: Combine them: ${a} + ${b} = ${sum} ${ctx.item}.`;
+                } else {
+                    question = `${name1} ${ctx.verb} ${a} ${ctx.item} on Monday. Then ${name1} ${ctx.verb} ${b} more ${ctx.item} on Tuesday. How many total ${ctx.item} did ${name1} ${ctx.verb} across both days?`;
+                    stepText = `Step 1: Day 1 count = ${a}.\nStep 2: Day 2 count = ${b}.\nStep 3: Sum both days: ${a} + ${b} = ${sum} ${ctx.item}.`;
+                }
+                finalAnswer = `${sum}`;
+                barModelData = {
+                    type: 'part-part-whole',
+                    part1: { label: name1, val: a },
+                    part2: { label: 'Added', val: b },
+                    whole: { label: 'Total', val: sum }
+                };
+            } else {
+                const start = Math.floor(Math.random() * 45) + 35;
+                const removed = Math.floor(Math.random() * (start - 15)) + 10;
+                const diff = start - removed;
+                const subtype = seedIndex % 3;
+
+                if (subtype === 0) {
+                    question = `${name1} arranged ${start} ${ctx.item} for the school project. During activity time, the class used ${removed} of them. How many ${ctx.item} remain in the ${ctx.container}?`;
+                    stepText = `Step 1: Original total count = ${start} ${ctx.item}.\nStep 2: Amount subtracted/used = ${removed} ${ctx.item}.\nStep 3: Compute ${start} - ${removed} = ${diff} ${ctx.item}.`;
+                    finalAnswer = `${diff}`;
+                    barModelData = {
+                        type: 'part-part-whole',
+                        part1: { label: 'Used', val: removed },
+                        part2: { label: 'Left', val: diff },
+                        whole: { label: 'Total', val: start }
+                    };
+                } else if (subtype === 1) {
+                    question = `There were ${start} ${ctx.item} sitting in the ${ctx.container}. ${name2} took ${removed} ${ctx.item} to share with partners. How many ${ctx.item} are still left?`;
+                    stepText = `Step 1: Starting total = ${start}.\nStep 2: Items taken = ${removed}.\nStep 3: ${start} - ${removed} = ${diff} ${ctx.item} remaining.`;
+                    finalAnswer = `${diff}`;
+                    barModelData = {
+                        type: 'part-part-whole',
+                        part1: { label: 'Shared', val: removed },
+                        part2: { label: 'Left', val: diff },
+                        whole: { label: 'Total', val: start }
+                    };
+                } else {
+                    question = `${name1} counted ${start} ${ctx.item}, while ${name2} counted ${diff} ${ctx.item}. How many more ${ctx.item} does ${name1} have than ${name2}?`;
+                    stepText = `Step 1: Compare ${name1}'s count (${start}) with ${name2}'s count (${diff}).\nStep 2: Subtract the smaller count: ${start} - ${diff} = ${removed}.\nStep 3: ${name1} has ${removed} more ${ctx.item}.`;
+                    finalAnswer = `${removed}`;
+                    barModelData = {
+                        type: 'comparison',
+                        top: { label: name1, val: start },
+                        bottom: { label: name2, val: diff },
+                        diff: { label: 'Difference', val: removed }
+                    };
+                }
+            }
+
+            return {
+                id,
+                grade: 2,
+                operationType,
+                contextItem: ctx.item,
+                icon: ctx.icon,
+                question,
+                steps: stepText,
+                answer: finalAnswer,
+                barModel: barModelData
+            };
+        }
+
+        function generateGrade5Problem(id, seedIndex) {
+            const types = ['frac_add_sub', 'frac_mult', 'frac_div', 'multi_integer_ops'];
+            const type = types[seedIndex % types.length];
+            const name1 = STUDENT_NAMES[(seedIndex * 3) % STUDENT_NAMES.length];
+            const name2 = STUDENT_NAMES[(seedIndex * 3 + 1) % STUDENT_NAMES.length];
+
+            let question = '', stepText = '', finalAnswer = '', operationType = '', barModelData = null;
+
+            if (type === 'frac_add_sub') {
+                const denominators = [2, 3, 4, 5, 6, 8];
+                const d1 = denominators[Math.floor(Math.random() * (denominators.length - 2))];
+                const d2 = denominators[Math.floor(Math.random() * (denominators.length - 2)) + 2];
+                const n1 = Math.floor(Math.random() * (d1 - 1)) + 1;
+                const n2 = Math.floor(Math.random() * (d2 - 1)) + 1;
+                const isAdd = Math.random() > 0.5;
+                const commonDenom = lcm(d1, d2);
+                const convN1 = n1 * (commonDenom / d1);
+                const convN2 = n2 * (commonDenom / d2);
+
+                if (isAdd) {
+                    operationType = 'fraction-addition';
+                    const sumNum = convN1 + convN2;
+                    question = `In science laboratory, ${name1} poured ${n1}/${d1} liter of saline solution into a beaker. ${name2} then added ${n2}/${d2} liter of distilled water. What is the combined volume of liquid inside the beaker in liters?`;
+                    stepText = `Step 1: Find common denominator for ${d1} & ${d2}: LCM = ${commonDenom}.\nStep 2: Equivalent fractions:\n   ${n1}/${d1} = ${convN1}/${commonDenom}\n   ${n2}/${d2} = ${convN2}/${commonDenom}\nStep 3: Add numerators: (${convN1} + ${convN2}) / ${commonDenom} = ${sumNum}/${commonDenom}.\nStep 4: Simplified form: ${simplifyFraction(sumNum, commonDenom)} liters.`;
+                    finalAnswer = simplifyFraction(sumNum, commonDenom);
+                    barModelData = { type: 'fraction-sum', f1: `${n1}/${d1}`, f2: `${n2}/${d2}`, res: finalAnswer };
+                } else {
+                    operationType = 'fraction-subtraction';
+                    const bigN = convN1 >= convN2 ? convN1 : convN2;
+                    const smallN = convN1 >= convN2 ? convN2 : convN1;
+                    const bigDisp = convN1 >= convN2 ? `${n1}/${d1}` : `${n2}/${d2}`;
+                    const smallDisp = convN1 >= convN2 ? `${n2}/${d2}` : `${n1}/${d1}`;
+                    const diffNum = bigN - smallN;
+
+                    question = `A recipe requires ${bigDisp} kilogram of organic flour. Chef ${name1} has used ${smallDisp} kilogram so far. How much flour is still needed to complete the recipe?`;
+                    stepText = `Step 1: Find common denominator: ${commonDenom}.\nStep 2: Convert: ${bigDisp} = ${bigN}/${commonDenom} and ${smallDisp} = ${smallN}/${commonDenom}.\nStep 3: Subtract: (${bigN} - ${smallN}) / ${commonDenom} = ${diffNum}/${commonDenom}.\nStep 4: Simplified form: ${simplifyFraction(diffNum, commonDenom)} kg.`;
+                    finalAnswer = simplifyFraction(diffNum, commonDenom);
+                    barModelData = { type: 'fraction-diff', total: bigDisp, used: smallDisp, res: finalAnswer };
+                }
+            } else if (type === 'frac_mult') {
+                operationType = 'fraction-multiplication';
+                if (seedIndex % 2 === 0) {
+                    const den = [3, 4, 5, 6, 8][Math.floor(Math.random() * 5)];
+                    const num = Math.floor(Math.random() * (den - 1)) + 1;
+                    const multiplier = Math.floor(Math.random() * 5) + 3;
+                    const totalStudents = den * multiplier;
+                    const result = num * multiplier;
+
+                    question = `A grade 5 assembly has ${totalStudents} students. Exactly ${num}/${den} of these students are wearing the academy athletic team jersey. How many students are wearing the athletic jersey?`;
+                    stepText = `Step 1: Set up multiplication: (${num}/${den}) × ${totalStudents}.\nStep 2: Divide total by denominator: ${totalStudents} ÷ ${den} = ${multiplier}.\nStep 3: Multiply by numerator: ${multiplier} × ${num} = ${result} students.`;
+                    finalAnswer = `${result}`;
+                    barModelData = { type: 'fraction-of-whole', whole: totalStudents, parts: den, highlight: num, res: result };
+                } else {
+                    const n1 = Math.floor(Math.random() * 2) + 1;
+                    const d1 = [3, 4, 5][Math.floor(Math.random() * 3)];
+                    const n2 = Math.floor(Math.random() * 2) + 1;
+                    const d2 = [4, 5, 6][Math.floor(Math.random() * 3)];
+                    const prodNum = n1 * n2;
+                    const prodDen = d1 * d2;
+
+                    question = `A rectangular courtyard garden has a length of ${n1}/${d1} kilometer and a width of ${n2}/${d2} kilometer. Find the total area of the garden in square kilometers.`;
+                    stepText = `Step 1: Area = length × width = (${n1}/${d1}) × (${n2}/${d2}).\nStep 2: Multiply numerators: ${n1} × ${n2} = ${prodNum}.\nStep 3: Multiply denominators: ${d1} × ${d2} = ${prodDen}.\nStep 4: Reduced result: ${simplifyFraction(prodNum, prodDen)} sq km.`;
+                    finalAnswer = simplifyFraction(prodNum, prodDen);
+                    barModelData = { type: 'fraction-area', dim1: `${n1}/${d1}`, dim2: `${n2}/${d2}`, res: finalAnswer };
+                }
+            } else if (type === 'frac_div') {
+                operationType = 'fraction-division';
+                if (seedIndex % 2 === 0) {
+                    const den = [2, 3, 4, 5, 8][Math.floor(Math.random() * 5)];
+                    const wholeLength = Math.floor(Math.random() * 4) + 3;
+                    const pieces = wholeLength * den;
+
+                    question = `Art instructor ${name1} has a roll of craft wire measuring ${wholeLength} meters long. If each sculpture piece requires 1/${den} meter of wire, how many individual pieces can ${name1} cut?`;
+                    stepText = `Step 1: Set up division: ${wholeLength} ÷ (1/${den}).\nStep 2: Multiply by reciprocal: ${wholeLength} × (${den}/1).\nStep 3: Compute ${wholeLength} × ${den} = ${pieces} pieces.`;
+                    finalAnswer = `${pieces}`;
+                    barModelData = { type: 'fraction-division', whole: `${wholeLength}m`, unit: `1/${den}m`, res: pieces };
+                } else {
+                    const den = [2, 3, 4][Math.floor(Math.random() * 3)];
+                    const friends = Math.floor(Math.random() * 3) + 2;
+                    const resDen = den * friends;
+
+                    question = `${name1} saved 1/${den} of a rectangular sheet cake. If ${name1} distributes this piece equally among ${friends} friends, what fraction of the entire cake does each friend receive?`;
+                    stepText = `Step 1: Set up division: (1/${den}) ÷ ${friends}.\nStep 2: Multiply by reciprocal: (1/${den}) × (1/${friends}).\nStep 3: Multiply denominators: 1 / (${den} × ${friends}) = 1/${resDen} of the whole cake.`;
+                    finalAnswer = `1/${resDen}`;
+                    barModelData = { type: 'fraction-division', whole: `1/${den} slice`, unit: `Shared across ${friends}`, res: `1/${resDen}` };
+                }
+            } else {
+                operationType = 'mixed-integer';
+                const cost = Math.floor(Math.random() * 6) + 5;
+                const qty = Math.floor(Math.random() * 5) + 3;
+                const total = cost * qty;
+                const bill = Math.ceil(total / 10) * 10 + 20;
+                const change = bill - total;
+
+                question = `${name1} purchased ${qty} science binders at $${cost} each. If ${name1} paid the cashier with a $${bill} bill, how much money should ${name1} receive in change?`;
+                stepText = `Step 1: Total cost = ${qty} × $${cost} = $${total}.\nStep 2: Subtract from payment: $${bill} - $${total} = $${change}.\nStep 3: Final change = $${change}.`;
+                finalAnswer = `${change}`;
+                barModelData = { type: 'integer-multistep', mult: `${qty} × $${cost} = $${total}`, paid: `$${bill}`, res: `$${change}` };
+            }
+
+            return {
+                id,
+                grade: 5,
+                operationType,
+                icon: 'fa-calculator text-indigo-500',
+                question,
+                steps: stepText,
+                answer: finalAnswer,
+                barModel: barModelData
+            };
+        }
+
+        function generateFullWeek(grade) {
+            const days = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+            let counter = 1;
+
+            for (let d = 1; d <= 5; d++) {
+                for (let p = 1; p <= 5; p++) {
+                    const seed = (d - 1) * 5 + p;
+                    const prob = (grade === 2) 
+                        ? generateGrade2Problem(counter++, seed)
+                        : generateGrade5Problem(counter++, seed);
+                    days[d].push(prob);
+                }
+            }
+
+            const testProblems = [];
+            let testId = 1;
+            for (let d = 1; d <= 5; d++) {
+                [0, 2].forEach(idx => {
+                    testProblems.push({
+                        ...days[d][idx],
+                        id: testId++,
+                        sourceDay: d,
+                        isTestQuestion: true
+                    });
+                });
+            }
+
+            return { days, test: testProblems };
+        }
+
+        function initMathData() {
+            APP_STATE.weeks[2] = generateFullWeek(2);
+            APP_STATE.weeks[5] = generateFullWeek(5);
+        }
+        initMathData();
+
+        function renderApp() {
+            updateInfographicHeader();
+            updateNavigationTabs();
+            renderProblems();
+            renderVaultSolutions();
+            updateVaultUIStatus();
+        }
+
+        function updateInfographicHeader() {
+            const grade = APP_STATE.currentGrade;
+            const isG2 = grade === 2;
+            const gradePill = document.getElementById('infographic-grade-pill');
+            const titleEl = document.getElementById('infographic-title');
+            const descEl = document.getElementById('infographic-description');
+            const fracBadge = document.getElementById('badge-fraction-support');
+            const opsPillsContainer = document.getElementById('operations-pills');
+
+            if (isG2) {
+                gradePill.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
+                gradePill.textContent = "Grade 2 Core Track";
+                titleEl.textContent = "Grade 2 Daily Word Problems: Addition & Subtraction";
+                descEl.textContent = "Carefully crafted two-digit addition and subtraction scenarios. Uses clean whole numbers, part-part-whole bar models, and real-life classroom themes.";
+                fracBadge.classList.add('hidden');
+                opsPillsContainer.innerHTML = `
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <i class="fa-solid fa-plus text-[10px]"></i> Addition
+                    </span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
+                        <i class="fa-solid fa-minus text-[10px]"></i> Subtraction
+                    </span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                        <i class="fa-solid fa-shapes text-[10px]"></i> Bar Tape Models
+                    </span>
+                `;
+            } else {
+                gradePill.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 border border-indigo-200";
+                gradePill.textContent = "Grade 5 Advanced Track";
+                titleEl.textContent = "Grade 5 Daily Word Problems: Operations & Fractions";
+                descEl.textContent = "Multi-operation challenges including fractions with unlike denominators, fraction-by-whole multiplication, unit fraction division, and multi-step word logic.";
+                fracBadge.classList.remove('hidden');
+                opsPillsContainer.innerHTML = `
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200"><i class="fa-solid fa-plus text-[10px]"></i> + Add</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200"><i class="fa-solid fa-minus text-[10px]"></i> − Sub</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-xmark text-[10px]"></i> × Mult</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200"><i class="fa-solid fa-divide text-[10px]"></i> ÷ Div</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-pie-chart text-[10px]"></i> Fractions</span>
+                `;
+            }
+
+            const btnG2 = document.getElementById('btn-grade-2');
+            const btnG5 = document.getElementById('btn-grade-5');
+            if (isG2) {
+                btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-emerald-700 shadow-sm";
+                btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+            } else {
+                btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-indigo-700 shadow-sm";
+            }
+        }
+
+        function updateNavigationTabs() {
+            const day = APP_STATE.currentDay;
+            [1, 2, 3, 4, 5].forEach(d => {
+                const tab = document.getElementById(`day-tab-${d}`);
+                if (d === day) {
+                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 bg-brand-600 text-white shadow-md shadow-brand-500/20 border-transparent";
+                    tab.querySelector('span:first-child').className = "text-[10px] uppercase font-semibold text-brand-200";
+                } else {
+                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:bg-slate-100 border border-transparent";
+                    tab.querySelector('span:first-child').className = "text-[10px] uppercase font-semibold text-slate-400";
+                }
+            });
+
+            const testTab = document.getElementById('day-tab-test');
+            if (day === 'test') {
+                testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-500 text-white shadow-md shadow-amber-500/20";
+                testTab.querySelector('i').className = "fa-solid fa-award text-white text-lg";
+                testTab.querySelector('span:first-child').className = "block text-[10px] uppercase font-bold text-amber-100";
+            } else {
+                testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100";
+                testTab.querySelector('i').className = "fa-solid fa-award text-amber-600";
+                testTab.querySelector('span:first-child').className = "block text-[10px] uppercase font-bold text-amber-600";
+            }
+
+            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
+            const printTitle = document.getElementById('print-sheet-title');
+            const printSubtitle = document.getElementById('print-sheet-subtitle');
+            const printPoints = document.getElementById('print-total-points');
+            const printMax = document.getElementById('print-max-score');
+            const printName = document.getElementById('print-student-name');
+            const printDate = document.getElementById('print-date');
+
+            if (printDate) printDate.textContent = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            if (printName) printName.textContent = APP_STATE.studentName ? APP_STATE.studentName : '___________________________';
+
+            if (day === 'test') {
+                printTitle.textContent = `Grade ${APP_STATE.currentGrade} • End-of-Week Comprehensive Assessment`;
+                printSubtitle.textContent = `10-Question Synthesized Assessment covering Days 1-5 Core Concepts`;
+                printPoints.textContent = '20 pts';
+                printMax.textContent = '20';
+            } else {
+                printTitle.textContent = `Grade ${APP_STATE.currentGrade} • ${dayNames[day]} Daily Word Problems`;
+                printSubtitle.textContent = `5 Mathematical Challenge Problems with Working Space`;
+                printPoints.textContent = '10 pts';
+                printMax.textContent = '10';
+            }
+        }
+
+        function renderProblems() {
+            const container = document.getElementById('problems-container');
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const weekData = APP_STATE.weeks[grade];
+            const problemList = (day === 'test') ? weekData.test : weekData.days[day];
+
+            let html = '';
+            if (day === 'test') {
+                html += `
+                    <div class="no-print bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 rounded-3xl p-5 sm:p-6 text-white shadow-lg mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-extrabold font-display">End-of-Week 10-Question Assessment</h3>
+                                <p class="text-xs text-amber-100">Curated across Monday-to-Friday practice sets to evaluate core mastery.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1.5 rounded-xl bg-white/15 text-xs font-bold border border-white/20">
+                                <i class="fa-regular fa-clock mr-1"></i> Suggested Time: 30 Mins
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-white text-amber-800 text-xs font-extrabold">
+                                10 Problems Total
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            problemList.forEach((prob, idx) => {
+                const probNumber = idx + 1;
+                const storageKey = `${grade}-${day}-${prob.id}`;
+                const currentVal = APP_STATE.studentAnswers[storageKey] || '';
+
+                html += `
+                    <article class="worksheet-card bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-sm hover:shadow-md transition-all">
+                        <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-brand-50 text-brand-700 font-extrabold font-display flex items-center justify-center text-sm border border-brand-100">
+                                    Q${probNumber}
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Problem ${probNumber} of ${problemList.length}</span>
+                                        ${prob.isTestQuestion ? `<span class="px-2 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Synthesized from Day ${prob.sourceDay}</span>` : ''}
+                                    </div>
+                                    <h4 class="text-xs font-semibold text-slate-500 capitalize flex items-center gap-1.5 mt-0.5">
+                                        <i class="${prob.icon || 'fa-solid fa-shapes text-brand-500'}"></i>
+                                        <span>${formatOperationName(prob.operationType)}</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="no-print flex items-center gap-2">
+                                <button onclick="toggleVisualModel(${prob.id})" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-diagram-project text-brand-500"></i>
+                                    <span class="hidden sm:inline">Visual Bar Model</span>
+                                </button>
+                                <button onclick="toggleScratchpad(${prob.id})" class="text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-pencil text-amber-500"></i>
+                                    <span class="hidden sm:inline">Scratchpad</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="py-4">
+                            <p class="text-base sm:text-lg text-slate-800 leading-relaxed font-medium">${prob.question}</p>
+                        </div>
+
+                        <div id="visual-model-${prob.id}" class="hidden no-print my-3 p-4 rounded-2xl bg-gradient-to-r from-brand-50/60 to-indigo-50/60 border border-brand-200">
+                            <div class="flex items-center justify-between pb-2 mb-2 border-b border-brand-200/50">
+                                <span class="text-xs font-bold text-brand-800 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Singapore Math Bar Model Visualizer
+                                </span>
+                                <span class="text-[10px] text-brand-600 font-medium">Tape Representation</span>
+                            </div>
+                            ${renderBarModelGraphic(prob)}
+                        </div>
+
+                        <div class="hidden print-only mt-2 pt-2 border border-dashed border-slate-300 rounded-xl h-24 p-2 text-slate-400 text-xs">
+                            Show your work / calculations here:
+                        </div>
+
+                        <div id="scratchpad-${prob.id}" class="hidden no-print my-3 p-3 rounded-2xl bg-amber-50/50 border border-amber-200">
+                            <label class="block text-xs font-bold text-amber-800 uppercase mb-1">Student Scratchpad / Notes</label>
+                            <textarea placeholder="Type step-by-step thinking or rough calculations here..." rows="2"
+                                class="w-full text-xs font-mono p-3 rounded-xl border border-amber-200 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                        </div>
+
+                        <div class="no-print pt-3 mt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2 flex-1 max-w-sm">
+                                <label for="input-${prob.id}" class="text-xs font-bold text-slate-600 whitespace-nowrap">Your Answer:</label>
+                                <input type="text" id="input-${prob.id}" value="${currentVal}" placeholder="${grade === 2 ? 'e.g. 42' : 'e.g. 18 or 3/4'}"
+                                    onchange="saveStudentAnswer('${storageKey}', this.value)"
+                                    class="w-full px-3 py-1.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold font-mono">
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button onclick="checkStudentAnswer(${prob.id}, '${prob.answer}')" 
+                                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm active:scale-95">
+                                    Check Answer
+                                </button>
+                                <span id="feedback-${prob.id}" class="text-xs font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <div class="hidden print-only mt-3 text-right font-bold text-xs text-slate-900">
+                            Final Answer: __________________________
+                        </div>
+                    </article>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderBarModelGraphic(prob) {
+            const data = prob.barModel;
+            if (!data) return `<p class="text-xs text-slate-500">Visual model not available for this question.</p>`;
+
+            if (data.type === 'part-part-whole') {
+                return `
+                    <div class="space-y-2 py-1">
+                        <div class="flex h-10 w-full rounded-xl overflow-hidden shadow-inner border border-slate-300">
+                            <div class="bg-emerald-400 text-white text-xs font-bold flex items-center justify-center border-r border-white/50" style="flex: ${data.part1.val};">
+                                ${data.part1.label} (${data.part1.val})
+                            </div>
+                            <div class="bg-sky-400 text-white text-xs font-bold flex items-center justify-center" style="flex: ${data.part2.val};">
+                                ${data.part2.label} (${data.part2.val})
+                            </div>
+                        </div>
+                        <div class="text-center text-xs font-extrabold text-slate-700">
+                            &uarr; Total Combined: ${data.whole.val} &uarr;
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === 'comparison') {
+                return `
+                    <div class="space-y-2 py-1">
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-16 font-semibold text-slate-700">${data.top.label}:</span>
+                            <div class="h-6 bg-indigo-500 text-white font-bold rounded-lg flex items-center px-3" style="width: ${Math.min(100, data.top.val * 1.5)}%;">
+                                ${data.top.val}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-16 font-semibold text-slate-700">${data.bottom.label}:</span>
+                            <div class="h-6 bg-slate-400 text-white font-bold rounded-lg flex items-center px-3" style="width: ${Math.min(100, data.bottom.val * 1.5)}%;">
+                                ${data.bottom.val}
+                            </div>
+                        </div>
+                        <div class="text-xs font-bold text-amber-700 pt-1">
+                            Difference: ${data.diff.val}
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === 'fraction-sum') {
+                return `
+                    <div class="flex items-center gap-2 py-2">
+                        <div class="h-8 bg-purple-200 border border-purple-400 text-purple-900 font-bold text-xs rounded-xl flex items-center px-3">
+                            Part A: ${data.f1}
+                        </div>
+                        <span class="font-black text-slate-400">+</span>
+                        <div class="h-8 bg-indigo-200 border border-indigo-400 text-indigo-900 font-bold text-xs rounded-xl flex items-center px-3">
+                            Part B: ${data.f2}
+                        </div>
+                        <span class="font-black text-slate-400">=</span>
+                        <div class="h-8 bg-brand-600 text-white font-extrabold text-xs rounded-xl flex items-center px-3 shadow-sm">
+                            Total: ${data.res}
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === 'fraction-diff') {
+                return `
+                    <div class="flex items-center gap-2 py-2">
+                        <div class="h-8 bg-slate-200 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl flex items-center px-3">
+                            Total: ${data.total}
+                        </div>
+                        <span class="font-black text-slate-400">−</span>
+                        <div class="h-8 bg-rose-100 border border-rose-300 text-rose-800 font-bold text-xs rounded-xl flex items-center px-3">
+                            Used: ${data.used}
+                        </div>
+                        <span class="font-black text-slate-400">=</span>
+                        <div class="h-8 bg-emerald-600 text-white font-extrabold text-xs rounded-xl flex items-center px-3 shadow-sm">
+                            Remaining: ${data.res}
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === 'fraction-of-whole') {
+                return `
+                    <div class="space-y-1.5 py-1">
+                        <div class="text-xs font-semibold text-slate-700">Whole Quantity = ${data.whole} (${data.parts} equal segments):</div>
+                        <div class="flex gap-1 h-8">
+                            ${Array.from({ length: data.parts }).map((_, i) => `
+                                <div class="flex-1 ${i < data.highlight ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-200 text-slate-500'} rounded-lg text-xs flex items-center justify-center">
+                                    ${data.whole / data.parts}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="text-xs font-extrabold text-indigo-700 pt-1">
+                            ${data.highlight} of ${data.parts} segments = ${data.res}
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="text-xs text-slate-700 py-1">
+                        <span class="font-bold">Model Context:</span> ${JSON.stringify(data).replace(/["{}]/g, ' ')}
+                    </div>
+                `;
+            }
+        }
+
+        function formatOperationName(type) {
+            if (!type) return 'Mathematical Logic';
+            return type.replace(/-/g, ' ');
+        }
+
+        function renderVaultSolutions() {
+            const vaultList = document.getElementById('vault-solutions-list');
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const weekData = APP_STATE.weeks[grade];
+            const problemList = (day === 'test') ? weekData.test : weekData.days[day];
+
+            let html = `
+                <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                    <span class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                        Displaying Full Answer Key: Grade ${grade} • ${day === 'test' ? '10-Question Friday Assessment' : `Day ${day}`}
+                    </span>
+                    <span class="text-xs font-bold text-rose-600">
+                        ${problemList.length} Total Solutions
+                    </span>
+                </div>
+            `;
+
+            problemList.forEach((prob, idx) => {
+                html += `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500">Problem #${idx + 1}</span>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                Target Answer: ${prob.answer}
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-600 italic">"${prob.question}"</p>
+                        <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                            <span class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Step-by-Step Pedagogical Method:</span>
+                            <pre class="text-xs font-mono text-slate-700 whitespace-pre-wrap leading-relaxed">${prob.steps}</pre>
+                        </div>
+                    </div>
+                `;
+            });
+
+            vaultList.innerHTML = html;
+        }
+
+        function switchGrade(grade) {
+            if (APP_STATE.currentGrade === grade) return;
+            APP_STATE.currentGrade = grade;
+            renderApp();
+            showToast(`Switched to Grade ${grade} Curriculum`);
+        }
+
+        function switchDay(day) {
+            APP_STATE.currentDay = day;
+            renderApp();
+            window.scrollTo({ top: 120, behavior: 'smooth' });
+        }
+
+        function regenerateCurrentWeek() {
+            APP_STATE.weeks[APP_STATE.currentGrade] = generateFullWeek(APP_STATE.currentGrade);
+            renderApp();
+            showToast(`Generated a fresh weekly set for Grade ${APP_STATE.currentGrade}!`);
+        }
+
+        function toggleVisualModel(id) {
+            const el = document.getElementById(`visual-model-${id}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        function toggleScratchpad(id) {
+            const el = document.getElementById(`scratchpad-${id}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        function saveStudentAnswer(key, value) {
+            APP_STATE.studentAnswers[key] = value.trim();
+        }
+
+        function handleStudentNameChange(name) {
+            APP_STATE.studentName = name.trim();
+            try {
+                localStorage.setItem('mathquest_student_name', APP_STATE.studentName);
+            } catch (e) {}
+
+            const greeting = document.getElementById('student-greeting-tag');
+            const printName = document.getElementById('print-student-name');
+
+            if (APP_STATE.studentName) {
+                if (greeting) greeting.textContent = `Welcome, ${APP_STATE.studentName}! 🌟`;
+                if (printName) printName.textContent = APP_STATE.studentName;
+            } else {
+                if (greeting) greeting.textContent = `Ready to solve!`;
+                if (printName) printName.textContent = '___________________________';
+            }
+        }
+
+        function checkStudentAnswer(id, target) {
+            const input = document.getElementById(`input-${id}`);
+            const feedback = document.getElementById(`feedback-${id}`);
+            if (!input || !feedback) return;
+
+            const val = input.value.trim().toLowerCase();
+            const cleanTarget = target.trim().toLowerCase();
+
+            feedback.classList.remove('hidden');
+
+            if (!val) {
+                feedback.className = "text-xs font-bold text-slate-400";
+                feedback.textContent = "Please enter an answer.";
+                return;
+            }
+
+            const namePrefix = APP_STATE.studentName ? `${APP_STATE.studentName}, ` : '';
+            const isMatch = (val === cleanTarget) || 
+                (val.replace(/[^0-9/]/g, '') === cleanTarget.replace(/[^0-9/]/g, ''));
+
+            if (isMatch) {
+                feedback.className = "text-xs font-bold text-emerald-600 flex items-center gap-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Great job, ${namePrefix}that's correct!`;
+            } else {
+                feedback.className = "text-xs font-bold text-rose-600 flex items-center gap-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Not quite yet, ${namePrefix}check the Bar Model or Scratchpad!`;
+            }
+        }
+
+        function handleVaultClick() {
+            if (APP_STATE.isVaultUnlocked) {
+                const panel = document.getElementById('vault-panel');
+                panel.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('vault-auth-modal').classList.remove('hidden');
+            document.getElementById('auth-error-msg').classList.add('hidden');
+            const passInput = document.getElementById('vault-password-input');
+            passInput.value = '';
+            setTimeout(() => passInput.focus(), 150);
+            updatePasswordHintUI();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('vault-auth-modal').classList.add('hidden');
+        }
+
+        function verifyVaultPassword() {
+            const entered = document.getElementById('vault-password-input').value.trim();
+            const errorMsg = document.getElementById('auth-error-msg');
+
+            if (entered === APP_STATE.teacherPassword) {
+                APP_STATE.isVaultUnlocked = true;
+                closeAuthModal();
+                updateVaultUIStatus();
+                renderVaultSolutions();
+
+                const panel = document.getElementById('vault-panel');
+                panel.classList.remove('hidden');
+                setTimeout(() => { panel.scrollIntoView({ behavior: 'smooth' }); }, 100);
+                showToast("Teacher Vault successfully unlocked!");
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        function lockVault() {
+            APP_STATE.isVaultUnlocked = false;
+            updateVaultUIStatus();
+            document.getElementById('vault-panel').classList.add('hidden');
+            showToast("Teacher Vault has been locked.");
+        }
+
+        function updateVaultUIStatus() {
+            const btn = document.getElementById('btn-vault-trigger');
+            const label = document.getElementById('vault-button-label');
+            const icon = document.getElementById('vault-icon-indicator');
+            const chip = document.getElementById('status-chip-vault');
+            const panel = document.getElementById('vault-panel');
+
+            if (APP_STATE.isVaultUnlocked) {
+                btn.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-all flex items-center gap-2 shadow-sm";
+                label.textContent = "Vault Unlocked";
+                icon.className = "fa-solid fa-unlock-keyhole text-emerald-600";
+                chip.className = "text-xl sm:text-2xl font-black text-emerald-600 font-display flex items-center justify-center gap-1";
+                chip.innerHTML = `<i class="fa-solid fa-unlock text-sm"></i> Unlocked`;
+                panel.classList.remove('hidden');
+            } else {
+                btn.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition-all flex items-center gap-2 shadow-sm";
+                label.textContent = "Teacher Vault";
+                icon.className = "fa-solid fa-lock text-rose-600";
+                chip.className = "text-xl sm:text-2xl font-black text-rose-600 font-display flex items-center justify-center gap-1";
+                chip.innerHTML = `<i class="fa-solid fa-lock text-sm"></i> Locked`;
+                panel.classList.add('hidden');
+            }
+        }
+
+        function openChangePasswordModal() {
+            closeAuthModal();
+            document.getElementById('change-password-modal').classList.remove('hidden');
+            document.getElementById('change-pass-error').classList.add('hidden');
+            document.getElementById('current-pass-input').value = '';
+            document.getElementById('new-pass-input').value = '';
+            document.getElementById('confirm-pass-input').value = '';
+
+            const currentPassGroup = document.getElementById('current-pass-group');
+            if (APP_STATE.isVaultUnlocked) {
+                currentPassGroup.classList.add('hidden');
+            } else {
+                currentPassGroup.classList.remove('hidden');
+            }
+
+            setTimeout(() => {
+                const target = APP_STATE.isVaultUnlocked 
+                    ? document.getElementById('new-pass-input')
+                    : document.getElementById('current-pass-input');
+                target.focus();
+            }, 150);
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('change-password-modal').classList.add('hidden');
+        }
+
+        function saveNewPassword() {
+            const currentPass = document.getElementById('current-pass-input').value.trim();
+            const newPass = document.getElementById('new-pass-input').value.trim();
+            const confirmPass = document.getElementById('confirm-pass-input').value.trim();
+            const errBox = document.getElementById('change-pass-error');
+            const errText = document.getElementById('change-pass-error-text');
+
+            if (!APP_STATE.isVaultUnlocked && currentPass !== APP_STATE.teacherPassword) {
+                errText.textContent = "Current passcode is incorrect.";
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            if (newPass.length < 3) {
+                errText.textContent = "New passcode must be at least 3 characters.";
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                errText.textContent = "New passcode and confirmation do not match.";
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            APP_STATE.teacherPassword = newPass;
+            try {
+                localStorage.setItem('mathquest_vault_pin_2026', newPass);
+            } catch (e) {
+                console.warn("Cannot persist to localStorage", e);
+            }
+
+            closeChangePasswordModal();
+            updatePasswordHintUI();
+            showToast("Teacher passcode successfully updated!");
+        }
+
+        function resetToDefaultPassword() {
+            APP_STATE.teacherPassword = 'mathmaster';
+            try {
+                localStorage.setItem('mathquest_vault_pin_2026', 'mathmaster');
+            } catch (e) {
+                console.warn("Cannot persist to localStorage", e);
+            }
+
+            closeChangePasswordModal();
+            updatePasswordHintUI();
+            showToast("Passcode reset to default: mathmaster");
+        }
+
+        function updatePasswordHintUI() {
+            const hint = document.getElementById('password-hint-text');
+            if (!hint) return;
+            if (APP_STATE.teacherPassword === 'mathmaster') {
+                hint.innerHTML = `Default Master PIN: <span class="font-mono font-bold text-rose-600 cursor-pointer underline" onclick="fillDefaultPassword()">mathmaster</span>`;
+            } else {
+                hint.innerHTML = `Custom Passcode Active &bull; <span class="font-mono font-bold text-rose-600 cursor-pointer underline" onclick="fillDefaultPassword()">Autofill saved passcode</span>`;
+            }
+        }
+
+        function fillDefaultPassword() {
+            document.getElementById('vault-password-input').value = APP_STATE.teacherPassword;
+            verifyVaultPassword();
+        }
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = "fa-regular fa-eye-slash";
+            } else {
+                input.type = 'password';
+                icon.className = "fa-regular fa-eye";
+            }
+        }
+
+        function printCurrentWorksheet() {
+            const printName = document.getElementById('print-student-name');
+            if (printName) {
+                printName.textContent = APP_STATE.studentName ? APP_STATE.studentName : '___________________________';
+            }
+            window.print();
+        }
+
+        function downloadCurrentWorksheet() {
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
+            const weekData = APP_STATE.weeks[grade];
+            const problems = (day === 'test') ? weekData.test : weekData.days[day];
+            const title = (day === 'test') 
+                ? `Grade ${grade} - End of Week 10-Question Test` 
+                : `Grade ${grade} - ${dayNames[day]} Word Problems`;
+            const student = APP_STATE.studentName || 'Student';
+            const dateStr = new Date().toLocaleDateString();
+
+            let problemRows = '';
+            problems.forEach((p, idx) => {
+                problemRows += `
+                    <div style="margin-bottom: 24px; padding: 16px; border: 1px solid #cbd5e1; border-radius: 8px; page-break-inside: avoid;">
+                        <div style="font-size: 14px; font-weight: bold; color: #0f172a; margin-bottom: 6px;">
+                            Question ${idx + 1} (${p.operationType ? p.operationType.replace(/-/g, ' ') : 'Math'})
+                        </div>
+                        <p style="font-size: 15px; line-height: 1.5; color: #1e293b; margin: 0 0 12px 0;">${p.question}</p>
+                        <div style="border: 1px dashed #94a3b8; height: 90px; border-radius: 6px; padding: 8px; color: #94a3b8; font-size: 11px;">
+                            Show your work & calculations here:
+                        </div>
+                        <div style="text-align: right; margin-top: 10px; font-size: 13px; font-weight: bold; color: #0f172a;">
+                            Answer: _______________________
+                        </div>
+                    </div>
+                `;
+            });
+
+            const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>${title} - ${student}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 40px; color: #0f172a; max-width: 800px; margin: auto; }
+        .header { border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 25px; }
+        .info-grid { display: flex; justify-content: space-between; margin-top: 15px; font-size: 14px; }
+        @media print { body { padding: 0; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin: 0; font-size: 24px;">MathQuest Worksheet</h1>
+        <h2 style="margin: 4px 0 0 0; font-size: 16px; color: #475569; font-weight: normal;">${title}</h2>
+        <div class="info-grid">
+            <div><strong>Student Name:</strong> ${student}</div>
+            <div><strong>Date:</strong> ${dateStr}</div>
+            <div><strong>Score:</strong> ______ / ${problems.length * 2}</div>
+        </div>
+    </div>
+    <div class="questions">
+        ${problemRows}
+    </div>
+    <footer style="margin-top: 30px; font-size: 11px; text-align: center; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+        MathQuest &bull; Grade ${grade} Word Problem Curriculum
+    </footer>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const safeName = student.replace(/[^a-zA-Z0-9]/g, '_');
+            const safeDay = (day === 'test') ? 'Friday_Test' : `Day_${day}`;
+            const fileName = `MathQuest_G${grade}_${safeDay}_${safeName}.html`;
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`Downloaded "${fileName}"!`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+            if (APP_STATE.studentName) {
+                const nameInput = document.getElementById('student-name-input');
+                if (nameInput) nameInput.value = APP_STATE.studentName;
+                handleStudentNameChange(APP_STATE.studentName);
+            }
+        });
+    </script>
+</body>
+</html>
