@@ -68,7 +68,7 @@
                         <span class="text-xl sm:text-2xl font-extrabold font-display tracking-tight bg-gradient-to-r from-brand-700 via-indigo-700 to-purple-800 bg-clip-text text-transparent">MathQuest</span>
                         <span id="portal-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800 border border-brand-200">Cross-Device Portal</span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Cloud Synced &bull; Multi-Device Grading Hub &bull; Grade 2 &amp; Grade 5</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Multi-Device Cloud Hub &bull; Grade 2 &amp; Grade 5 Word Problems</p>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                         <span id="autosave-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span id="autosave-dot" class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </span>
-                    <span id="autosave-label" class="font-bold text-[11px] sm:text-xs"><i class="fa-solid fa-cloud mr-1"></i>Live Cloud Sync</span>
+                    <span id="autosave-label" class="font-bold text-[11px] sm:text-xs"><i class="fa-solid fa-cloud mr-1"></i>Live Sync</span>
                 </div>
 
                 <!-- Download Hub Trigger Button -->
@@ -140,7 +140,7 @@
                             Cloud Active
                         </span>
                         <span id="submission-count-pill" class="text-[11px] font-medium text-slate-500">
-                            &bull; Submissions instantly sync to the Teacher Hub on all devices
+                            &bull; Submissions instantly sync to the Teacher Hub across all devices
                         </span>
                     </div>
                     <div class="flex items-center gap-2 mt-1">
@@ -338,7 +338,7 @@
                 </div>
             </div>
 
-            <!-- Vault Sub-Navigation (Submissions vs Answer Keys) -->
+            <!-- Vault Sub-Navigation -->
             <div class="bg-slate-100 px-6 py-2.5 border-b border-slate-200 flex items-center justify-between gap-4">
                 <div class="flex items-center gap-2">
                     <button onclick="switchVaultTab('submissions')" id="vault-tab-submissions"
@@ -366,15 +366,13 @@
                         <p class="text-xs text-slate-500">Click on any submission below to inspect questions, answers, and scratchpad calculations, or assign grades.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="refreshSubmissionsList()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition">
+                        <button onclick="renderSubmissionsList()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition">
                             <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh Submissions
                         </button>
                     </div>
                 </div>
 
-                <div id="submissions-list-container" class="space-y-3">
-                    <!-- Populated dynamically -->
-                </div>
+                <div id="submissions-list-container" class="space-y-3"></div>
             </div>
 
             <!-- Solutions Master Key View -->
@@ -465,7 +463,7 @@
 
                 <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-slate-600 space-y-1 text-[11px]">
                     <p class="font-semibold text-slate-700"><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Format Information:</p>
-                    <p id="format-description-text">Word documents open in Microsoft Word, Google Docs, and LibreOffice with tables, questions, student answers, and calculation space.</p>
+                    <p id="format-description-text">Word documents open in Microsoft Word, Google Docs, and LibreOffice with questions, student answers, and calculation space.</p>
                 </div>
             </div>
 
@@ -491,7 +489,6 @@
                 <p class="text-xs text-slate-500">Sign in as a student to complete word problems or as an educator to grade submissions on any device.</p>
             </div>
 
-            <!-- Role Selector Tabs -->
             <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl mb-4 border border-slate-200">
                 <button type="button" onclick="selectLoginRole('student')" id="login-role-student-btn"
                     class="py-2 rounded-xl text-xs font-extrabold transition bg-white text-brand-700 shadow-sm flex items-center justify-center gap-2">
@@ -506,7 +503,6 @@
             </div>
 
             <form id="user-login-form" onsubmit="event.preventDefault(); handleUserLoginSubmit();" class="space-y-4">
-                <!-- Student Login Fields -->
                 <div id="login-student-fields" class="space-y-3">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Student Full Name</label>
@@ -533,7 +529,6 @@
                     </div>
                 </div>
 
-                <!-- Teacher Login Fields -->
                 <div id="login-teacher-fields" class="hidden space-y-3">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Educator / Teacher Name</label>
@@ -574,6 +569,7 @@
         </div>
     </div>
 
+    <!-- Teacher Marking Dialog -->
     <div id="teacher-marking-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
         <div class="bg-white rounded-3xl max-w-3xl w-full mx-4 max-h-[90vh] flex flex-col shadow-2xl border border-slate-100 transform transition-all overflow-hidden">
             <div class="bg-slate-900 text-white p-5 flex items-center justify-between shrink-0">
@@ -591,9 +587,7 @@
                 </button>
             </div>
 
-            <div id="marking-modal-body" class="p-6 overflow-y-auto space-y-5 flex-1 bg-slate-50/50">
-                <!-- Injected dynamically per question for teacher to grade -->
-            </div>
+            <div id="marking-modal-body" class="p-6 overflow-y-auto space-y-5 flex-1 bg-slate-50/50"></div>
 
             <div class="bg-white p-4 sm:p-5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4 shrink-0">
                 <div class="flex items-center gap-3">
@@ -615,6 +609,7 @@
         </div>
     </div>
 
+    <!-- Vault Passcode Modal -->
     <div id="vault-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden no-print">
         <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
             <div class="text-center space-y-2 mb-6">
@@ -710,7 +705,7 @@
                 <button onclick="closeChangePasswordModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     Cancel
                 </button>
-                <button onclick="saveNewPassword()" class="px-5 py-2 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white transition shadow-sm">
+                <button onclick="saveNewPassword()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white transition shadow-sm">
                     Save New Passcode
                 </button>
             </div>
@@ -725,6 +720,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="mt-auto border-t border-slate-200/80 bg-white py-6 text-center text-xs text-slate-400 no-print">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <p>&copy; 2026 MathQuest Educational Systems. Aligned with Grade 2 &amp; Grade 5 Curriculum Standards.</p>
@@ -735,202 +731,13 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Environment variables provided by runtime platform
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'mathquest-app-default';
-        const rawFirebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
-        let firebaseConfig = {};
-        if (rawFirebaseConfig) {
-            try { firebaseConfig = JSON.parse(rawFirebaseConfig); } catch (e) { console.error("Firebase config parse error", e); }
-        }
-
-        let db = null;
-        let auth = null;
-        let currentUser = null;
-        let isCloudAvailable = false;
-
-        if (firebaseConfig && firebaseConfig.apiKey) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                isCloudAvailable = true;
-            } catch (err) {
-                console.warn("Cloud initialization error, running in memory-mode:", err);
-            }
-        }
-
-        // Initialize Authentication before Firestore operations (Rule 3)
-        async function initCloudAuth() {
-            if (!isCloudAvailable || !auth) return;
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                currentUser = auth.currentUser;
-                window.currentUser = currentUser;
-                console.log("Cloud authentication initialized. User ID:", currentUser?.uid);
-                setupRealtimeCloudListeners();
-            } catch (authErr) {
-                console.warn("Auth initialization fallback:", authErr);
-                try {
-                    await signInAnonymously(auth);
-                    currentUser = auth.currentUser;
-                    setupRealtimeCloudListeners();
-                } catch (fallbackErr) {
-                    console.error("Anonymous auth failed:", fallbackErr);
-                }
-            }
-        }
-
-        // Setup Firestore Real-time Listeners (Rule 1 & Rule 2)
-        function setupRealtimeCloudListeners() {
-            if (!db || !currentUser) return;
-
-            // 1. Listen for all submissions across any device
-            const submissionsCol = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
-            onSnapshot(submissionsCol, (snapshot) => {
-                const cloudSubmissions = [];
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    cloudSubmissions.push({ id: docSnap.id, ...data });
-                });
-
-                // Sort submissions newest first in JS memory (Rule 2: No complex orderBy queries)
-                cloudSubmissions.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-                window.APP_STATE.submissions = cloudSubmissions;
-
-                // Sync current student's answer state if graded by teacher
-                if (window.APP_STATE.currentUserRole === 'student') {
-                    const mySub = cloudSubmissions.find(s => 
-                        s.grade === window.APP_STATE.currentGrade && 
-                        s.day === window.APP_STATE.currentDay && 
-                        s.studentName === window.APP_STATE.studentName
-                    );
-                    if (mySub && mySub.answers) {
-                        Object.keys(mySub.answers).forEach(qid => {
-                            const key = `${mySub.grade}-${mySub.day}-${qid}`;
-                            if (!window.APP_STATE.studentAnswers[key]) {
-                                window.APP_STATE.studentAnswers[key] = mySub.answers[qid];
-                            }
-                        });
-                    }
-                }
-
-                window.renderSubmissionsList();
-                window.updateStudentSubmissionStatusCard();
-                window.updateVaultBadgeCounts();
-                window.updateAutoSaveBadge('saved');
-            }, (error) => {
-                console.error("Submissions cloud sync error:", error);
-            });
-
-            // 2. Listen for Shared Weekly Curriculum so all devices see identical word problems
-            const curriculumCol = collection(db, 'artifacts', appId, 'public', 'data', 'curriculum');
-            onSnapshot(curriculumCol, (snapshot) => {
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    if (data.grade2 && data.grade2.days) {
-                        window.APP_STATE.weeks[2] = data.grade2;
-                    }
-                    if (data.grade5 && data.grade5.days) {
-                        window.APP_STATE.weeks[5] = data.grade5;
-                    }
-                });
-                window.renderProblems();
-                window.renderVaultSolutions();
-            }, (error) => {
-                console.error("Curriculum cloud sync error:", error);
-            });
-
-            // 3. Listen for Global Teacher Settings (such as custom passcode)
-            const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
-            onSnapshot(settingsDocRef, (snap) => {
-                if (snap.exists()) {
-                    const data = snap.data();
-                    if (data.teacherPassword && data.teacherPassword.length >= 3) {
-                        window.APP_STATE.teacherPassword = data.teacherPassword;
-                        window.updatePasswordHintUI();
-                    }
-                }
-            }, (error) => {
-                console.error("Settings cloud sync error:", error);
-            });
-        }
-
-        // Cloud writer functions exposed globally
-        window.cloudSaveSubmission = async function(submission) {
-            if (!db || !auth?.currentUser) return false;
-            try {
-                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submission.id);
-                await setDoc(subDocRef, submission, { merge: true });
-                return true;
-            } catch (err) {
-                console.error("Failed to push submission to cloud:", err);
-                return false;
-            }
-        };
-
-        window.cloudDeleteSubmission = async function(submissionId) {
-            if (!db || !auth?.currentUser) return false;
-            try {
-                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submissionId);
-                await deleteDoc(subDocRef);
-                return true;
-            } catch (err) {
-                console.error("Failed to delete submission from cloud:", err);
-                return false;
-            }
-        };
-
-        window.cloudSaveCurriculum = async function(weekG2, weekG5) {
-            if (!db || !auth?.currentUser) return false;
-            try {
-                const currDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'curriculum', 'active_weekly_sets');
-                await setDoc(currDocRef, {
-                    grade2: weekG2,
-                    grade5: weekG5,
-                    updatedAt: new Date().toISOString()
-                }, { merge: true });
-                return true;
-            } catch (err) {
-                console.error("Failed to sync curriculum to cloud:", err);
-                return false;
-            }
-        };
-
-        window.cloudSaveTeacherPassword = async function(newPassword) {
-            if (!db || !auth?.currentUser) return false;
-            try {
-                const settingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
-                await setDoc(settingsRef, {
-                    teacherPassword: newPassword,
-                    updatedAt: new Date().toISOString()
-                }, { merge: true });
-                return true;
-            } catch (err) {
-                console.error("Failed to sync teacher passcode to cloud:", err);
-                return false;
-            }
-        };
-
-        // Start cloud initialization immediately
-        initCloudAuth();
-    </script>
-
     <script>
         const APP_STATE = {
             currentGrade: 2,
             currentDay: 1,
             isVaultUnlocked: false,
             teacherPassword: 'mathmaster',
-            currentUserRole: 'student', // 'student' or 'teacher'
+            currentUserRole: 'student',
             studentName: 'Alex Parker',
             studentId: 'STU-2026',
             teacherName: 'Teacher',
@@ -946,10 +753,6 @@
             lastSavedTimestamp: null
         };
 
-        let autoSaveDebounceTimer = null;
-        const AUTOSAVE_STORAGE_KEY = 'mathquest_autosaved_session_v3';
-
-        // Load stored state
         try {
             const savedRole = localStorage.getItem('mathquest_user_role');
             if (savedRole === 'teacher' || savedRole === 'student') APP_STATE.currentUserRole = savedRole;
@@ -1228,15 +1031,892 @@
         }
         initMathData();
 
-        function renderApp() {
-            updateInfographicHeader();
-            updateNavigationTabs();
-            renderProblems();
-            renderVaultSolutions();
+        function updateInfographicHeader() {
+            const grade = APP_STATE.currentGrade;
+            const titleEl = document.getElementById('infographic-title');
+            const descEl = document.getElementById('infographic-description');
+            const pillEl = document.getElementById('infographic-grade-pill');
+            const fracBadge = document.getElementById('badge-fraction-support');
+            const opsPills = document.getElementById('operations-pills');
+
+            if (grade === 2) {
+                if (titleEl) titleEl.textContent = "Grade 2 Daily Word Problems: Addition & Subtraction";
+                if (descEl) descEl.textContent = "Focused on foundational two-digit addition, subtraction, real-world context models, and change-over-time word problems without fractional complexity.";
+                if (pillEl) {
+                    pillEl.textContent = "Grade 2 Portal";
+                    pillEl.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
+                }
+                if (fracBadge) fracBadge.classList.add('hidden');
+                if (opsPills) {
+                    opsPills.innerHTML = `
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Addition (+)</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-sky-50 text-sky-700 border border-sky-200">Subtraction (−)</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">Tape Bar Models</span>
+                    `;
+                }
+            } else {
+                if (titleEl) titleEl.textContent = "Grade 5 Daily Word Problems: Fractions & Multi-Step Ops";
+                if (descEl) descEl.textContent = "Rigorous synthesis of unlike denominator addition/subtraction, whole-by-fraction multiplication, unit fraction division, and multi-step integers.";
+                if (pillEl) {
+                    pillEl.textContent = "Grade 5 Portal";
+                    pillEl.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 border border-indigo-200";
+                }
+                if (fracBadge) fracBadge.classList.remove('hidden');
+                if (opsPills) {
+                    opsPills.innerHTML = `
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">Fraction +, −</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">Fraction ×, ÷</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-pink-50 text-pink-700 border border-pink-200">Multi-Step Integers</span>
+                    `;
+                }
+            }
+
+            const btnG2 = document.getElementById('btn-grade-2');
+            const btnG5 = document.getElementById('btn-grade-5');
+            if (btnG2 && btnG5) {
+                if (grade === 2) {
+                    btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-brand-700 shadow-sm";
+                    btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                } else {
+                    btnG5.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 bg-white text-indigo-700 shadow-sm";
+                    btnG2.className = "px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                }
+            }
+        }
+
+        function updateNavigationTabs() {
+            const current = APP_STATE.currentDay;
+            [1, 2, 3, 4, 5].forEach(d => {
+                const tab = document.getElementById(`day-tab-${d}`);
+                if (!tab) return;
+                if (current === d) {
+                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border bg-brand-500 text-white shadow-sm border-brand-600";
+                    const spanSub = tab.querySelector('span:first-child');
+                    if (spanSub) spanSub.className = "text-[10px] uppercase font-semibold text-brand-100";
+                } else {
+                    tab.className = "day-tab flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col items-center justify-center gap-0.5 border border-transparent text-slate-600 hover:bg-slate-100";
+                    const spanSub = tab.querySelector('span:first-child');
+                    if (spanSub) spanSub.className = "text-[10px] uppercase font-semibold text-slate-400";
+                }
+            });
+
+            const testTab = document.getElementById('day-tab-test');
+            if (testTab) {
+                if (current === 'test') {
+                    testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-500 text-white shadow-sm border-amber-600";
+                    const spanSub = testTab.querySelector('span:first-child');
+                    if (spanSub) spanSub.className = "block text-[10px] uppercase font-bold text-amber-100";
+                } else {
+                    testTab.className = "day-tab flex-1 min-w-[140px] py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 border bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100";
+                    const spanSub = testTab.querySelector('span:first-child');
+                    if (spanSub) spanSub.className = "block text-[10px] uppercase font-bold text-amber-600";
+                }
+            }
+        }
+
+        function renderProblems() {
+            const container = document.getElementById('problems-container');
+            if (!container) return;
+
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const week = APP_STATE.weeks[grade];
+            if (!week) return;
+
+            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
+            const titleStr = day === 'test' ? 'Friday End-of-Week 10-Question Test' : `${dayNames[day]} Practice • 5 Word Problems`;
+
+            // Print header sync
+            const pTitle = document.getElementById('print-sheet-title');
+            const pSub = document.getElementById('print-sheet-subtitle');
+            const pPts = document.getElementById('print-total-points');
+            const pMax = document.getElementById('print-max-score');
+            const pDate = document.getElementById('print-date');
+            if (pTitle) pTitle.textContent = `MathQuest • ${titleStr}`;
+            if (pSub) pSub.textContent = `Grade ${grade} Word Problem Curriculum • Aligned Standards`;
+            if (pPts) pPts.textContent = `${problems.length * 2} pts`;
+            if (pMax) pMax.textContent = `${problems.length * 2}`;
+            if (pDate) pDate.textContent = new Date().toLocaleDateString();
+
+            let html = '';
+            problems.forEach((p, index) => {
+                const key = `${grade}-${day}-${p.id}`;
+                const savedAns = APP_STATE.studentAnswers[key] || '';
+                const savedScratch = APP_STATE.studentScratchpads[key] || '';
+                const evalResult = APP_STATE.evaluations[key];
+
+                let evalHtml = '';
+                if (evalResult) {
+                    if (evalResult.isCorrect) {
+                        evalHtml = `
+                            <div class="mt-3 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                                    <span class="font-bold">Correct! Excellent problem-solving, ${APP_STATE.studentName}!</span>
+                                </div>
+                                <span class="font-mono text-emerald-700 font-bold">+2 Pts</span>
+                            </div>
+                        `;
+                    } else {
+                        evalHtml = `
+                            <div class="mt-3 p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-xmark text-rose-600 text-sm"></i>
+                                    <span>Not quite yet. Check your calculations on the scratchpad and try again!</span>
+                                </div>
+                                <span class="font-mono text-rose-600 font-bold">Try again</span>
+                            </div>
+                        `;
+                    }
+                }
+
+                html += `
+                    <div class="worksheet-card bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm transition hover:shadow-md">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-extrabold text-xs flex items-center justify-center font-display border border-slate-200">
+                                    Q${index + 1}
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${grade === 2 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-indigo-50 text-indigo-700 border border-indigo-200'}">
+                                    ${p.operationType || 'Math Challenge'}
+                                </span>
+                                ${p.isTestQuestion ? `<span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Day ${p.sourceDay} Review</span>` : ''}
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">2 pts</span>
+                        </div>
+
+                        <p class="mt-3.5 text-sm sm:text-base font-medium text-slate-800 leading-relaxed">
+                            ${p.question}
+                        </p>
+
+                        <!-- Singapore Math Bar Model Visualizer -->
+                        ${renderBarModelHTML(p.barModel)}
+
+                        <!-- Interactive Answer and Scratchpad Input Bar -->
+                        <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 no-print">
+                            <div class="flex items-center gap-2 flex-1 max-w-md">
+                                <div class="relative flex-1">
+                                    <input type="text" id="input-${p.id}" value="${savedAns}" placeholder="Type final answer..."
+                                        oninput="handleAnswerInput('${grade}', '${day}', '${p.id}', this.value)"
+                                        class="w-full pl-3 pr-3 py-2 text-xs sm:text-sm font-semibold rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50/50">
+                                </div>
+                                <button onclick="checkProblemAnswer('${grade}', '${day}', '${p.id}')"
+                                    class="px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm active:scale-95 shrink-0">
+                                    Check
+                                </button>
+                            </div>
+
+                            <button onclick="toggleScratchpad('${p.id}')" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-pencil text-slate-400"></i>
+                                <span>Calculation Scratchpad</span>
+                            </button>
+                        </div>
+
+                        <!-- Print Scratch Area -->
+                        <div class="hidden print-only mt-4 pt-3 border-t border-slate-200">
+                            <p class="text-[10px] font-bold uppercase text-slate-400 mb-1">Student Working / Scratch Area:</p>
+                            <div class="h-24 border border-dashed border-slate-300 rounded-lg"></div>
+                            <p class="mt-2 text-xs font-bold text-right text-slate-700">Final Answer: ______________________</p>
+                        </div>
+
+                        <!-- Expandable Scratchpad Container -->
+                        <div id="scratchpad-${p.id}" class="hidden no-print mt-3 p-3 bg-amber-50/60 rounded-2xl border border-amber-200/80">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[11px] font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Scratchpad &amp; Rough Calculations
+                                </span>
+                                <span class="text-[10px] text-amber-600">Visible to Teacher for Marking</span>
+                            </div>
+                            <textarea rows="3" placeholder="Jot down your math steps, intermediate sums, or fraction conversions here..."
+                                oninput="handleScratchpadInput('${grade}', '${day}', '${p.id}', this.value)"
+                                class="w-full p-2.5 text-xs font-mono rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">${savedScratch}</textarea>
+                        </div>
+
+                        ${evalHtml}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderBarModelHTML(model) {
+            if (!model) return '';
+            if (model.type === 'part-part-whole') {
+                return `
+                    <div class="mt-3 p-3 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-shapes text-brand-500"></i> Part-Part-Whole Visualizer
+                        </p>
+                        <div class="flex h-7 rounded-lg overflow-hidden border border-slate-300 font-bold text-[11px] text-white text-center shadow-inner">
+                            <div class="bg-brand-500 flex items-center justify-center px-2 flex-1">${model.part1.label}: ${model.part1.val}</div>
+                            <div class="bg-indigo-500 flex items-center justify-center px-2 flex-1">${model.part2.label}: ${model.part2.val}</div>
+                        </div>
+                        <div class="text-right mt-1 text-[11px] font-semibold text-slate-600">
+                            Total Whole: <span class="font-bold text-slate-900">${model.whole.val}</span>
+                        </div>
+                    </div>
+                `;
+            } else if (model.type === 'comparison') {
+                return `
+                    <div class="mt-3 p-3 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs space-y-1.5">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-shapes text-sky-500"></i> Comparison Model
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <span class="w-16 truncate font-semibold text-slate-600">${model.top.label}:</span>
+                            <div class="bg-brand-500 h-6 rounded-md flex items-center px-2 text-white font-bold text-[11px] w-full max-w-[200px]">${model.top.val}</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-16 truncate font-semibold text-slate-600">${model.bottom.label}:</span>
+                            <div class="bg-slate-400 h-6 rounded-md flex items-center px-2 text-white font-bold text-[11px] w-full max-w-[140px]">${model.bottom.val}</div>
+                            <span class="text-[11px] font-bold text-rose-600 ml-1">Diff: ${model.diff.val}</span>
+                        </div>
+                    </div>
+                `;
+            } else if (model.type === 'fraction-sum' || model.type === 'fraction-diff') {
+                return `
+                    <div class="mt-3 p-2.5 bg-indigo-50/50 rounded-2xl border border-indigo-100 text-xs flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs shrink-0">
+                            <i class="fa-solid fa-divide"></i>
+                        </div>
+                        <div class="text-[11px] text-slate-600">
+                            <span class="font-bold text-indigo-900">Fraction Concept:</span> Equivalent denominators required before combining. Target: <span class="font-mono font-bold text-indigo-700">${model.res}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            return '';
+        }
+
+        function renderVaultSolutions() {
+            const list = document.getElementById('vault-solutions-list');
+            if (!list) return;
+
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const week = APP_STATE.weeks[grade];
+            if (!week) return;
+
+            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+            const dayLabel = document.getElementById('vault-day-label');
+            const gradeLabel = document.getElementById('vault-grade-label');
+            if (dayLabel) dayLabel.textContent = day === 'test' ? 'Friday Test' : `Day ${day}`;
+            if (gradeLabel) gradeLabel.textContent = `${grade}`;
+
+            let html = '';
+            problems.forEach((p, idx) => {
+                html += `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-xs text-rose-700 uppercase tracking-wider font-display">Problem ${idx + 1} Solution Key</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">${p.operationType}</span>
+                        </div>
+                        <p class="text-xs text-slate-700 font-medium">${p.question}</p>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 font-mono text-xs whitespace-pre-line text-slate-800 leading-relaxed">${p.steps}</div>
+                        <div class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-key"></i> Final Answer: <span class="font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">${p.answer}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+
+        function renderSubmissionsList() {
+            const container = document.getElementById('submissions-list-container');
+            if (!container) return;
+
+            const submissions = APP_STATE.submissions || [];
+            updateVaultBadgeCounts();
+
+            if (submissions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 bg-white rounded-2xl border border-dashed border-slate-300 p-6 space-y-2">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-inbox"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-700">No Submissions Yet</h4>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto">When students click "Submit Work to Teacher" on any computer or tablet, their completed questions will show up here in real time.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            submissions.forEach(sub => {
+                const isGraded = sub.status === 'graded';
+                const timeString = new Date(sub.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const isExpanded = !!APP_STATE.expandedSubmissions[sub.id];
+
+                html += `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm transition space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl ${isGraded ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center font-bold text-sm shrink-0">
+                                    <i class="fa-solid ${isGraded ? 'fa-check' : 'fa-clock'}"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-extrabold text-sm text-slate-900">${sub.studentName}</h4>
+                                        <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-slate-600">${sub.studentId || 'ID'}</span>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isGraded ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                            ${isGraded ? `Marked: ${sub.awardedPoints} / ${sub.maxPoints} pts` : 'Awaiting Grading'}
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-0.5">Grade ${sub.grade} &bull; ${sub.assignmentTitle} &bull; ${timeString}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleSubmissionExpand('${sub.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition flex items-center gap-1.5">
+                                    <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'} text-slate-400"></i>
+                                    <span>${isExpanded ? 'Hide Work' : 'Inspect Work'}</span>
+                                </button>
+                                <button onclick="openMarkingModal('${sub.id}')" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-marker"></i>
+                                    <span>${isGraded ? 'Edit Marks' : 'Grade Submission'}</span>
+                                </button>
+                                <button onclick="deleteSubmission('${sub.id}')" title="Delete record" class="p-1.5 text-slate-400 hover:text-rose-600 transition">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        ${isExpanded ? renderInlineSubmissionInspector(sub) : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderInlineSubmissionInspector(sub) {
+            const problems = sub.problems || [];
+            let rows = '';
+
+            problems.forEach((p, i) => {
+                const studentAns = (sub.answers && sub.answers[p.id]) ? sub.answers[p.id] : '—';
+                const scratch = (sub.scratchpads && sub.scratchpads[p.id]) ? sub.scratchpads[p.id] : 'None provided';
+                const marksAwarded = sub.questionMarks ? sub.questionMarks[p.id] : 0;
+
+                rows += `
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
+                        <div class="flex items-center justify-between font-bold text-slate-800">
+                            <span>Question ${i + 1}: ${p.question}</span>
+                            <span class="text-brand-600">${marksAwarded} / 2 pts</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] pt-1 border-t border-slate-200/60">
+                            <div>
+                                <span class="font-semibold text-slate-500">Student Answer:</span>
+                                <span class="font-bold text-slate-900 ml-1 font-mono">${studentAns}</span>
+                                <span class="text-slate-400 ml-2">(Target: ${p.answer})</span>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-slate-500">Scratchpad:</span>
+                                <span class="text-slate-700 italic ml-1">${scratch}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="pt-3 border-t border-slate-100 space-y-2">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Detailed Student Answers &amp; Working:</p>
+                    <div class="space-y-2">${rows}</div>
+                    ${sub.teacherRemarks ? `<div class="p-2.5 bg-brand-50 rounded-xl text-xs text-brand-900 border border-brand-200"><strong>Teacher Remarks:</strong> ${sub.teacherRemarks}</div>` : ''}
+                </div>
+            `;
+        }
+
+        function toggleSubmissionExpand(id) {
+            APP_STATE.expandedSubmissions[id] = !APP_STATE.expandedSubmissions[id];
             renderSubmissionsList();
-            updateVaultUIStatus();
-            updateStudentSubmissionStatusCard();
+        }
+
+        function updateStudentSubmissionStatusCard() {
+            const card = document.getElementById('student-submission-status-card');
+            if (!card) return;
+
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const studentName = APP_STATE.studentName;
+
+            const sub = APP_STATE.submissions.find(s => s.grade === grade && s.day === day && s.studentName === studentName);
+            if (!sub) {
+                card.classList.add('hidden');
+                return;
+            }
+
+            card.classList.remove('hidden');
+            if (sub.status === 'graded') {
+                card.className = "no-print rounded-2xl p-4 border bg-emerald-50 border-emerald-200 text-emerald-900 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-bold text-sm">Graded by Teacher: ${sub.awardedPoints} / ${sub.maxPoints} Points</h4>
+                                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-800">Complete</span>
+                            </div>
+                            <p class="text-xs text-emerald-800/90 mt-0.5">${sub.teacherRemarks ? `"${sub.teacherRemarks}"` : 'Great effort on your daily word problem set!'}</p>
+                        </div>
+                    </div>
+                    <button onclick="openExportModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition shadow-sm shrink-0">
+                        <i class="fa-solid fa-file-arrow-down mr-1"></i> Download Graded Sheet
+                    </button>
+                `;
+            } else {
+                card.className = "no-print rounded-2xl p-4 border bg-amber-50 border-amber-200 text-amber-900 transition-all flex items-center justify-between gap-3 shadow-sm";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-base shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">Submitted &bull; Awaiting Teacher Review</h4>
+                            <p class="text-xs text-amber-700/90">Your answers are synchronized to the Teacher Hub across all devices.</p>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-amber-700 px-3 py-1 bg-amber-100 rounded-lg">Pending Mark</span>
+                `;
+            }
+        }
+
+        function switchGrade(grade) {
+            APP_STATE.currentGrade = grade;
+            renderApp();
+            showToast(`Switched to Grade ${grade} Word Problem Portal`);
+            triggerAutoSave();
+        }
+
+        function switchDay(day) {
+            APP_STATE.currentDay = day;
+            renderApp();
+            triggerAutoSave();
+        }
+
+        function switchVaultTab(tab) {
+            APP_STATE.activeVaultTab = tab;
+            const btnSub = document.getElementById('vault-tab-submissions');
+            const btnSol = document.getElementById('vault-tab-solutions');
+            const viewSub = document.getElementById('vault-submissions-view');
+            const viewSol = document.getElementById('vault-solutions-view');
+
+            if (tab === 'submissions') {
+                if (btnSub) btnSub.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-rose-700 shadow-sm";
+                if (btnSol) btnSol.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                if (viewSub) viewSub.classList.remove('hidden');
+                if (viewSol) viewSol.classList.add('hidden');
+                renderSubmissionsList();
+            } else {
+                if (btnSol) btnSol.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white text-rose-700 shadow-sm";
+                if (btnSub) btnSub.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                if (viewSol) viewSol.classList.remove('hidden');
+                if (viewSub) viewSub.classList.add('hidden');
+                renderVaultSolutions();
+            }
+        }
+
+        function handleAnswerInput(grade, day, id, val) {
+            const key = `${grade}-${day}-${id}`;
+            APP_STATE.studentAnswers[key] = val;
+            triggerAutoSave();
+        }
+
+        function handleScratchpadInput(grade, day, id, val) {
+            const key = `${grade}-${day}-${id}`;
+            APP_STATE.studentScratchpads[key] = val;
+            triggerAutoSave();
+        }
+
+        function toggleScratchpad(id) {
+            const pad = document.getElementById(`scratchpad-${id}`);
+            if (pad) pad.classList.toggle('hidden');
+        }
+
+        function handleStudentNameChange(val) {
+            APP_STATE.studentName = val.trim() || 'Student';
+            try { localStorage.setItem('mathquest_student_name', APP_STATE.studentName); } catch (e) {}
+            const printName = document.getElementById('print-student-name');
+            if (printName) printName.textContent = APP_STATE.studentName;
             updateUserProfileUI();
+            triggerAutoSave();
+        }
+
+        function handleStudentIdChange(val) {
+            APP_STATE.studentId = val.trim() || 'ID';
+            try { localStorage.setItem('mathquest_student_id', APP_STATE.studentId); } catch (e) {}
+            triggerAutoSave();
+        }
+
+        function checkProblemAnswer(grade, day, id) {
+            const key = `${grade}-${day}-${id}`;
+            const studentVal = (APP_STATE.studentAnswers[key] || '').trim().toLowerCase();
+            const week = APP_STATE.weeks[grade];
+            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+            const problem = problems.find(p => p.id == id);
+            if (!problem) return;
+
+            const target = problem.answer.trim().toLowerCase();
+            const isCorrect = (studentVal === target) || (studentVal.replace(/[^0-9/]/g, '') === target.replace(/[^0-9/]/g, ''));
+            APP_STATE.evaluations[key] = { isCorrect, timestamp: new Date().toISOString() };
+            renderProblems();
+            triggerAutoSave();
+        }
+
+        function openMarkingModal(submissionId) {
+            APP_STATE.activeMarkingSubmissionId = submissionId;
+            const sub = APP_STATE.submissions.find(s => s.id === submissionId);
+            if (!sub) return;
+
+            const modal = document.getElementById('teacher-marking-modal');
+            const title = document.getElementById('marking-modal-student-title');
+            const meta = document.getElementById('marking-modal-meta');
+            const body = document.getElementById('marking-modal-body');
+            const scoreBadge = document.getElementById('marking-total-score-badge');
+
+            if (title) title.textContent = `Marking Submission: ${sub.studentName} (${sub.studentId || 'No ID'})`;
+            if (meta) meta.textContent = `Grade ${sub.grade} • ${sub.assignmentTitle} • Submitted: ${new Date(sub.timestamp).toLocaleString()}`;
+            if (scoreBadge) scoreBadge.textContent = `${sub.awardedPoints || 0} / ${sub.maxPoints} pts`;
+
+            let html = '';
+            const problems = sub.problems || [];
+            problems.forEach((p, idx) => {
+                const studentAns = (sub.answers && sub.answers[p.id]) ? sub.answers[p.id] : '';
+                const scratch = (sub.scratchpads && sub.scratchpads[p.id]) ? sub.scratchpads[p.id] : '';
+                const currentMark = (sub.questionMarks && sub.questionMarks[p.id] !== undefined) ? sub.questionMarks[p.id] : 0;
+                const feedback = (sub.teacherFeedbackPerQuestion && sub.teacherFeedbackPerQuestion[p.id]) ? sub.teacherFeedbackPerQuestion[p.id] : '';
+
+                html += `
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-800 text-xs uppercase">Question ${idx + 1}</span>
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-semibold text-slate-600">Points Awarded:</label>
+                                <select id="q-mark-${p.id}" onchange="updateLiveMarkingTotal()" class="px-2 py-1 rounded-lg border border-slate-300 text-xs font-bold text-brand-700 bg-slate-50">
+                                    <option value="0" ${currentMark === 0 ? 'selected' : ''}>0 pts (Incorrect)</option>
+                                    <option value="1" ${currentMark === 1 ? 'selected' : ''}>1 pt (Partial Credit)</option>
+                                    <option value="2" ${currentMark === 2 ? 'selected' : ''}>2 pts (Full Credit)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="text-xs font-medium text-slate-700">${p.question}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="font-bold text-slate-600 block mb-1">Student Answer:</span>
+                                <span class="font-mono text-sm font-bold ${studentAns ? 'text-slate-900' : 'text-slate-400'}">${studentAns || '(No answer written)'}</span>
+                                <div class="mt-1 text-[11px] text-emerald-700">Target Answer: <span class="font-mono font-bold">${p.answer}</span></div>
+                            </div>
+                            <div class="p-2.5 bg-amber-50/50 rounded-xl border border-amber-200">
+                                <span class="font-bold text-amber-800 block mb-1">Student Scratchpad:</span>
+                                <span class="text-[11px] font-mono text-slate-700 whitespace-pre-line">${scratch || '(No scratchpad work)'}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" id="q-feedback-${p.id}" value="${feedback}" placeholder="Optional feedback note for this question..."
+                                class="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="bg-white rounded-2xl p-4 border border-slate-200 space-y-2">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Overall Teacher Evaluation &amp; Comments:</label>
+                    <textarea id="marking-overall-remarks" rows="2" placeholder="Write overall comments or congratulations for the student..."
+                        class="w-full p-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500">${sub.teacherRemarks || ''}</textarea>
+                </div>
+            `;
+
+            if (body) body.innerHTML = html;
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeMarkingModal() {
+            const modal = document.getElementById('teacher-marking-modal');
+            if (modal) modal.classList.add('hidden');
+            APP_STATE.activeMarkingSubmissionId = null;
+        }
+
+        function updateLiveMarkingTotal() {
+            const sub = APP_STATE.submissions.find(s => s.id === APP_STATE.activeMarkingSubmissionId);
+            if (!sub) return;
+            let sum = 0;
+            const problems = sub.problems || [];
+            problems.forEach(p => {
+                const el = document.getElementById(`q-mark-${p.id}`);
+                if (el) sum += parseInt(el.value, 10);
+            });
+            const badge = document.getElementById('marking-total-score-badge');
+            if (badge) badge.textContent = `${sum} / ${sub.maxPoints} pts`;
+        }
+
+        function openExportModal() {
+            document.getElementById('export-download-modal').classList.remove('hidden');
+            selectExportFormat(APP_STATE.selectedExportFormat || 'word');
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-download-modal').classList.add('hidden');
+        }
+
+        function selectExportFormat(fmt) {
+            APP_STATE.selectedExportFormat = fmt;
+            ['word', 'pdf', 'json', 'html'].forEach(f => {
+                const card = document.getElementById(`format-card-${f}`);
+                if (!card) return;
+                if (f === fmt) {
+                    card.className = "format-choice border-2 border-indigo-600 bg-indigo-50/50 p-3 rounded-2xl cursor-pointer transition flex items-center gap-3";
+                } else {
+                    card.className = "format-choice border border-slate-200 p-3 rounded-2xl cursor-pointer hover:bg-slate-50 transition flex items-center gap-3";
+                }
+            });
+
+            const label = document.getElementById('download-confirm-btn-label');
+            const desc = document.getElementById('format-description-text');
+            if (fmt === 'word') {
+                if (label) label.textContent = "Download Word Document (.doc)";
+                if (desc) desc.textContent = "Word documents open cleanly in Microsoft Word, Google Docs, and LibreOffice with questions, tables, and student answer space.";
+            } else if (fmt === 'pdf') {
+                if (label) label.textContent = "Print / Save as PDF";
+                if (desc) desc.textContent = "Opens browser print dialog formatted specifically for clean 8.5x11 / A4 paper or PDF export.";
+            } else if (fmt === 'json') {
+                if (label) label.textContent = "Download JSON Archive";
+                if (desc) desc.textContent = "Contains full raw JSON data including all 50 questions, answers, step-by-step methods, and submission activity.";
+            } else {
+                if (label) label.textContent = "Download Offline HTML";
+                if (desc) desc.textContent = "Self-contained interactive HTML file that can be opened and answered offline without internet connection.";
+            }
+        }
+
+        function executeDownloadChoice() {
+            const fmt = APP_STATE.selectedExportFormat;
+            const isStudentWork = document.querySelector('input[name="export-content-type"]:checked')?.value === 'student_work';
+            closeExportModal();
+
+            if (fmt === 'pdf') {
+                window.print();
+            } else if (fmt === 'word') {
+                downloadWordDocument(isStudentWork);
+            } else if (fmt === 'json') {
+                downloadActivityJSON();
+            } else {
+                downloadOfflineHTML(isStudentWork);
+            }
+        }
+
+        function downloadWordDocument(includeAnswers) {
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const week = APP_STATE.weeks[grade];
+            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+            const dayNames = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday' };
+            const title = day === 'test' ? 'Friday End-of-Week Test' : `${dayNames[day]} Practice`;
+
+            let bodyContent = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h1 style="color: #0369a1; margin-bottom: 4px;">MathQuest • Grade ${grade} Word Problems</h1>
+                    <h3 style="color: #475569; margin-top: 0;">${title} • Total Marks: ${problems.length * 2} pts</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <tr>
+                            <td style="padding: 6px; border-bottom: 1px solid #ccc;"><strong>Student Name:</strong> ${APP_STATE.studentName || '_______________________'}</td>
+                            <td style="padding: 6px; border-bottom: 1px solid #ccc;"><strong>Student ID:</strong> ${APP_STATE.studentId || '___________'}</td>
+                            <td style="padding: 6px; border-bottom: 1px solid #ccc;"><strong>Date:</strong> ${new Date().toLocaleDateString()}</td>
+                        </tr>
+                    </table>
+            `;
+
+            problems.forEach((p, idx) => {
+                const key = `${grade}-${day}-${p.id}`;
+                const ans = APP_STATE.studentAnswers[key] || '';
+                const scratch = APP_STATE.studentScratchpads[key] || '';
+
+                bodyContent += `
+                    <div style="margin-bottom: 24px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                        <p style="font-weight: bold; margin-top: 0; color: #1e293b;">Question ${idx + 1} (${p.operationType}):</p>
+                        <p style="font-size: 14px; line-height: 1.5;">${p.question}</p>
+                        ${includeAnswers ? `
+                            <p style="margin-top: 8px;"><strong>Student Answer:</strong> <span style="font-family: monospace;">${ans || '________________'}</span></p>
+                            <p><strong>Scratchpad:</strong> <em>${scratch || 'None'}</em></p>
+                            <p style="color: #047857;"><strong>Official Answer Key:</strong> ${p.answer}</p>
+                        ` : `
+                            <div style="height: 60px; border: 1px dashed #cbd5e1; margin-top: 8px; padding: 4px; color: #94a3b8; font-size: 11px;">Working Area</div>
+                            <p style="margin-top: 8px;"><strong>Final Answer:</strong> _____________________________</p>
+                        `}
+                    </div>
+                `;
+            });
+
+            bodyContent += `</div>`;
+
+            const docContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>MathQuest Worksheet</title></head>
+                <body>${bodyContent}</body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', docContent], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `MathQuest_Grade${grade}_Day${day}_Worksheet.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Word document download generated!");
+        }
+
+        function downloadOfflineHTML(includeAnswers) {
+            const grade = APP_STATE.currentGrade;
+            const day = APP_STATE.currentDay;
+            const week = APP_STATE.weeks[grade];
+            const problems = (day === 'test') ? week.test : (week.days[day] || []);
+
+            const content = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>MathQuest Offline Sheet</title>
+            <style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;color:#1e293b;}.card{border:1px solid #cbd5e1;border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;}</style>
+            </head><body>
+            <h1>MathQuest • Grade ${grade} Worksheet</h1>
+            <p>Student: ${APP_STATE.studentName} | Date: ${new Date().toLocaleDateString()}</p>
+            ${problems.map((p, i) => `<div class="card"><h3>Q${i+1}: ${p.question}</h3><p>Answer: ${includeAnswers ? (APP_STATE.studentAnswers[`${grade}-${day}-${p.id}`] || 'Unanswered') : '_______________'}</p></div>`).join('')}
+            </body></html>`;
+
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `MathQuest_Grade${grade}_Day${day}_Offline.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Offline HTML worksheet downloaded!");
+        }
+
+        function downloadActivityJSON() {
+            const payload = generateActivityJSONPayload();
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `MathQuest_Full_Activity_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Activity JSON downloaded!");
+        }
+
+        function generateActivityJSONPayload() {
+            return {
+                app: "MathQuest",
+                version: "3.2.0",
+                exportedAt: new Date().toISOString(),
+                student: {
+                    name: APP_STATE.studentName,
+                    studentId: APP_STATE.studentId,
+                    activeGrade: APP_STATE.currentGrade,
+                    activeDay: APP_STATE.currentDay
+                },
+                curriculumData: {
+                    grade2: APP_STATE.weeks[2],
+                    grade5: APP_STATE.weeks[5]
+                },
+                studentSubmissions: {
+                    answers: APP_STATE.studentAnswers,
+                    scratchpads: APP_STATE.studentScratchpads,
+                    evaluations: APP_STATE.evaluations,
+                    teacherSubmissionHistory: APP_STATE.submissions
+                }
+            };
+        }
+
+        let autoSaveDebounceTimer = null;
+        const AUTOSAVE_STORAGE_KEY = 'mathquest_autosaved_session_v3';
+
+        function triggerAutoSave() {
+            updateAutoSaveBadge('saving');
+            if (autoSaveDebounceTimer) clearTimeout(autoSaveDebounceTimer);
+
+            autoSaveDebounceTimer = setTimeout(() => {
+                try {
+                    const payload = generateActivityJSONPayload();
+                    const jsonString = JSON.stringify(payload);
+                    try {
+                        localStorage.setItem(AUTOSAVE_STORAGE_KEY, jsonString);
+                    } catch (e) {
+                        sessionStorage.setItem(AUTOSAVE_STORAGE_KEY, jsonString);
+                    }
+
+                    APP_STATE.lastSavedTimestamp = new Date();
+                    const timeString = APP_STATE.lastSavedTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    updateAutoSaveBadge('saved', timeString);
+                } catch (err) {
+                    console.error("Auto-save failed:", err);
+                }
+            }, 600);
+        }
+
+        function updateAutoSaveBadge(state, timeStr) {
+            const badge = document.getElementById('autosave-status-badge');
+            const label = document.getElementById('autosave-label');
+            const ping = document.getElementById('autosave-ping');
+            const dot = document.getElementById('autosave-dot');
+            if (!badge || !label) return;
+
+            if (state === 'saving') {
+                badge.className = "px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 transition-all flex items-center gap-1.5 shadow-sm";
+                label.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin mr-1"></i>Saving...`;
+                if (ping) ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
+                if (dot) dot.className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
+            } else {
+                badge.className = "px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 transition-all flex items-center gap-1.5 shadow-sm";
+                label.innerHTML = `<i class="fa-solid fa-cloud mr-1"></i>${timeStr ? `Saved ${timeStr}` : 'Live Cloud Sync'}`;
+                if (ping) ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                if (dot) dot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+            }
+        }
+
+        function restoreAutoSavedSession() {
+            try {
+                let savedDataStr = null;
+                try {
+                    savedDataStr = localStorage.getItem(AUTOSAVE_STORAGE_KEY) || sessionStorage.getItem(AUTOSAVE_STORAGE_KEY);
+                } catch (e) {}
+
+                if (!savedDataStr) return false;
+
+                const content = JSON.parse(savedDataStr);
+                if (!content || !content.curriculumData) return false;
+
+                if (content.curriculumData.grade2) APP_STATE.weeks[2] = content.curriculumData.grade2;
+                if (content.curriculumData.grade5) APP_STATE.weeks[5] = content.curriculumData.grade5;
+
+                if (content.studentSubmissions) {
+                    APP_STATE.studentAnswers = content.studentSubmissions.answers || {};
+                    APP_STATE.studentScratchpads = content.studentSubmissions.scratchpads || {};
+                    APP_STATE.evaluations = content.studentSubmissions.evaluations || {};
+                    APP_STATE.submissions = content.studentSubmissions.teacherSubmissionHistory || [];
+                }
+
+                if (content.student) {
+                    if (content.student.name) APP_STATE.studentName = content.student.name;
+                    if (content.student.studentId) APP_STATE.studentId = content.student.studentId;
+                    if (content.student.activeGrade) APP_STATE.currentGrade = content.student.activeGrade;
+                    if (content.student.activeDay) APP_STATE.currentDay = content.student.activeDay;
+                }
+
+                return true;
+            } catch (err) {
+                console.warn("Could not restore auto-saved session:", err);
+                return false;
+            }
         }
 
         function updateUserProfileUI() {
@@ -1422,7 +2102,6 @@
                 s.grade === grade && s.day === day && s.studentName === studentName
             );
 
-            // Use stable deterministic ID so multiple edits cleanly update the cloud document
             const submissionId = existingIndex >= 0 
                 ? APP_STATE.submissions[existingIndex].id 
                 : `SUB-${grade}-${day}-${studentName.replace(/[^a-zA-Z0-9]/g, '_')}`;
@@ -1447,7 +2126,6 @@
                 questionMarks: {}
             };
 
-            // Pre-calculate suggested marks for teacher guidance
             problems.forEach(prob => {
                 const ans = (answersMap[prob.id] || '').trim().toLowerCase();
                 const target = prob.answer.trim().toLowerCase();
@@ -1465,12 +2143,11 @@
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
 
-            // Cloud synchronization across devices (Rule 1 & Rule 3)
             if (typeof window.cloudSaveSubmission === 'function') {
                 window.cloudSaveSubmission(submission);
             }
 
-            showToast(`Work for ${assignmentTitle} submitted to the teacher on all devices! (${enteredCount}/${problems.length} answered)`);
+            showToast(`Work for ${assignmentTitle} submitted to the teacher! (${enteredCount}/${problems.length} answered)`);
         }
 
         function saveAndFinalizeMarks() {
@@ -1498,12 +2175,11 @@
             updateStudentSubmissionStatusCard();
             triggerAutoSave();
 
-            // Sync updated marks to cloud so the student sees them on their device
             if (typeof window.cloudSaveSubmission === 'function') {
                 window.cloudSaveSubmission(sub);
             }
 
-            showToast(`Marks saved and synced to student device for ${sub.studentName}!`);
+            showToast(`Marks saved and returned to student ${sub.studentName}!`);
         }
 
         function deleteSubmission(id) {
@@ -1522,157 +2198,9 @@
         function updateVaultBadgeCounts() {
             const badge = document.getElementById('vault-submissions-badge');
             const countChip = document.getElementById('pending-mark-count');
-            const pending = APP_STATE.submissions.filter(s => s.status === 'pending').length;
+            const pending = (APP_STATE.submissions || []).filter(s => s.status === 'pending').length;
             if (badge) badge.textContent = APP_STATE.submissions.length;
             if (countChip) countChip.textContent = `${pending} Submissions`;
-        }
-
-        function saveNewPassword() {
-            const currentPass = document.getElementById('current-pass-input').value.trim();
-            const newPass = document.getElementById('new-pass-input').value.trim();
-            const confirmPass = document.getElementById('confirm-pass-input').value.trim();
-            const errBox = document.getElementById('change-pass-error');
-            const errText = document.getElementById('change-pass-error-text');
-
-            if (!APP_STATE.isVaultUnlocked && currentPass !== APP_STATE.teacherPassword) {
-                errText.textContent = "Current passcode is incorrect.";
-                errBox.classList.remove('hidden');
-                return;
-            }
-
-            if (newPass.length < 3) {
-                errText.textContent = "New passcode must be at least 3 characters.";
-                errBox.classList.remove('hidden');
-                return;
-            }
-
-            if (newPass !== confirmPass) {
-                errText.textContent = "New passcode and confirmation do not match.";
-                errBox.classList.remove('hidden');
-                return;
-            }
-
-            APP_STATE.teacherPassword = newPass;
-            try {
-                localStorage.setItem('mathquest_vault_pin_2026', newPass);
-            } catch (e) {}
-
-            if (typeof window.cloudSaveTeacherPassword === 'function') {
-                window.cloudSaveTeacherPassword(newPass);
-            }
-
-            closeChangePasswordModal();
-            updatePasswordHintUI();
-            showToast("Teacher passcode successfully updated and synced across devices!");
-        }
-
-        function resetToDefaultPassword() {
-            APP_STATE.teacherPassword = 'mathmaster';
-            try {
-                localStorage.setItem('mathquest_vault_pin_2026', 'mathmaster');
-            } catch (e) {}
-
-            if (typeof window.cloudSaveTeacherPassword === 'function') {
-                window.cloudSaveTeacherPassword('mathmaster');
-            }
-
-            closeChangePasswordModal();
-            updatePasswordHintUI();
-            showToast("Passcode reset to default: mathmaster");
-        }
-
-        function regenerateCurrentWeek() {
-            APP_STATE.weeks[APP_STATE.currentGrade] = generateFullWeek(APP_STATE.currentGrade);
-            renderApp();
-            showToast(`Generated a fresh weekly set for Grade ${APP_STATE.currentGrade}!`);
-            triggerAutoSave();
-
-            // Sync week questions so student and teacher on any device see identical problems
-            if (typeof window.cloudSaveCurriculum === 'function') {
-                window.cloudSaveCurriculum(APP_STATE.weeks[2], APP_STATE.weeks[5]);
-            }
-        }
-
-        // Attach global exports for module and legacy handlers
-        window.APP_STATE = APP_STATE;
-        window.renderApp = renderApp;
-        window.renderProblems = renderProblems;
-        window.renderVaultSolutions = renderVaultSolutions;
-        window.renderSubmissionsList = renderSubmissionsList;
-        window.updateVaultBadgeCounts = updateVaultBadgeCounts;
-        window.updateStudentSubmissionStatusCard = updateStudentSubmissionStatusCard;
-        window.updateAutoSaveBadge = updateAutoSaveBadge;
-        window.updatePasswordHintUI = updatePasswordHintUI;
-        window.openLoginModal = openLoginModal;
-        window.closeLoginModal = closeLoginModal;
-        window.selectLoginRole = selectLoginRole;
-        window.handleUserLoginSubmit = handleUserLoginSubmit;
-        window.fillTeacherLoginDefault = fillTeacherLoginDefault;
-        window.submitWorkForGrading = submitWorkForGrading;
-        window.saveAndFinalizeMarks = saveAndFinalizeMarks;
-        window.deleteSubmission = deleteSubmission;
-        window.saveNewPassword = saveNewPassword;
-        window.resetToDefaultPassword = resetToDefaultPassword;
-        window.regenerateCurrentWeek = regenerateCurrentWeek;
-
-        // Auto-save debounced runner
-        function triggerAutoSave() {
-            updateAutoSaveBadge('saving');
-            if (autoSaveDebounceTimer) clearTimeout(autoSaveDebounceTimer);
-
-            autoSaveDebounceTimer = setTimeout(() => {
-                try {
-                    const payload = generateActivityJSONPayload();
-                    const jsonString = JSON.stringify(payload);
-                    try {
-                        localStorage.setItem(AUTOSAVE_STORAGE_KEY, jsonString);
-                    } catch (e) {
-                        sessionStorage.setItem(AUTOSAVE_STORAGE_KEY, jsonString);
-                    }
-
-                    APP_STATE.lastSavedTimestamp = new Date();
-                    const timeString = APP_STATE.lastSavedTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    updateAutoSaveBadge('saved', timeString);
-                } catch (err) {
-                    console.error("Auto-save failed:", err);
-                }
-            }, 600);
-        }
-
-        function restoreAutoSavedSession() {
-            try {
-                let savedDataStr = null;
-                try {
-                    savedDataStr = localStorage.getItem(AUTOSAVE_STORAGE_KEY) || sessionStorage.getItem(AUTOSAVE_STORAGE_KEY);
-                } catch (e) {}
-
-                if (!savedDataStr) return false;
-
-                const content = JSON.parse(savedDataStr);
-                if (!content || !content.curriculumData) return false;
-
-                if (content.curriculumData.grade2) APP_STATE.weeks[2] = content.curriculumData.grade2;
-                if (content.curriculumData.grade5) APP_STATE.weeks[5] = content.curriculumData.grade5;
-
-                if (content.studentSubmissions) {
-                    APP_STATE.studentAnswers = content.studentSubmissions.answers || {};
-                    APP_STATE.studentScratchpads = content.studentSubmissions.scratchpads || {};
-                    APP_STATE.evaluations = content.studentSubmissions.evaluations || {};
-                    APP_STATE.submissions = content.studentSubmissions.teacherSubmissionHistory || [];
-                }
-
-                if (content.student) {
-                    if (content.student.name) APP_STATE.studentName = content.student.name;
-                    if (content.student.studentId) APP_STATE.studentId = content.student.studentId;
-                    if (content.student.activeGrade) APP_STATE.currentGrade = content.student.activeGrade;
-                    if (content.student.activeDay) APP_STATE.currentDay = content.student.activeDay;
-                }
-
-                return true;
-            } catch (err) {
-                console.warn("Could not restore auto-saved session:", err);
-                return false;
-            }
         }
 
         function handleVaultClick() {
@@ -1806,6 +2334,10 @@
                 localStorage.setItem('mathquest_vault_pin_2026', newPass);
             } catch (e) {}
 
+            if (typeof window.cloudSaveTeacherPassword === 'function') {
+                window.cloudSaveTeacherPassword(newPass);
+            }
+
             closeChangePasswordModal();
             updatePasswordHintUI();
             showToast("Teacher passcode successfully updated!");
@@ -1816,6 +2348,10 @@
             try {
                 localStorage.setItem('mathquest_vault_pin_2026', 'mathmaster');
             } catch (e) {}
+
+            if (typeof window.cloudSaveTeacherPassword === 'function') {
+                window.cloudSaveTeacherPassword('mathmaster');
+            }
 
             closeChangePasswordModal();
             updatePasswordHintUI();
@@ -1840,6 +2376,7 @@
         function togglePasswordVisibility(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
+            if (!input || !icon) return;
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.className = "fa-regular fa-eye-slash";
@@ -1849,15 +2386,21 @@
             }
         }
 
-        function printCurrentWorksheet() {
-            const printName = document.getElementById('print-student-name');
-            if (printName) printName.textContent = APP_STATE.studentName ? APP_STATE.studentName : '___________________________';
-            window.print();
+        function regenerateCurrentWeek() {
+            APP_STATE.weeks[APP_STATE.currentGrade] = generateFullWeek(APP_STATE.currentGrade);
+            renderApp();
+            showToast(`Generated a fresh weekly set for Grade ${APP_STATE.currentGrade}!`);
+            triggerAutoSave();
+
+            if (typeof window.cloudSaveCurriculum === 'function') {
+                window.cloudSaveCurriculum(APP_STATE.weeks[2], APP_STATE.weeks[5]);
+            }
         }
 
         function showToast(message) {
             const toast = document.getElementById('toast');
             const msgEl = document.getElementById('toast-msg');
+            if (!toast || !msgEl) return;
             msgEl.textContent = message;
             toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
@@ -1865,6 +2408,249 @@
             }, 3000);
         }
 
+        function renderApp() {
+            updateInfographicHeader();
+            updateNavigationTabs();
+            renderProblems();
+            renderVaultSolutions();
+            renderSubmissionsList();
+            updateVaultUIStatus();
+            updateStudentSubmissionStatusCard();
+            updateUserProfileUI();
+        }
+
+        // Exposing all methods on window so module listeners and inline attributes can call them safely
+        window.APP_STATE = APP_STATE;
+        window.renderApp = renderApp;
+        window.renderProblems = renderProblems;
+        window.renderVaultSolutions = renderVaultSolutions;
+        window.renderSubmissionsList = renderSubmissionsList;
+        window.updateVaultBadgeCounts = updateVaultBadgeCounts;
+        window.updateStudentSubmissionStatusCard = updateStudentSubmissionStatusCard;
+        window.updateAutoSaveBadge = updateAutoSaveBadge;
+        window.updatePasswordHintUI = updatePasswordHintUI;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.selectLoginRole = selectLoginRole;
+        window.handleUserLoginSubmit = handleUserLoginSubmit;
+        window.fillTeacherLoginDefault = fillTeacherLoginDefault;
+        window.submitWorkForGrading = submitWorkForGrading;
+        window.saveAndFinalizeMarks = saveAndFinalizeMarks;
+        window.deleteSubmission = deleteSubmission;
+        window.saveNewPassword = saveNewPassword;
+        window.resetToDefaultPassword = resetToDefaultPassword;
+        window.regenerateCurrentWeek = regenerateCurrentWeek;
+        window.switchGrade = switchGrade;
+        window.switchDay = switchDay;
+        window.switchVaultTab = switchVaultTab;
+        window.handleAnswerInput = handleAnswerInput;
+        window.handleScratchpadInput = handleScratchpadInput;
+        window.toggleScratchpad = toggleScratchpad;
+        window.handleStudentNameChange = handleStudentNameChange;
+        window.handleStudentIdChange = handleStudentIdChange;
+        window.checkProblemAnswer = checkProblemAnswer;
+        window.openMarkingModal = openMarkingModal;
+        window.closeMarkingModal = closeMarkingModal;
+        window.updateLiveMarkingTotal = updateLiveMarkingTotal;
+        window.toggleSubmissionExpand = toggleSubmissionExpand;
+        window.openExportModal = openExportModal;
+        window.closeExportModal = closeExportModal;
+        window.selectExportFormat = selectExportFormat;
+        window.executeDownloadChoice = executeDownloadChoice;
+        window.handleVaultClick = handleVaultClick;
+        window.openAuthModal = openAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.verifyVaultPassword = verifyVaultPassword;
+        window.lockVault = lockVault;
+        window.openChangePasswordModal = openChangePasswordModal;
+        window.closeChangePasswordModal = closeChangePasswordModal;
+        window.togglePasswordVisibility = togglePasswordVisibility;
+        window.fillDefaultPassword = fillDefaultPassword;
+        window.showToast = showToast;
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'mathquest-app-default';
+        const rawFirebaseConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        let firebaseConfig = {};
+        if (rawFirebaseConfig) {
+            try { firebaseConfig = JSON.parse(rawFirebaseConfig); } catch (e) { console.error("Firebase config parse error", e); }
+        }
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let isCloudAvailable = false;
+
+        if (firebaseConfig && firebaseConfig.apiKey) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                isCloudAvailable = true;
+            } catch (err) {
+                console.warn("Cloud initialization error, running in memory-mode:", err);
+            }
+        }
+
+        async function initCloudAuth() {
+            if (!isCloudAvailable || !auth) return;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                currentUser = auth.currentUser;
+                window.currentUser = currentUser;
+                setupRealtimeCloudListeners();
+            } catch (authErr) {
+                console.warn("Auth initialization fallback:", authErr);
+                try {
+                    await signInAnonymously(auth);
+                    currentUser = auth.currentUser;
+                    setupRealtimeCloudListeners();
+                } catch (fallbackErr) {
+                    console.error("Anonymous auth failed:", fallbackErr);
+                }
+            }
+        }
+
+        function setupRealtimeCloudListeners() {
+            if (!db || !currentUser) return;
+
+            // 1. Listen for all submissions across any device
+            const submissionsCol = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+            onSnapshot(submissionsCol, (snapshot) => {
+                const cloudSubmissions = [];
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    cloudSubmissions.push({ id: docSnap.id, ...data });
+                });
+
+                cloudSubmissions.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+                window.APP_STATE.submissions = cloudSubmissions;
+
+                if (window.APP_STATE.currentUserRole === 'student') {
+                    const mySub = cloudSubmissions.find(s => 
+                        s.grade === window.APP_STATE.currentGrade && 
+                        s.day === window.APP_STATE.currentDay && 
+                        s.studentName === window.APP_STATE.studentName
+                    );
+                    if (mySub && mySub.answers) {
+                        Object.keys(mySub.answers).forEach(qid => {
+                            const key = `${mySub.grade}-${mySub.day}-${qid}`;
+                            if (!window.APP_STATE.studentAnswers[key]) {
+                                window.APP_STATE.studentAnswers[key] = mySub.answers[qid];
+                            }
+                        });
+                    }
+                }
+
+                if (typeof window.renderSubmissionsList === 'function') window.renderSubmissionsList();
+                if (typeof window.updateStudentSubmissionStatusCard === 'function') window.updateStudentSubmissionStatusCard();
+                if (typeof window.updateVaultBadgeCounts === 'function') window.updateVaultBadgeCounts();
+                if (typeof window.updateAutoSaveBadge === 'function') window.updateAutoSaveBadge('saved');
+            }, (error) => {
+                console.error("Submissions cloud sync error:", error);
+            });
+
+            // 2. Listen for Shared Weekly Curriculum so all devices see identical word problems
+            const curriculumCol = collection(db, 'artifacts', appId, 'public', 'data', 'curriculum');
+            onSnapshot(curriculumCol, (snapshot) => {
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.grade2 && data.grade2.days) {
+                        window.APP_STATE.weeks[2] = data.grade2;
+                    }
+                    if (data.grade5 && data.grade5.days) {
+                        window.APP_STATE.weeks[5] = data.grade5;
+                    }
+                });
+                if (typeof window.renderProblems === 'function') window.renderProblems();
+                if (typeof window.renderVaultSolutions === 'function') window.renderVaultSolutions();
+            }, (error) => {
+                console.error("Curriculum cloud sync error:", error);
+            });
+
+            // 3. Listen for Global Teacher Settings
+            const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
+            onSnapshot(settingsDocRef, (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data.teacherPassword && data.teacherPassword.length >= 3) {
+                        window.APP_STATE.teacherPassword = data.teacherPassword;
+                        if (typeof window.updatePasswordHintUI === 'function') window.updatePasswordHintUI();
+                    }
+                }
+            }, (error) => {
+                console.error("Settings cloud sync error:", error);
+            });
+        }
+
+        window.cloudSaveSubmission = async function(submission) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submission.id);
+                await setDoc(subDocRef, submission, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to push submission to cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudDeleteSubmission = async function(submissionId) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submissionId);
+                await deleteDoc(subDocRef);
+                return true;
+            } catch (err) {
+                console.error("Failed to delete submission from cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudSaveCurriculum = async function(weekG2, weekG5) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const currDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'curriculum', 'active_weekly_sets');
+                await setDoc(currDocRef, {
+                    grade2: weekG2,
+                    grade5: weekG5,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to sync curriculum to cloud:", err);
+                return false;
+            }
+        };
+
+        window.cloudSaveTeacherPassword = async function(newPassword) {
+            if (!db || !auth?.currentUser) return false;
+            try {
+                const settingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'security');
+                await setDoc(settingsRef, {
+                    teacherPassword: newPassword,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                return true;
+            } catch (err) {
+                console.error("Failed to sync teacher passcode to cloud:", err);
+                return false;
+            }
+        };
+
+        initCloudAuth();
+    </script>
+
+    <script>
         window.addEventListener('DOMContentLoaded', () => {
             const restored = restoreAutoSavedSession();
             renderApp();
